@@ -1,0 +1,27 @@
+Population description	Population code (1KGP)	Superpopulation code (1KGP)	Regional grouping (This study)	NumberOfSampledIndividualsPhase1	NumberOfSampledIndividualsPhase3
+African Ancestry in Southwest US	ASW	AFR	AMR	61	61
+"Yoruba in Ibadan, Nigeria"	YRI	AFR	AFR	88	108
+"Luhya in Webuye, Kenya"	LWK	AFR	AFR	97	99
+"Japanese in Tokyo, Japan"	JPT	EAS	EAS	89	104
+"Chinese Dai in Xishuangbanna, China"	CDX	EAS	EAS	0	93
+Utah residents (CEPH) with Northern and Western European ancestry	CEU	EUR	AMR	85	99
+"Han Chinese in Beijing, China"	CHB	EAS	EAS	97	103
+"Gujarati Indians in Houston, TX"	GIH	SAS	SAS	0	103
+"Gambian in Western Division, The Gambia - Mandinka"	GWD	AFR	AFR	0	113
+Mende in Sierra Leone	MSL	AFR	AFR	0	85
+Iberian populations in Spain	IBS	EUR	EUR	14	107
+Toscani in Italy	TSI	EUR	EUR	98	107
+"Punjabi in Lahore, Pakistan"	PJL	SAS	SAS	0	96
+Esan in Nigeria	ESN	AFR	AFR	0	99
+"Mexican Ancestry in Los Angeles, California"	MXL	AMR	AMR	66	64
+"Colombian in Medellin, Colombia"	CLM	AMR	AMR	60	94
+"Peruvian in Lima, Peru"	PEL	AMR	AMR	0	85
+Han Chinese South	CHS	EAS	CHB	100	105
+Puerto Rican in Puerto Rico	PUR	AMR	AMR	55	104
+Finnish in Finland	FIN	EUR	EUR	93	99
+"Kinh in Ho Chi Minh City, Vietnam"	KHV	EAS	EAS	0	99
+Bengali in Bangladesh	BEB	SAS	SAS	0	86
+African Caribbean in Barbados	ACB	AFR	AMR	0	96
+Indian Telugu in the UK	ITU	SAS	SAS	0	102
+British in England and Scotland	GBR	EUR	EUR	89	91
+Sri Lankan Tamil in the UK	STU	SAS	SAS	0	102
