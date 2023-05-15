@@ -114,9 +114,14 @@ separated_ellipses_coordinates$abbreviation <- row.names(separated_ellipses_coor
 separated_ellipses_coordinates <- merge(separated_ellipses_coordinates, amr_ellipses_coordinates$ellipses_coord[,-which(names(amr_ellipses_coordinates$ellipses_coord) %in% c("h", "k", "a", "b", "phi"))], by="abbreviation")
 separated_ellipses_coordinates <- separated_ellipses_coordinates[order(separated_ellipses_coordinates$common_variants),]
 heptagram <- data.frame(
-  x=c(4000*cos(2*pi/7), 4000*cos(4*pi/7), 4000*cos(6*pi/7), 4000*cos(6*pi/7), 4000*cos(4*pi/7), 4000*cos(2*pi/7), 4000),
-  y=c(-4000*sin(2*pi/7), -4000*sin(4*pi/7), -4000*sin(6*pi/7), 4000*sin(6*pi/7), 4000*sin(4*pi/7), 4000*sin(2*pi/7), 0)
+  x=c(4000*cos(2*pi/7), 4000*cos(2*pi/7), 4000*cos(6*pi/7), 4000*cos(6*pi/7), 4000*cos(4*pi/7), 4000*cos(4*pi/7), 4000),
+  y=c(-4000*sin(2*pi/7), 4000*sin(2*pi/7), 4000*sin(6*pi/7), -4000*sin(6*pi/7), 4000*sin(4*pi/7), -4000*sin(4*pi/7), 0)
 )
+
+#heptagram <- data.frame(
+#  x=c(4000*cos(2*pi/7), 4000*cos(4*pi/7), 4000*cos(6*pi/7), 4000*cos(6*pi/7), 4000*cos(4*pi/7), 4000*cos(2*pi/7), 4000),
+#  y=c(-4000*sin(2*pi/7), -4000*sin(4*pi/7), -4000*sin(6*pi/7), 4000*sin(6*pi/7), 4000*sin(4*pi/7), 4000*sin(2*pi/7), 0)
+#)
 separated_ellipses_coordinates$h <- heptagram$x
 separated_ellipses_coordinates$k <- heptagram$y
 toJSON(separated_ellipses_coordinates)
