@@ -2,7 +2,7 @@
 layout: "post"
 permalink: "/blog/visualizing-human-genetic-diversity"
 title: "Visualizing Human Genetic Diversity"
-date: "May 15, 2023"
+date: "May 16, 2023"
 authors: "James Kitchens and Graham Coop"
 skills: [Genetics, D3, Python, R]
 description: A key insight from human genetics is that, as a species, we are all very genetically similar to one another and share much of our genetic variation. Our genome can be depicted as a string of letters (A, T, G, and C), referring to the four nucleobases found in DNA.
