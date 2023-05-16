@@ -883,7 +883,7 @@ Zooming back out and putting Figure 3 back onto the scale of the whole genome, t
 </center>
 <br>
 
-Genetic diversity in the Americas reflects the history of colonialism and the transatlantic slave trade, which has moved people from across the globe into the region over the past few hundred years. Given this history, you may wonder whether the high degree of overlap reflects this recent history of the Americas or whether it is representative of sharing that is present in geographically distant samples. To look into this question, we created a Euler diagram with five samples, one from each of the broad geographic groupings used by Biddanda et al.
+Genetic diversity in the Americas reflects the history of colonialism and the transatlantic slave trade, which has moved people from across the globe into the region over the past few hundred years. Given this, you may wonder whether the high degree of overlap reflects this recent history of the Americas or whether it is representative of sharing that is present in geographically distant samples. To look into this question, we created a Euler diagram with five samples, one from each of the broad geographic groupings used by Biddanda et al.
 
 <br>
 <div id="figure6" style="display: flex; justify-content: center; transform: rotate(180deg);"></div>
@@ -1035,7 +1035,7 @@ We thank John Novembre, Arjun Biddanda, Molly Przeworski, Doc Edge, and the Coop
 
 ### Technical details
 
-We used the `geovar` package in Python to group the ~92 million variants included in the 1000 Genomes Project based on minor allele frequency (MAF). Variants were separated into five bins based (MAF=0%, 0%<MAF<1%, 1%<MAF<5%, 5%<MAF<10%, and MAF>10%), though two bins would have sufficed for this analysis (MAF<5% and MAF>5%). We used the `eulerr` in R to calculate the position and orientation of ellipses in the Euler diagrams. Unfortunately, exactly proportionally scaling the area of every region of this diagram becomes difficult to impossible as you increase the number of sets, or samples. Because of this, we have included two goodness-of-fit measurements provided by the `eulerr` package and described in further details in the package's [tutorial](https://cran.r-project.org/web/packages/eulerr/vignettes/introduction.html). For both measurements, values closer to zero have less error. Below is a table with these measurements for all of the Euler diagrams presented in this post:
+We used the `geovar` package in Python to group the ~92 million variants included in the 1000 Genomes Project based on minor allele frequency (MAF). Variants were separated into five bins based (MAF=0%, 0%<MAF<1%, 1%<MAF<5%, 5%<MAF<10%, and MAF>10%), though two bins would have sufficed for this analysis (MAF<5% and MAF>5%). We used the `eulerr` package in R to calculate the position and orientation of ellipses in the Euler diagrams. Unfortunately, exactly proportionally scaling the area of every region of this diagram becomes difficult to impossible as you increase the number of sets, or samples. Because of this, we have included two goodness-of-fit measurements provided by the `eulerr` package and described in further details in the package's [tutorial](https://cran.r-project.org/web/packages/eulerr/vignettes/introduction.html). For both measurements, values closer to zero have less error. Below is a table with these measurements for all of the Euler diagrams presented in this post:
 
 <br>
 
