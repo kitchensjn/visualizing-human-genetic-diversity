@@ -22,6 +22,7 @@ twitter:
         background-color: white;
         color: black;
         text-align: left;
+        z-index: 9999;
     }
     path {
         transition: opacity 0.25s, stroke-width 0.25s;
