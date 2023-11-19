@@ -7,6 +7,57 @@
         <script src='https://d3js.org/d3.v7.min.js'></script>
     </head>
     <body>
+        <script>
+            var data = [
+                    {"abbreviation":"PEL","h":2493.9592,"k":-3127.3259,"a":1139.4186,"b":1374.1214,"phi":1.0056,"common_variants":5140058,"unshared_common_variants":99338,"description":"Peruvian in Lima, Peru","sampled_individuals":85,"color":"#E69F00","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"MXL","h":2493.9592,"k":3127.3259,"a":1298.0515,"b":1327.9438,"phi":-1.3532,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"CEU","h":-3603.8755,"k":1735.535,"a":1518.3666,"b":1150.6006,"phi":1.187,"common_variants":5726377,"unshared_common_variants":184313,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"CLM","h":-3603.8755,"k":-1735.535,"a":1247.0832,"b":1433.2207,"phi":-0.2126,"common_variants":5895649,"unshared_common_variants":37361,"description":"Colombian in Medellin, Colombia","sampled_individuals":94,"color":"#009E73","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"PUR","h":-890.0837,"k":3899.7116,"a":1435.6344,"b":1296.4881,"phi":-1.5072,"common_variants":6053543,"unshared_common_variants":51810,"description":"Puerto Rican in Puerto Rico","sampled_individuals":104,"color":"#000000","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"ASW","h":-890.0837,"k":-3899.7116,"a":1753.6272,"b":1346.1266,"phi":-1.7434,"common_variants":7631052,"unshared_common_variants":321566,"description":"African Ancestry in Southwest US","sampled_individuals":61,"color":"#0072B2","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"ACB","h":4000,"k":0,"a":1661.9991,"b":1482.8142,"phi":-2.3891,"common_variants":8018649,"unshared_common_variants":840969,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"none","stroke_dasharray":"none"}
+                ];
+            var id = "americas_example_euler";
+            var dim = 1000;
+            var title = "Americas";
+            var title_color = "#696969";
+            var flip_title = "";
+            var loc = "body";
+            var interactive = true;
+
+            var create_form = d3.select(loc).append("form").attr("name", "submit-to-google-sheet");
+                
+            create_form
+                .selectAll("ellipses")
+                .data(data)
+                .enter()
+                .append("input")
+                    .attr("type", "hidden")
+                    .attr("name", function(d) { return d.abbreviation + ".h"; })
+                    .attr("value", function(d) { return d.h; });
+            
+            create_form
+                .selectAll("ellipses")
+                .data(data)
+                .enter()
+                .append("input")
+                    .attr("type", "hidden")
+                    .attr("name", function(d) { return d.abbreviation + ".k"; })
+                    .attr("value", function(d) { return d.k; });
+            
+            create_form.append("button").attr("type", "submit").text("Submit Diagram");
+
+            const scriptURL = "https://script.google.com/macros/s/AKfycbyK5W2y9UQDdoBpOThyY77QSZzjb3ZJvo8CQ6pvRD0yzxsnAihPKMrjmweA_bkxe0YP/exec"
+            const form = document.forms['submit-to-google-sheet']
+        
+            form.addEventListener('submit', e => {
+                e.preventDefault()
+                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                    .then(response => {window.location.href = "https://james-kitchens.com/blog/visualizing-human-genetic-diversity"})
+                    .catch(error => console.error('Error!', error.message))
+            });
+        </script>
+
         <script type="module">
             const pyodide = await loadPyodide();
             await pyodide.loadPackage(["shapely"]);
@@ -55,46 +106,6 @@
                 js.intersectionStats = calcIntersectPercentage
                 js.uniqueStats = calcUniquePercentage
             `);
-
-
-            var data = [
-                    {"abbreviation":"PEL","h":2493.9592,"k":-3127.3259,"a":1139.4186,"b":1374.1214,"phi":1.0056,"common_variants":5140058,"unshared_common_variants":99338,"description":"Peruvian in Lima, Peru","sampled_individuals":85,"color":"#E69F00","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"MXL","h":2493.9592,"k":3127.3259,"a":1298.0515,"b":1327.9438,"phi":-1.3532,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"CEU","h":-3603.8755,"k":1735.535,"a":1518.3666,"b":1150.6006,"phi":1.187,"common_variants":5726377,"unshared_common_variants":184313,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"CLM","h":-3603.8755,"k":-1735.535,"a":1247.0832,"b":1433.2207,"phi":-0.2126,"common_variants":5895649,"unshared_common_variants":37361,"description":"Colombian in Medellin, Colombia","sampled_individuals":94,"color":"#009E73","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"PUR","h":-890.0837,"k":3899.7116,"a":1435.6344,"b":1296.4881,"phi":-1.5072,"common_variants":6053543,"unshared_common_variants":51810,"description":"Puerto Rican in Puerto Rico","sampled_individuals":104,"color":"#000000","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"ASW","h":-890.0837,"k":-3899.7116,"a":1753.6272,"b":1346.1266,"phi":-1.7434,"common_variants":7631052,"unshared_common_variants":321566,"description":"African Ancestry in Southwest US","sampled_individuals":61,"color":"#0072B2","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"ACB","h":4000,"k":0,"a":1661.9991,"b":1482.8142,"phi":-2.3891,"common_variants":8018649,"unshared_common_variants":840969,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"none","stroke_dasharray":"none"}
-                ];
-            var id = "americas_example_euler";
-            var dim = 1000;
-            var title = "Americas";
-            var title_color = "#696969";
-            var flip_title = "";
-            var loc = "body";
-            var interactive = true;
-
-            var create_form = d3.select(loc).append("form").attr("name", "submit-to-google-sheet");
-                
-            create_form
-                .selectAll("ellipses")
-                .data(data)
-                .enter()
-                .append("input")
-                    .attr("type", "hidden")
-                    .attr("name", function(d) { return d.abbreviation + ".h"; })
-                    .attr("value", function(d) { return d.h; });
-            
-            create_form
-                .selectAll("ellipses")
-                .data(data)
-                .enter()
-                .append("input")
-                    .attr("type", "hidden")
-                    .attr("name", function(d) { return d.abbreviation + ".k"; })
-                    .attr("value", function(d) { return d.k; });
-            
-            create_form.append("button").attr("type", "submit").text("Submit Diagram");
 
             var percent_overlap = d3.select(loc).append("div").attr("id", "overlap").style("display", "flex");
             percent_overlap.append("span").attr("id", "overlap_value").text(Math.round(intersectionStats(data)*100)+"%");
@@ -234,16 +245,6 @@
                         .call(wrap, 300, 0, 1);
                 }
             }
-
-            const scriptURL = "https://script.google.com/macros/s/AKfycbyK5W2y9UQDdoBpOThyY77QSZzjb3ZJvo8CQ6pvRD0yzxsnAihPKMrjmweA_bkxe0YP/exec"
-            const form = document.forms['submit-to-google-sheet']
-        
-            form.addEventListener('submit', e => {
-                e.preventDefault()
-                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                    .then(response => {window.location.href = "https://james-kitchens.com/blog/visualizing-human-genetic-diversity"})
-                    .catch(error => console.error('Error!', error.message))
-            })
         </script>
     </body>
 </html>
