@@ -116,7 +116,8 @@
                 {"abbreviation":"PUR","h":-3.3496,"k":-177.4831,"a":1273.5133,"b":1513.0604,"phi":2.6191,"common_variants":6053543,"unshared_common_variants":77506,"description":"Puerto Rican in Puerto Rico","sampled_individuals":104,"color":"#009E73","fill":"none","stroke_dasharray":"none"}
             ];
             var id = "americas_example_euler";
-            var dim = 500;
+            var width = 500;
+            var height = 500;
             var title = "Americas";
             var title_color = "#696969";
             var flip_title = "";
@@ -223,11 +224,12 @@
                 .style("border", "1px solid #696969")
                 .append("svg")
                 .attr("id", id)
-                .attr("width", dim)
-                .attr("viewBox", "0 0 " + dim + " " + dim);
+                .attr("width", 500)
+                .attr("viewBox", "0 0 " + width + " " + height);
 
             var downscale = 15;
-            var shift = dim/2;
+            var shift_h = width/2;
+            var shift_v = height/2;
 
             svg_container
                 .selectAll("ellipses")
@@ -236,14 +238,14 @@
                 .append("path")
                 .attr("id", function(d) { return d._row; })
                 .attr("stroke", function(d) { return d.color; })
-                .attr("stroke-width", 3)
+                .attr("stroke-width", 10)
                 .attr("stroke-dasharray", function(d) { return d.stroke_dasharray; })
                 .attr("fill", function(d) { return d.fill; })
                 .attr("d", function(d) {
-                    return ["M", (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift-0.001)].join(' ')
+                    return ["M", (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v-0.001)].join(' ')
                 })
                 .attr("transform", function(d) {
-                    return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift) + " " + (d.k/downscale+shift) + ")"; 
+                    return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_v) + ")"; 
                 });
 
             if (interactive) {
@@ -291,10 +293,10 @@
                 d.k = d.k + event.dy*downscale;
                 d3.select(this)
                     .attr("d", function(d) {
-                        return ["M", (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift-0.001)].join(' ')
+                        return ["M", (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v-0.001)].join(' ')
                     })
                     .attr("transform", function(d) {
-                        return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift) + " " + (d.k/downscale+shift) + ")";
+                        return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_v) + ")";
                     });
                 d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
                 d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
@@ -328,10 +330,10 @@
                     svg_container
                         .append("text")
                         .text(title)
-                        .attr("x", dim/2)
-                        .attr("y", dim/2)
+                        .attr("x", width/2)
+                        .attr("y", height/2)
                         .attr("text-anchor", "middle")
-                        .attr("transform", "rotate(180, " + dim/2 + ", " + dim/2 + ")")
+                        .attr("transform", "rotate(180, " + width/2 + ", " + height/2 + ")")
                         .style("font-family", "Arial")
                         .style("font-size", 25)
                         .style("fill", title_color)
@@ -340,8 +342,8 @@
                     svg_container
                         .append("text")
                         .text(title)
-                        .attr("x", dim/2)
-                        .attr("y", dim/2)
+                        .attr("x", width/2)
+                        .attr("y", height/2)
                         .attr("text-anchor", "middle")
                         .style("font-family", "Arial")
                         .style("font-size", 25)
