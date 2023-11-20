@@ -118,6 +118,7 @@
             var id = "americas_example_euler";
             var width = 900;
             var height = 600;
+            var line_width = 15;
             var title = "Americas";
             var title_color = "#696969";
             var flip_title = "";
@@ -238,7 +239,7 @@
                 .append("path")
                 .attr("id", function(d) { return d._row; })
                 .attr("stroke", function(d) { return d.color; })
-                .attr("stroke-width", 10)
+                .attr("stroke-width", line_width)
                 .attr("stroke-dasharray", function(d) { return d.stroke_dasharray; })
                 .attr("fill", function(d) { return d.fill; })
                 .attr("d", function(d) {
@@ -254,14 +255,14 @@
                         .on("mouseover", function(event, d) {
                             d3.select(this)
                                 .style("cursor", "grab")
-                                .style("stroke-width", 10)
+                                .style("stroke-width", line_width)
                                 .style("opacity", 1);
                         })
                         .on("mouseout", function(d) {
                             d3.select("#"+id)
                                 .selectAll("path")
                                     .style("opacity", 1)
-                                    .style("stroke-width", 10);
+                                    .style("stroke-width", line_width);
                         })
                         .call(d3.drag()
                             .on("start", dragstart)
@@ -287,7 +288,7 @@
                         .style("pointer-events", "none")
                         .style("opacity", 0.25);
                 d3.select(this)
-                    .style("stroke-width", 10)
+                    .style("stroke-width", line_width)
                     .style("opacity", 1);
                 d.h = d.h + event.dx*downscale;
                 d.k = d.k + event.dy*downscale;
