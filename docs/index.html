@@ -5,8 +5,42 @@
         <meta charset="utf-8">
         <script defer src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
         <script src='https://d3js.org/d3.v7.min.js'></script>
+
+        <style>
+            #box {
+                width: 550px;
+                height: 575px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                color: #053e4e;
+            }
+
+            .loader {
+                border: 20px solid #053e4e;
+                border-radius: 50%;
+                border-top: 20px solid #1eebb1;
+                width: 100px;
+                height: 100px;
+                animation: spinner 4s linear infinite;
+            }
+
+            @keyframes spinner {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
     </head>
     <body>
+        <div id="app">
+            <div id="box">
+                <!--https://blog.hubspot.com/website/css-loading-animation-->
+                <div class="loader"></div>
+                <h1>LOADING...</h1>
+            </div>
+        </div>
+
         <script>
             var data = [
                     {"abbreviation":"PEL","h":2493.9592,"k":-3127.3259,"a":1139.4186,"b":1374.1214,"phi":1.0056,"common_variants":5140058,"unshared_common_variants":99338,"description":"Peruvian in Lima, Peru","sampled_individuals":85,"color":"#E69F00","fill":"none","stroke_dasharray":"none"},
@@ -22,7 +56,7 @@
             var title = "Americas";
             var title_color = "#696969";
             var flip_title = "";
-            var loc = "body";
+            var loc = "#app";
             var interactive = true;
 
             var create_form = d3.select(loc).append("form").attr("name", "submit-to-google-sheet");
@@ -44,8 +78,6 @@
                     .attr("type", "hidden")
                     .attr("name", function(d) { return d.abbreviation + ".k"; })
                     .attr("value", function(d) { return d.k; });
-            
-            create_form.append("button").attr("type", "submit").text("Submit Diagram");
 
             const scriptURL = "https://script.google.com/macros/s/AKfycbyK5W2y9UQDdoBpOThyY77QSZzjb3ZJvo8CQ6pvRD0yzxsnAihPKMrjmweA_bkxe0YP/exec"
             const form = document.forms['submit-to-google-sheet']
@@ -106,6 +138,10 @@
                 js.intersectionStats = calcIntersectPercentage
                 js.uniqueStats = calcUniquePercentage
             `);
+
+            document.getElementById("box").remove();
+
+            create_form.append("button").attr("type", "submit").text("Submit Diagram");
 
             var percent_overlap = d3.select(loc).append("div").attr("id", "overlap").style("display", "flex");
             percent_overlap.append("span").attr("id", "overlap_value").text(Math.round(intersectionStats(data)*100)+"%");
