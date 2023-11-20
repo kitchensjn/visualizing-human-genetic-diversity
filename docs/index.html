@@ -7,9 +7,26 @@
         <script src='https://d3js.org/d3.v7.min.js'></script>
 
         <style>
+            html, body {
+                margin: 0;
+                height: 100%;
+                overflow: hidden
+            }
+
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #app {
+                max-width: 500px;
+                width: 100%;
+            }
+
             #box {
-                width: 550px;
-                height: 575px;
+                width: 500px;
+                height: 500px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -30,10 +47,60 @@
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
             }
+
+            button {
+                color: #696969;
+                background-color: #dddddd;
+                width: 100%;
+                height: 50px;
+                font-size: 25px;
+                border-radius: 50px;
+                border: 0px;
+            }
+
+            button:hover {
+                background-color: #696969;
+                color: white;
+                cursor: pointer;
+            }
+
+            #figure {
+                margin: 25px 0px;
+            }
+
+            #stats {
+                display: flex;
+                justify-content: space-around;
+                font-size: 20px;
+                color: #696969;
+            }
+
+            #stats .container {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            #stats .container .title {
+                margin: 0px;
+            }
+
+            #stats .container .value {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-end;
+            }
+
+            #stats .container .value .number {
+                font-size: 100px;
+                margin: 0px;
+            }
         </style>
     </head>
     <body>
         <div id="app">
+            <div id="stats"></div>
+            <div id="figure"></div>
             <div id="box">
                 <!--https://blog.hubspot.com/website/css-loading-animation-->
                 <div class="loader"></div>
@@ -43,23 +110,19 @@
 
         <script>
             var data = [
-                    {"abbreviation":"PEL","h":2493.9592,"k":-3127.3259,"a":1139.4186,"b":1374.1214,"phi":1.0056,"common_variants":5140058,"unshared_common_variants":99338,"description":"Peruvian in Lima, Peru","sampled_individuals":85,"color":"#E69F00","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"MXL","h":2493.9592,"k":3127.3259,"a":1298.0515,"b":1327.9438,"phi":-1.3532,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"CEU","h":-3603.8755,"k":1735.535,"a":1518.3666,"b":1150.6006,"phi":1.187,"common_variants":5726377,"unshared_common_variants":184313,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"CLM","h":-3603.8755,"k":-1735.535,"a":1247.0832,"b":1433.2207,"phi":-0.2126,"common_variants":5895649,"unshared_common_variants":37361,"description":"Colombian in Medellin, Colombia","sampled_individuals":94,"color":"#009E73","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"PUR","h":-890.0837,"k":3899.7116,"a":1435.6344,"b":1296.4881,"phi":-1.5072,"common_variants":6053543,"unshared_common_variants":51810,"description":"Puerto Rican in Puerto Rico","sampled_individuals":104,"color":"#000000","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"ASW","h":-890.0837,"k":-3899.7116,"a":1753.6272,"b":1346.1266,"phi":-1.7434,"common_variants":7631052,"unshared_common_variants":321566,"description":"African Ancestry in Southwest US","sampled_individuals":61,"color":"#0072B2","fill":"none","stroke_dasharray":"none"},
-                    {"abbreviation":"ACB","h":4000,"k":0,"a":1661.9991,"b":1482.8142,"phi":-2.3891,"common_variants":8018649,"unshared_common_variants":840969,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"none","stroke_dasharray":"none"}
-                ];
+                {"abbreviation":"ACB","h":-617.121,"k":-229.1291,"a":1623.8223,"b":1571.8563,"phi":3.9993,"common_variants":8018649,"unshared_common_variants":2737569,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"none","stroke_dasharray":"none"},
+                {"abbreviation":"CEU","h":78.9421,"k":-229.1291,"a":1134.635,"b":1606.4746,"phi":-0.0869,"common_variants":5726377,"unshared_common_variants":246572,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#0072B2","fill":"none","stroke_dasharray":"none"},
+                {"abbreviation":"MXL","h":36.9821,"k":27.3403,"a":1528.6233,"b":1179.267,"phi":1.2096,"common_variants":5663208,"unshared_common_variants":249342,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#CC79A7","fill":"none","stroke_dasharray":"none"},
+                {"abbreviation":"PUR","h":-3.3496,"k":-177.4831,"a":1273.5133,"b":1513.0604,"phi":2.6191,"common_variants":6053543,"unshared_common_variants":77506,"description":"Puerto Rican in Puerto Rico","sampled_individuals":104,"color":"#009E73","fill":"none","stroke_dasharray":"none"}
+            ];
             var id = "americas_example_euler";
-            var dim = 1000;
+            var dim = 500;
             var title = "Americas";
             var title_color = "#696969";
             var flip_title = "";
-            var loc = "#app";
             var interactive = true;
 
-            var create_form = d3.select(loc).append("form").attr("name", "submit-to-google-sheet");
+            var create_form = d3.select("#app").append("form").attr("name", "submit-to-google-sheet");
                 
             create_form
                 .selectAll("ellipses")
@@ -143,16 +206,21 @@
 
             create_form.append("button").attr("type", "submit").text("Submit Diagram");
 
-            var percent_overlap = d3.select(loc).append("div").attr("id", "overlap").style("display", "flex");
-            percent_overlap.append("span").attr("id", "overlap_value").text(Math.round(intersectionStats(data)*100)+"%");
-            percent_overlap.append("p").style("margin", "0px 0px 0px 5px").text("of variants that are common in at least one sample are common in every sample.");
+            var percent_overlap = d3.select("#stats").append("div").attr("class", "container");
+            percent_overlap.append("p").attr("class", "title").text("overlap");
+            var overlap_stats = percent_overlap.append("div").attr("class", "value");
+            overlap_stats.append("p").attr("id", "overlap_value").attr("class", "number").text(Math.round(intersectionStats(data)*100));
+            overlap_stats.append("p").attr("class", "percent").text("%");
 
-            var percent_unique = d3.select(loc).append("div").attr("id", "overlap").style("display", "flex");
-            percent_unique.append("span").attr("id", "unique_value").text(Math.round(uniqueStats(data)*100)+"%");
-            percent_unique.append("p").style("margin", "0px 0px 0px 5px").text("of variants are common in only one sample.");
+            var percent_unique = d3.select("#stats").append("div").attr("class", "container");
+            percent_unique.append("p").attr("class", "title").text("unique");
+            var unique_stats = percent_unique.append("div").attr("class", "value");
+            unique_stats.append("p").attr("id", "unique_value").attr("class", "number").text(Math.round(uniqueStats(data)*100));
+            unique_stats.append("p").attr("class", "percent").text("%");
 
             
-            var svg_container = d3.select(loc)
+            var svg_container = d3.select("#figure")
+                .style("border", "1px solid #696969")
                 .append("svg")
                 .attr("id", id)
                 .attr("width", dim)
@@ -207,8 +275,8 @@
                         .style("opacity", 0.25);
                 d3.select(this)
                     .style("opacity", 1);
-                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100)+"%");
-                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100)+"%");
+                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
+                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
             }
 
             function dragging(event, d) {
@@ -228,8 +296,8 @@
                     .attr("transform", function(d) {
                         return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift) + " " + (d.k/downscale+shift) + ")";
                     });
-                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100)+"%");
-                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100)+"%");
+                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
+                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
             }
 
             function dragend(event, d) {
@@ -251,8 +319,8 @@
                     })
                     .attr("value", function(d) { return d.h; });
                 
-                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100)+"%");
-                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100)+"%");
+                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
+                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
             }
             
             if (title != "") {
