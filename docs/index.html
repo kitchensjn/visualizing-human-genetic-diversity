@@ -254,14 +254,14 @@
                         .on("mouseover", function(event, d) {
                             d3.select(this)
                                 .style("cursor", "grab")
-                                .style("stroke-width", 7)
+                                .style("stroke-width", 10)
                                 .style("opacity", 1);
                         })
                         .on("mouseout", function(d) {
                             d3.select("#"+id)
                                 .selectAll("path")
                                     .style("opacity", 1)
-                                    .style("stroke-width", 3);
+                                    .style("stroke-width", 10);
                         })
                         .call(d3.drag()
                             .on("start", dragstart)
