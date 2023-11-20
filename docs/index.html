@@ -206,21 +206,33 @@
 
             document.getElementById("box").remove();
 
-            create_form.append("button").attr("type", "submit").text("Submit Diagram");
-
+            var overlap = Math.round(intersectionStats(data)*100);
             var percent_overlap = d3.select("#stats").append("div").attr("class", "container");
             percent_overlap.append("p").attr("class", "title").text("overlap");
             var overlap_stats = percent_overlap.append("div").attr("class", "value");
-            overlap_stats.append("p").attr("id", "overlap_value").attr("class", "number").text(Math.round(intersectionStats(data)*100));
+            overlap_stats.append("p").attr("id", "overlap_value").attr("class", "number").text(overlap);
             overlap_stats.append("p").attr("class", "percent").text("%");
 
+            var unique = Math.round(uniqueStats(data)*100)
             var percent_unique = d3.select("#stats").append("div").attr("class", "container");
             percent_unique.append("p").attr("class", "title").text("unique");
             var unique_stats = percent_unique.append("div").attr("class", "value");
-            unique_stats.append("p").attr("id", "unique_value").attr("class", "number").text(Math.round(uniqueStats(data)*100));
+            unique_stats.append("p").attr("id", "unique_value").attr("class", "number").text(unique);
             unique_stats.append("p").attr("class", "percent").text("%");
 
+            create_form
+                .append("input")
+                    .attr("type", "hidden")
+                    .attr("name", "overlap")
+                    .attr("value", overlap);
             
+            create_form
+                .append("input")
+                    .attr("type", "hidden")
+                    .attr("name", "unique")
+                    .attr("value", unique);
+            create_form.append("button").attr("type", "submit").text("Submit Diagram");
+
             var svg_container = d3.select("#figure")
                 .style("border", "1px solid #696969")
                 .append("svg")
@@ -322,8 +334,23 @@
                     })
                     .attr("value", function(d) { return d.h; });
                 
-                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
-                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
+                var overlap = Math.round(intersectionStats(data)*100);
+                var unique = Math.round(uniqueStats(data)*100);
+                
+                d3.selectAll("input")
+                    .filter(function() {
+                        return d3.select(this).attr("name") == "overlap";
+                    })
+                    .attr("value", overlap);
+
+                d3.selectAll("input")
+                    .filter(function() {
+                        return d3.select(this).attr("name") == "unique";
+                    })
+                    .attr("value", unique);
+                
+                d3.select("#overlap_value").text(overlap);
+                d3.select("#unique_value").text(unique);
             }
             
             if (title != "") {
