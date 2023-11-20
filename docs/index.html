@@ -120,7 +120,6 @@
             var width = 900;
             var height = 600;
             var line_width = 15;
-            var title = "Americas";
             var title_color = "#696969";
             var flip_title = "";
             var interactive = true;
@@ -352,33 +351,6 @@
                 
                 d3.select("#overlap_value").text(overlap);
                 d3.select("#unique_value").text(unique);
-            }
-            
-            if (title != "") {
-                if (flip_title != "") {
-                    svg_container
-                        .append("text")
-                        .text(title)
-                        .attr("x", width/2)
-                        .attr("y", height/2)
-                        .attr("text-anchor", "middle")
-                        .attr("transform", "rotate(180, " + width/2 + ", " + height/2 + ")")
-                        .style("font-family", "Arial")
-                        .style("font-size", 25)
-                        .style("fill", title_color)
-                        .call(wrap, 300, 0, 1);
-                } else {
-                    svg_container
-                        .append("text")
-                        .text(title)
-                        .attr("x", width/2)
-                        .attr("y", height/2)
-                        .attr("text-anchor", "middle")
-                        .style("font-family", "Arial")
-                        .style("font-size", 25)
-                        .style("fill", title_color)
-                        .call(wrap, 300, 0, 1);
-                }
             }
         </script>
     </body>
