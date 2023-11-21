@@ -344,6 +344,17 @@
                     .style("opacity", 1);
                 d.h = d.h + event.dx*downscale;
                 d.k = d.k + event.dy*downscale;
+                console.log(d.h, d.k);
+                if (d.h < -3500) {
+                    d.h = -3500;
+                } else if (d.h > 3500) {
+                    d.h = 3500;
+                }
+                if (d.k < -3000) {
+                    d.k = -3000;
+                } else if (d.k > 3000) {
+                    d.k = 3000;
+                }
                 d3.select(this)
                     .attr("d", function(d) {
                         return ["M", (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v-0.001)].join(' ')
