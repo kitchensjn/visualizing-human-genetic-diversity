@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>tskit_arg_visualizer</title>
+        <title>Visualizing Human Genetic Diversity</title>
         <meta charset="utf-8">
         <script defer src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
         <script src='https://d3js.org/d3.v7.min.js'></script>
@@ -23,6 +23,7 @@
             #app {
                 max-width: 900px;
                 width: 100%;
+                position: relative;
             }
 
             #box {
@@ -96,20 +97,38 @@
                 font-size: 100px;
                 margin: 0px;
             }
+
+            #overlay {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(255,255,255,0.75);
+            }
+
+            #lock {
+                position: absolute;
+                bottom: 30px;
+                right: 5px;
+                width: 50px;
+                height: 57px;
+            }
         </style>
     </head>
     <body>
         <div id="app">
             <div id="stats"></div>
             <div id="figure"></div>
-            <div id="box">
-                <!--https://blog.hubspot.com/website/css-loading-animation-->
-                <div class="loader"></div>
-                <h1>LOADING...</h1>
-            </div>
         </div>
 
         <script>
+
+            //https://blog.hubspot.com/website/css-loading-animation
+            var loader = d3.select("#app").append("div").attr("id", "box")
+            loader.append("div").attr("class", "loader")
+            loader.append("h1").text("LOADING...")
+
             var data = [
                 {"abbreviation":"ACB","h":-617.121,"k":-229.1291,"a":1623.8223,"b":1571.8563,"phi":3.9993,"common_variants":8018649,"unshared_common_variants":2737569,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"none","stroke_dasharray":"none"},
                 {"abbreviation":"CEU","h":78.9421,"k":-229.1291,"a":1134.635,"b":1606.4746,"phi":-0.0869,"common_variants":5726377,"unshared_common_variants":246572,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"none","stroke_dasharray":"none"},
@@ -124,7 +143,7 @@
             var flip_title = "";
             var interactive = true;
 
-            var create_form = d3.select("#app").append("form").attr("name", "submit-to-google-sheet");
+            var create_form = d3.select("#app").append("form").attr("name", "submit-to-google-sheet").attr("id", "form");
                 
             create_form
                 .selectAll("ellipses")
@@ -149,8 +168,28 @@
         
             form.addEventListener('submit', e => {
                 e.preventDefault()
+                
+                var overlay = d3.select("#app").append("div").attr("id", "overlay");
+
+                //https://blog.hubspot.com/website/css-loading-animation
+                var loader = d3.select("#overlay").append("div").attr("id", "box");
+                loader.append("div").attr("class", "loader");
+                loader.append("h1").text("Submitting...");
+                
                 fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                    .then(response => {window.location.href = "https://james-kitchens.com/blog/visualizing-human-genetic-diversity"})
+                    .then(response => {
+                        document.getElementById("form").remove();
+                        document.getElementById("box").remove();
+                        d3.select("#overlay").style("background-color", "transparent")
+                            .append("div").attr("id", "lock")
+                                .append("svg") //<!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                    .attr("xmlns", "http://www.w3.org/2000/svg")
+                                    .attr("viewBox", "0 0 448 512")
+                                    .append("path")
+                                    .attr("d", "M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z")
+                                    .style("fill", "#696969");
+
+                    })
                     .catch(error => console.error('Error!', error.message))
             });
         </script>
@@ -231,6 +270,7 @@
                     .attr("type", "hidden")
                     .attr("name", "unique")
                     .attr("value", unique);
+
             create_form.append("button").attr("type", "submit").text("Submit Diagram");
 
             var svg_container = d3.select("#figure")
