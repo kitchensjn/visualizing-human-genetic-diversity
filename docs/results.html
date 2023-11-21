@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+  </head>
+
+  <body>
+    <svg></svg>
+  </body>
+  <script>
+    google.charts.load('current');
+    google.charts.setOnLoadCallback(init);
+
+    function init() {
+        var url = "https://docs.google.com/spreadsheets/d/1JnoYyWDmQ35xHzaHd8cVtQI-RFMrb5vOYRC1HimHmw8";
+        var query = new google.visualization.Query(url);
+        query.setQuery('select J, K');
+        query.send(processSheetsData);
+    }
+
+    function processSheetsData(response) {
+        var array = [];
+        var data = response.getDataTable();
+        var columns = data.getNumberOfColumns();
+        var rows = data.getNumberOfRows();
+        for (var r = 0; r < rows; r++) {
+            var row = [];
+            for (var c = 0; c < columns; c++) {
+                row.push(data.getFormattedValue(r, c));
+            }
+            array.push({
+            name: row[0],
+            value: +row[1],
+            });
+        }
+        console.log(array);
+        //renderData(array);
+    }
+  </script>
+</html>
