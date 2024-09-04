@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<head>
+</head>
+<body>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <style>
+        .euler_tooltip {
+            position: absolute;
+            max-width: 500px;
+            padding: 10px;
+            background-color: white;
+            color: black;
+            text-align: left;
+            z-index: 9999;
+        }
+        path {
+            transition: opacity 0.25s, stroke-width 0.25s;
+        }
+        svg {
+            display: block;
+        }
+        #all_euler_diagrams {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-evenly;
+        }
+        .upset {
+            text-align: center;
+        }
+        .upset img {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .hidden_thumbnail {
+            display: none;
+        }
+    </style>
+
+
+    <script>
+        var stepBefore = d3.line().curve(d3.curveStepBefore);
+        // Define the div for the tooltip
+        var tip = d3.select(".section").append("div")
+            .attr("class", "euler_tooltip")
+            .style("display", "none");
+
+        function wrap(
+            text,
+            width,
+            dyAdjust,
+            lineHeightEms,
+            lineHeightSquishFactor,
+            splitOnHyphen,
+            centreVertically
+            ) {
+            // Use default values for the last three parameters if values are not provided.
+            if (!lineHeightEms) lineHeightEms = 1.05;
+            if (!lineHeightSquishFactor) lineHeightSquishFactor = 1;
+            if (splitOnHyphen == null) splitOnHyphen = true;
+            if (centreVertically == null) centreVertically = true;
+
+            text.each(function () {
+                var text = d3.select(this),
+                x = text.attr("x"),
+                y = text.attr("y");
+
+                var words = [];
+                text
+                .text()
+                .split(/\s+/)
+                .forEach(function (w) {
+                    if (splitOnHyphen) {
+                    var subWords = w.split("-");
+                    for (var i = 0; i < subWords.length - 1; i++)
+                        words.push(subWords[i] + "-");
+                    words.push(subWords[subWords.length - 1] + " ");
+                    } else {
+                    words.push(w + " ");
+                    }
+                });
+
+                text.text(null); // Empty the text element
+
+                // `tspan` is the tspan element that is currently being added to
+                var tspan = text.append("tspan");
+
+                var line = ""; // The current value of the line
+                var prevLine = ""; // The value of the line before the last word (or sub-word) was added
+                var nWordsInLine = 0; // Number of words in the line
+                for (var i = 0; i < words.length; i++) {
+                var word = words[i];
+                prevLine = line;
+                line = line + word;
+                ++nWordsInLine;
+                tspan.text(line.trim());
+                if (tspan.node().getComputedTextLength() > width && nWordsInLine > 1) {
+                    // The tspan is too long, and it contains more than one word.
+                    // Remove the last word and add it to a new tspan.
+                    tspan.text(prevLine.trim());
+                    prevLine = "";
+                    line = word;
+                    nWordsInLine = 1;
+                    tspan = text.append("tspan").text(word.trim());
+                }
+                }
+
+                var tspans = text.selectAll("tspan");
+
+                var h = lineHeightEms;
+                // Reduce the line height a bit if there are more than 2 lines.
+                if (tspans.size() > 2)
+                for (var i = 0; i < tspans.size(); i++) h *= lineHeightSquishFactor;
+
+                tspans.each(function (d, i) {
+                // Calculate the y offset (dy) for each tspan so that the vertical centre
+                // of the tspans roughly aligns with the text element's y position.
+                var dy = i * h + dyAdjust;
+                if (centreVertically) dy -= ((tspans.size() - 1) * h) / 2;
+                d3.select(this)
+                    .attr("y", y)
+                    .attr("x", x)
+                    .attr("dy", dy + "em");
+                });
+            });
+            }
+
+        function d3_euler(data, id, dim, title, title_color, flip_title, loc, interactive) {
+
+            var svg_container = d3.select(loc)
+                .append("svg")
+                .attr("id", id)
+                .attr("width", dim)
+                .attr("viewBox", "0 0 " + dim + " " + dim);
+
+            var ellipses = data;
+
+            var downscale = 15;
+            var shift = dim/2;
+
+            svg_container
+                .selectAll("ellipses")
+                .data(ellipses)
+                .enter()
+                .append("path")
+                .attr("id", function(d) { return d._row; })
+                .attr("stroke", function(d) { return d.color; })
+                .attr("stroke-width", 3)
+                .attr("stroke-dasharray", function(d) { return d.stroke_dasharray; })
+                .attr("fill", function(d) { return d.fill; })
+                .attr("d", function(d) {
+                    return ["M", (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift-0.001)].join(' ')
+                })
+                .attr("transform", function(d) {
+                    return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift) + " " + (d.k/downscale+shift) + ")"; 
+                });
+            
+            if (interactive) {
+                svg_container
+                    .selectAll("path")
+                        .on("mouseover", function(d) {
+                            d3.select("#"+id)
+                                .selectAll("path")
+                                    .style("opacity", 0.25);
+                            d3.select(this)
+                                .style("cursor", "pointer")
+                                .style("stroke-width", 7)
+                                .style("opacity", 1);
+                            tip
+                                .style("display", "block")
+                                .html("<h3 style='margin: 0px;'>" + d.description + "</h3></br>1KGP Abbreviation: " + d.abbreviation + "</br>Number of Sampled Individuals: " + d.sampled_individuals.toLocaleString() + "</br>Number of Common Variants: " + d.common_variants.toLocaleString() + "</br>Number of Unshared Common Variants: "+d.unshared_common_variants.toLocaleString())
+                                .style("border", d.color + " solid 7px")
+                                .style("left", (d3.event.pageX) + "px")
+                                .style("top", (d3.event.pageY+25) + "px");
+                        })
+                        .on("mouseout", function(d) {
+                            tip.style("display", "none");
+                            d3.select("#"+id)
+                                .selectAll("path")
+                                    .style("opacity", 1)
+                                    .style("stroke-width", 3);
+                        });
+            }
+            
+            if (title != "") {
+                if (flip_title != "") {
+                    svg_container
+                        .append("text")
+                        .text(title)
+                        .attr("x", dim/2)
+                        .attr("y", dim/2)
+                        .attr("text-anchor", "middle")
+                        .attr("transform", "rotate(180, " + dim/2 + ", " + dim/2 + ")")
+                        .style("font-family", "Arial")
+                        .style("font-size", 25)
+                        .style("fill", title_color)
+                        .call(wrap, 300, 0, 1);
+                } else {
+                    svg_container
+                        .append("text")
+                        .text(title)
+                        .attr("x", dim/2)
+                        .attr("y", dim/2)
+                        .attr("text-anchor", "middle")
+                        .style("font-family", "Arial")
+                        .style("font-size", 25)
+                        .style("fill", title_color)
+                        .call(wrap, 300, 0, 1);
+                }
+            }
+        }
+
+        function add_coffee_stain_interactivity(id) {
+            d3.select("#"+id)
+                .selectAll("path")
+                    .on("mouseover", function(d) {
+                        d3.select("#"+id)
+                            .selectAll("path")
+                                .style("cursor", "pointer")
+                                .style("opacity", 0.25);
+                        d3.select("#"+id)
+                            .select("path")
+                                .style("opacity", 1);
+                    })
+                    .on("mouseout", function(d) {
+                        tip.style("display", "none");
+                        d3.select("#"+id)
+                            .selectAll("path")
+                                .style("opacity", 1);
+                    });
+        }    
+    </script>
+
+    <div id="figure5" style="display: flex; justify-content: center;"></div>
+
+    <script>
+        var dim = 600;
+
+        var svg_container = d3.select("#figure5")
+            .append("svg")
+            .attr("id", "globe_in_context")
+            .attr("width", dim)
+            .attr("viewBox", "0 0 " + dim + " " + dim);
+
+        
+        var ellipses = [
+            {"h":0,"k":0,"a":30380.5186,"b":30380.5186,"phi":-1.9666,"color":"#A9A9A9","fill":"white","stroke_dasharray":"5","_row":"Measurable"},
+            {"h":5635.2953,"k":0,"a":3402.5548,"b":3402.563,"phi":-1.9666,"color":"#A9A9A9","fill":"white","stroke_dasharray":"5","_row":"Variants"},
+            {"h":7169.9632,"k":256.3896,"a":1314.8759,"b":1934.1756,"phi":-1.9522,"color":"#56B4E9","fill":"none","stroke_dasharray":"none","_row":"YRI"},
+            {"h":6351.2985,"k":173.1756,"a":1254.7358,"b":1459.286,"phi":-0.4296,"color":"#D55E00","fill":"none","stroke_dasharray":"none","_row":"BEB"},
+            {"h":6259.7798,"k":424.2291,"a":1096.5971,"b":1485.2942,"phi":-0.2326,"color":"#0072B2","fill":"none","stroke_dasharray":"none","_row":"CHB"},
+            {"h":6462.7916,"k":-12.9233,"a":1523.416,"b":1147.4958,"phi":-1.5179,"color":"#CC79A7","fill":"none","stroke_dasharray":"none","_row":"GBR"},
+            {"h":6366.8574,"k":145.1752,"a":1118.9434,"b":1510.4567,"phi":-2.825,"color":"#009E73","fill":"none","stroke_dasharray":"none","_row":"MXL"}
+        ]
+        
+        /*
+        [
+            {"h":-3473.3056,"k":0,"a":30379.7837,"b":30379.7837,"phi":4.6048,"color":"#A9A9A9","fill":"white","stroke_dasharray":"5","_row":"Measurable"},
+            {"h":4680.7141,"k":0,"a":3503.9703,"b":3503.9703,"phi":4.6048,"color":"#A9A9A9","fill":"white","stroke_dasharray":"5","_row":"Variants"},
+            {"h":5169.0583,"k":1234.5167,"a":1418.2626,"b":1728.5732,"phi":2.7036,"color":"#D55E00","fill":"none","stroke_dasharray":"none","_row":"ACB"},
+            {"h":5011.8328,"k":1184.8433,"a":1803.0682,"b":1302.0182,"phi":4.7352,"color":"#0072B2","fill":"none","stroke_dasharray":"none","_row":"ASW"},
+            {"h":4870.3866,"k":528.203,"a":1420.4929,"b":1219.6246,"phi":4.6236,"color":"#CC79A7","fill":"none","stroke_dasharray":"none","_row":"CEU"},
+            {"h":4783.9403,"k":660.105,"a":1418.0123,"b":1267.8085,"phi":4.9378,"color":"#009E73","fill":"none","stroke_dasharray":"none","_row":"CLM"},
+            {"h":4728.8264,"k":649.0093,"a":1253.3611,"b":1370.2936,"phi":7.0731,"color":"#56B4E9","fill":"none","stroke_dasharray":"none","_row":"MXL"},
+            {"h":4659.5552,"k":657.2331,"a":1108.2349,"b":1415.1116,"phi":7.1649,"color":"#E69F00","fill":"none","stroke_dasharray":"none","_row":"PEL"},
+            {"h":4895.4203,"k":647.1042,"a":1415.7074,"b":1301.8497,"phi":5.137,"color":"#000000","fill":"none","stroke_dasharray":"none","_row":"PUR"}
+        ] 
+        */
+
+        var downscale = 130;
+        var shift = dim/2;
+
+
+        var measurable = svg_container
+            .selectAll("ellipses")
+            .data(ellipses)
+            .enter()
+            .filter(function(d) { return (d._row == "Measurable"); })
+            .append("g");
+
+        measurable
+            .append("path")
+            .attr("d", function(d) { return stepBefore([[d.h/downscale+shift-200, d.k/downscale+d.b/downscale+shift-480], [d.h/downscale+shift, d.k/downscale+d.b/downscale+shift-400]]) ;})
+            .attr("stroke-width", 2)
+            .attr("stroke", "#A9A9A9")
+            .attr("fill", "none");
+
+        measurable
+            .append("text")
+            .text("Measurable locations in the human genome (~2.9 billion sites)")
+            .attr("x", function(d) {return d.h/downscale+shift;})
+            .attr("y", function(d) {return d.k/downscale+d.b/downscale+shift-490; })
+            .style("text-anchor", "middle")
+            .style("fill", "#696969")
+            .style("font-family", "Arial")
+            .style("font-size", 18);
+
+        measurable
+            .append("path")
+            .attr("id", function(d) { return d._row; })
+            .attr("stroke", function(d) { return d.color; })
+            .attr("stroke-width", 3)
+            .attr("stroke-dasharray", function(d) { return d.stroke_dasharray; })
+            .attr("fill", function(d) { return d.fill; })
+            .attr("d", function(d) {
+                return ["M", (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift-0.001)].join(' ')
+            })
+            .attr("transform", function(d) {
+                return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift) + " " + (d.k/downscale+shift) + ")"; 
+            });
+
+    var variants = svg_container
+            .selectAll("ellipses")
+            .data(ellipses)
+            .enter()
+            .filter(function(d) { return (d._row == "Variants"); })
+            .append("g");
+
+        variants
+            .append("path")
+            .attr("d", function(d) { return stepBefore([[d.h/downscale+shift-100, d.k/downscale+d.b/downscale+shift-65], [d.h/downscale+shift, d.k/downscale+d.b/downscale+shift-25]]) ;})
+            .attr("stroke-width", 2)
+            .attr("stroke", "#A9A9A9")
+            .attr("fill", "none");
+
+        variants
+            .append("text")
+            .text("Observed variants within 452 individuals from global samples (~37 million sites)")
+            .attr("x", function(d) {return d.h/downscale+shift-100;})
+            .attr("y", function(d) {return d.k/downscale+d.b/downscale+shift-110; })
+            .style("text-anchor", "middle")
+            .style("fill", "#696969")
+            .style("font-family", "Arial")
+            .style("font-size", 18)
+            .call(wrap, 250, 1, 1);
+
+        variants
+            .append("path")
+            .attr("id", function(d) { return d._row; })
+            .attr("stroke", function(d) { return d.color; })
+            .attr("stroke-width", 3)
+            .attr("stroke-dasharray", function(d) { return d.stroke_dasharray; })
+            .attr("fill", function(d) { return d.fill; })
+            .attr("d", function(d) {
+                return ["M", (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift-0.001)].join(' ')
+            })
+            .attr("transform", function(d) {
+                return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift) + " " + (d.k/downscale+shift) + ")"; 
+            });
+
+        var common_text = svg_container
+            .selectAll("text")
+            .data(ellipses)
+            .enter()
+            .filter(function(d) { return (d._row == "YRI"); })
+            .append("g");
+        
+        common_text
+            .append("path")
+            .attr("d", function(d) { return stepBefore([[d.h/downscale+shift, d.k/downscale+d.b/downscale+shift], [d.h/downscale+shift-20, d.k/downscale+d.b/downscale+shift+60]]) ;})
+            .attr("stroke-width", 2)
+            .attr("stroke", "#A9A9A9")
+            .attr("fill", "none");
+
+        common_text
+            .append("text")
+            .text("Common variants within 452 individuals from global samples (~10 million sites)")
+            .attr("x", function(d) {return d.h/downscale+shift-150;})
+            .attr("y", function(d) {return d.k/downscale+d.b/downscale+shift+50; })
+            .style("text-anchor", "middle")
+            .style("fill", "#696969")
+            .style("font-family", "Arial")
+            .style("font-size", 18)
+            .call(wrap, 250, 1, 1);
+
+        common_text
+            .append("path")
+            .attr("id", function(d) { return d._row; })
+            .attr("stroke", function(d) { return d.color; })
+            .attr("stroke-width", 3)
+            .attr("stroke-dasharray", function(d) { return d.stroke_dasharray; })
+            .attr("fill", function(d) { return d.fill; })
+            .attr("d", function(d) {
+                return ["M", (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift-0.001)].join(' ')
+            })
+            .attr("transform", function(d) {
+                return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift) + " " + (d.k/downscale+shift) + ")"; 
+            });
+
+        var common = svg_container
+            .selectAll("text")
+            .data(ellipses)
+            .enter()
+            .filter(function(d) { return (d._row != "Measurable" & d._row != "Variants"); })
+            .append("g");
+
+        common
+            .append("path")
+            .attr("id", function(d) { return d._row; })
+            .attr("stroke", function(d) { return d.color; })
+            .attr("stroke-width", 3)
+            .attr("stroke-dasharray", function(d) { return d.stroke_dasharray; })
+            .attr("fill", function(d) { return d.fill; })
+            .attr("d", function(d) {
+                return ["M", (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift-0.001)].join(' ')
+            })
+            .attr("transform", function(d) {
+                return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift) + " " + (d.k/downscale+shift) + ")"; 
+            });
+    </script>
+</body>
+</html>

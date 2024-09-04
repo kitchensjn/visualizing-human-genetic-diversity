@@ -59,6 +59,7 @@ generate_euler_plot <- function(pairwise_file, poplist, selected_pops=c(), cutof
   
   euler_data <- shared_common_snps$unique_snps
   names(euler_data) <- apply(shared_common_snps, 1, function(x){paste(names(x)[which(x==1)],collapse="&")})
+  print(euler_data)
   return(list("sets"=euler_data,"euler"=eulerr::euler(euler_data, shape = "ellipse"),"size"=sum(shared_common_snps$unique_snps)))
 }
 
@@ -78,15 +79,19 @@ generate_d3_euler <- function(pops, common_pop="", supplemental="") {
   ellipses_coordinates$common_variants <- sapply(pops, FUN=function(pop, euler) {return(sum(euler[grepl(pop, names(euler))]))}, euler=pops_euler$sets)
   ellipses_coordinates$unshared_common_variants <- pops_euler$sets[pops]
   ellipses_coordinates <- merge(ellipses_coordinates, supplemental, by="abbreviation")
+  # Color Palette from https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7
+  colors <- c("#D55E00", "#0072B2", "#CC79A7", "#009E73", "#56B4E9", "#E69F00", "#000000")
   ellipses_coordinates$color <- colors[1:length(pops)]
   ellipses_coordinates$fill <- "none"
   ellipses_coordinates$stroke_dasharray <- "none"
   return(list("ellipses_coord"=ellipses_coordinates,"stress"=pops_euler$euler$stress, "diagError"=pops_euler$euler$diagError))
 }
 
-
-# Color Palette from https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7
-colors <- c("#D55E00", "#0072B2", "#CC79A7", "#009E73", "#56B4E9", "#E69F00", "#000000")
+AMR <- c("ACB", "ASW", "CEU", "CLM", "MXL", "PEL", "PUR")
+low_thresh_4 <- generate_euler_plot("assets/new_1kg_nyc_hg38_filt_total.biallelic_snps.pops.ncat_000_001_005_010_100.geodist.total.txt", "assets/poplists/pops_panel.txt", selected_pops=AMR, cutoff=4)
+low_thresh_2 <- generate_euler_plot("assets/new_1kg_nyc_hg38_filt_total.biallelic_snps.pops.ncat_000_001_005_010_100.geodist.total.txt", "assets/poplists/pops_panel.txt", selected_pops=AMR, cutoff=2)
+low_thresh_1 <- generate_euler_plot("assets/new_1kg_nyc_hg38_filt_total.biallelic_snps.pops.ncat_000_001_005_010_100.geodist.total.txt", "assets/poplists/pops_panel.txt", selected_pops=AMR, cutoff=1)
+plot(low_thresh_4$euler)
 
 geodist <- read.table(file="assets/new_1kg_nyc_hg38_filt_total.biallelic_snps.pops.ncat_000_001_005_010_100.geodist.total.txt", col.names=c("geovar_code", "counts"), colClasses=c("character", "numeric"))
 measurable <- 2.9e9
@@ -95,6 +100,8 @@ supplemental <- read.table(file="assets/supplemental.txt", sep="\t", header=TRUE
 supplemental <- supplemental[,c("Population.description", "Population.code..1KGP.", "NumberOfSampledIndividualsPhase3")]
 colnames(supplemental) <- c("description", "abbreviation", "sampled_individuals")
 
+
+colors <- c("#D55E00", "#0072B2", "#CC79A7", "#009E73", "#56B4E9", "#E69F00", "#000000")
 
 # Figure 3
 
@@ -229,3 +236,57 @@ toJSON(group_sas$ellipses_coord)
 
 global_euler <- generate_euler_plot("assets/new_1kg_nyc_hg38_filt_total.biallelic_snps.pops.ncat_000_001_005_010_100.geodist.total.txt", "assets/poplists/pops_panel.txt", selected_pops=c("BEB", "CHB", "GBR", "MXL", "YRI"))
 UpSetR::upset(fromExpression(global_euler$sets), order.by = "freq", show.numbers="no", mainbar.y.label = "Number of Common Variants", sets.x.label="Number of Common Variants")
+
+
+
+
+
+
+
+
+
+# Figure for student activity
+
+simple_AMR <- c("ACB", "CEU", "MXL")
+amr_ellipses_coordinates <- generate_d3_euler(pops=simple_AMR)
+error_df <- data.frame("figure"="3", "stress"=amr_ellipses_coordinates$stress, "diagError"=amr_ellipses_coordinates$diagError)
+toJSON(amr_ellipses_coordinates$ellipses_coord)
+
+
+
+# Global version of Figure 5
+
+data <- read.table(
+  file="assets/new_1kg_nyc_hg38_filt_total.biallelic_snps.pops.ncat_000_001_005_010_100.geodist.total.txt",
+  col.names=c("geovar_code", "counts"),
+  colClasses=c("character", "numeric")
+)
+pops <- c("BEB", "CHB", "GBR", "MXL", "YRI")
+split.pops <- sapply(data[,1], function(a){strsplit(as.character(a),"")[[1]]})
+split.pops <- apply(split.pops,2,as.numeric)
+split.pops <- as.data.frame(t(split.pops))
+row.names(split.pops) <- 1:nrow(split.pops)
+colnames(split.pops) <- c(as.character(pops))
+data <- cbind(split.pops, data)
+data <- data[,c(pops,"geovar_code","counts")]
+amr_num_variants <- sum(data$counts) - sum(data[which(rowSums(data[,1:length(pops)]) == 0),"counts"])
+
+amr_pops_euler <- generate_euler_plot("assets/new_1kg_nyc_hg38_filt_total.biallelic_snps.pops.ncat_000_001_005_010_100.geodist.total.txt", "assets/poplists/pops_panel.txt", selected_pops=pops)
+perspective <- amr_pops_euler$sets
+perspective_common <- sum(perspective)
+names(perspective) <- paste("Measurable&Variants&", names(perspective), sep="")
+perspective <- c(perspective, "Measurable"=(measurable - amr_num_variants))
+perspective <- c(perspective, "Measurable&Variants"=(amr_num_variants - perspective_common))
+perspective_euler <- eulerr::euler(
+  perspective,
+  shape = "ellipse"
+)
+error_df <- rbind(error_df, data.frame("figure"="5", "stress"=perspective_euler$stress, "diagError"=perspective_euler$diagError))
+plot(perspective_euler, lwd=1, fill="transparent", labels=c())
+persepective_ellipses_coordinates <- perspective_euler$ellipses
+persepective_ellipses_coordinates$color <- c("#A9A9A9", "#A9A9A9", colors[1:5])
+persepective_ellipses_coordinates$fill <- "none"
+persepective_ellipses_coordinates$stroke_dasharray <- c(5,5,rep("none", length(pops)))
+toJSON(persepective_ellipses_coordinates)
+
+

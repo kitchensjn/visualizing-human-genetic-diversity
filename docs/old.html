@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Visualizing Human Genetic Diversity</title>
+        <script src='https://d3js.org/d3.v7.min.js'></script>
+
+
+
+        
+
+
+    </head>
+    <body>
+          
+        
+
+
+        <script>
+
+
+            function clip (subjectPolygon, clipPolygon) {
+                
+                var cp1, cp2, s, e;
+                var inside = function (p) {
+                    return (cp2[0]-cp1[0])*(p[1]-cp1[1]) > (cp2[1]-cp1[1])*(p[0]-cp1[0]);
+                };
+                var intersection = function () {
+                    var dc = [ cp1[0] - cp2[0], cp1[1] - cp2[1] ],
+                        dp = [ s[0] - e[0], s[1] - e[1] ],
+                        n1 = cp1[0] * cp2[1] - cp1[1] * cp2[0],
+                        n2 = s[0] * e[1] - s[1] * e[0], 
+                        n3 = 1.0 / (dc[0] * dp[1] - dc[1] * dp[0]);
+                    return [(n1*dp[0] - n2*dc[0]) * n3, (n1*dp[1] - n2*dc[1]) * n3];
+                };
+                var outputList = subjectPolygon;
+                cp1 = clipPolygon[clipPolygon.length-1];
+                for (var j in clipPolygon) {
+                    cp2 = clipPolygon[j];
+                    var inputList = outputList;
+                    outputList = [];
+                    s = inputList[inputList.length - 1]; //last on the input list
+                    for (var i in inputList) {
+                        e = inputList[i];
+                        if (inside(e)) {
+                            if (!inside(s)) {
+                                outputList.push(intersection());
+                            }
+                            outputList.push(e);
+                        }
+                        else if (inside(s)) {
+                            outputList.push(intersection());
+                        }
+                        s = e;
+                    }
+                    cp1 = cp2;
+                }
+                return outputList
+            }
+
+            function subtract (subjectPolygon, clipPolygon) {
+                
+                var cp1, cp2, s, e;
+                var inside = function (p) {
+                    return (cp2[0]-cp1[0])*(p[1]-cp1[1]) > (cp2[1]-cp1[1])*(p[0]-cp1[0]);
+                };
+                var intersection = function () {
+                    var dc = [ cp1[0] - cp2[0], cp1[1] - cp2[1] ],
+                        dp = [ s[0] - e[0], s[1] - e[1] ],
+                        n1 = cp1[0] * cp2[1] - cp1[1] * cp2[0],
+                        n2 = s[0] * e[1] - s[1] * e[0], 
+                        n3 = 1.0 / (dc[0] * dp[1] - dc[1] * dp[0]);
+                    return [(n1*dp[0] - n2*dc[0]) * n3, (n1*dp[1] - n2*dc[1]) * n3];
+                };
+                var outputList = subjectPolygon;
+                cp1 = clipPolygon[clipPolygon.length-1];
+                for (var j in clipPolygon) {
+                    cp2 = clipPolygon[j];
+                    var inputList = outputList;
+                    outputList = [];
+                    s = inputList[inputList.length - 1]; //last on the input list
+                    for (var i in inputList) {
+                        e = inputList[i];
+                        if (inside(e)) {
+                            if (!inside(s)) {
+                                outputList.push(e);//intersection());
+                            }
+                            outputList.push(e);
+                        }
+                        else if (inside(s)) {
+                            outputList.push(e);//intersection());
+                        }
+                        s = e;
+                    }
+                    cp1 = cp2;
+                }
+                return outputList
+            }
+
+
+            function createPointsListForEllipse(x0, y0, a, b, angle) {
+                y0 = -y0
+                angle = -angle
+                var theta = Array(10).fill().map((element, index) => index * 2 * Math.PI / 10)
+                var crds = [];
+                for (var i=0; i<theta.length; i++) {
+                    crds.push([a * Math.cos(theta[i]) * Math.cos(angle) - b * Math.sin(theta[i]) * Math.sin(angle) + x0, a * Math.cos(theta[i]) * Math.sin(angle) + b * Math.sin(theta[i]) * Math.cos(angle) + y0])
+                }
+                return crds;
+            }
+
+            function calcPolygonArea(vertices) {
+                var total = 0;
+                for (var i = 0, l = vertices.length; i < l; i++) {
+                    var addX = vertices[i][0];
+                    var addY = vertices[i == vertices.length - 1 ? 0 : i + 1][1];
+                    var subX = vertices[i == vertices.length - 1 ? 0 : i + 1][0];
+                    var subY = vertices[i][1];
+
+                    total += (addX * addY * 0.5);
+                    total -= (subX * subY * 0.5);
+                }
+                return Math.abs(total);
+            }
+
+            function calcAreaUnique(data) {
+                for (var e=0;e<data.length;e++) {
+                    var unique = createPointsListForEllipse(data[e].h,data[e].k,data[e].a,data[e].b,data[e].phi);
+                    console.log(unique);
+                    for (var i=1;i<2;i++) {
+                        var mask = createPointsListForEllipse(data[i].h,data[i].k,data[i].a,data[i].b,data[i].phi)
+                        unique = subtract(unique, mask);
+                    }
+                    console.log(unique);
+                    console.log(calcPolygonArea(unique));
+                }
+            }
+
+
+            function calcAllOverlapArea(data) {
+                var intersect = createPointsListForEllipse(data[0].h,data[0].k,data[0].a,data[0].b,data[0].phi);
+                for (var e=1;e<data.length;e++) {
+                    var mask = createPointsListForEllipse(data[e].h,data[e].k,data[e].a,data[e].b,data[e].phi);
+                    intersect = clip(intersect, mask);
+                }
+                return calcPolygonArea(intersect);
+            }
+
+            // Define the div for the tooltip
+            var tip = d3.select(".section").append("div")
+                .attr("class", "euler_tooltip")
+                .style("display", "none");
+        
+            function wrap(
+                text,
+                width,
+                dyAdjust,
+                lineHeightEms,
+                lineHeightSquishFactor,
+                splitOnHyphen,
+                centreVertically
+                ) {
+                // Use default values for the last three parameters if values are not provided.
+                if (!lineHeightEms) lineHeightEms = 1.05;
+                if (!lineHeightSquishFactor) lineHeightSquishFactor = 1;
+                if (splitOnHyphen == null) splitOnHyphen = true;
+                if (centreVertically == null) centreVertically = true;
+        
+                text.each(function () {
+                    var text = d3.select(this),
+                    x = text.attr("x"),
+                    y = text.attr("y");
+        
+                    var words = [];
+                    text
+                    .text()
+                    .split(/\s+/)
+                    .forEach(function (w) {
+                        if (splitOnHyphen) {
+                        var subWords = w.split("-");
+                        for (var i = 0; i < subWords.length - 1; i++)
+                            words.push(subWords[i] + "-");
+                        words.push(subWords[subWords.length - 1] + " ");
+                        } else {
+                        words.push(w + " ");
+                        }
+                    });
+        
+                    text.text(null); // Empty the text element
+        
+                    // `tspan` is the tspan element that is currently being added to
+                    var tspan = text.append("tspan");
+        
+                    var line = ""; // The current value of the line
+                    var prevLine = ""; // The value of the line before the last word (or sub-word) was added
+                    var nWordsInLine = 0; // Number of words in the line
+                    for (var i = 0; i < words.length; i++) {
+                    var word = words[i];
+                    prevLine = line;
+                    line = line + word;
+                    ++nWordsInLine;
+                    tspan.text(line.trim());
+                    if (tspan.node().getComputedTextLength() > width && nWordsInLine > 1) {
+                        // The tspan is too long, and it contains more than one word.
+                        // Remove the last word and add it to a new tspan.
+                        tspan.text(prevLine.trim());
+                        prevLine = "";
+                        line = word;
+                        nWordsInLine = 1;
+                        tspan = text.append("tspan").text(word.trim());
+                    }
+                    }
+        
+                    var tspans = text.selectAll("tspan");
+        
+                    var h = lineHeightEms;
+                    // Reduce the line height a bit if there are more than 2 lines.
+                    if (tspans.size() > 2)
+                    for (var i = 0; i < tspans.size(); i++) h *= lineHeightSquishFactor;
+        
+                    tspans.each(function (d, i) {
+                    // Calculate the y offset (dy) for each tspan so that the vertical centre
+                    // of the tspans roughly aligns with the text element's y position.
+                    var dy = i * h + dyAdjust;
+                    if (centreVertically) dy -= ((tspans.size() - 1) * h) / 2;
+                    d3.select(this)
+                        .attr("y", y)
+                        .attr("x", x)
+                        .attr("dy", dy + "em");
+                    });
+                });
+                }
+        
+            function d3_euler(data, id, dim, title, title_color, flip_title, loc, interactive) {
+        
+                var ellipses = data;
+
+                var create_form = d3.select(loc).append("form").attr("name", "submit-to-google-sheet");
+                
+                create_form
+                    .selectAll("ellipses")
+                    .data(ellipses)
+                    .enter()
+                    .append("input")
+                        .attr("type", "hidden")
+                        .attr("name", function(d) { return d.abbreviation + ".h"; })
+                        .attr("value", function(d) { return d.h; });
+                
+                create_form
+                    .selectAll("ellipses")
+                    .data(ellipses)
+                    .enter()
+                    .append("input")
+                        .attr("type", "hidden")
+                        .attr("name", function(d) { return d.abbreviation + ".k"; })
+                        .attr("value", function(d) { return d.k; });
+                
+                create_form.append("button").attr("type", "submit").text("Submit Diagram");
+
+                var percent_overlap = d3.select(loc).append("div").attr("id", "overlap").style("display", "flex");
+                percent_overlap.append("p").style("margin", "0px 2px 0px 0px").text("~");
+                percent_overlap.append("span").attr("id", "overlap_value").text(Math.round(calcAllOverlapArea(data)/10000000*100)+"%");
+                percent_overlap.append("p").style("margin", "0px 0px 0px 5px").text("of variants that are common in at least one sample are common in every sample.");
+
+                calcAreaUnique(data);
+
+                var svg_container = d3.select(loc)
+                    .append("svg")
+                    .attr("id", id)
+                    .attr("width", dim)
+                    .attr("viewBox", "0 0 " + dim + " " + dim);
+        
+            
+                var downscale = 15;
+                var shift = dim/2;
+        
+                svg_container
+                    .selectAll("ellipses")
+                    .data(ellipses)
+                    .enter()
+                    .append("path")
+                    .attr("id", function(d) { return d._row; })
+                    .attr("stroke", function(d) { return d.color; })
+                    .attr("stroke-width", 3)
+                    .attr("stroke-dasharray", function(d) { return d.stroke_dasharray; })
+                    .attr("fill", function(d) { return d.fill; })
+                    .attr("d", function(d) {
+                        return ["M", (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift-0.001)].join(' ')
+                    })
+                    .attr("transform", function(d) {
+                        return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift) + " " + (d.k/downscale+shift) + ")"; 
+                    });
+                
+                if (interactive) {
+                    svg_container
+                        .selectAll("path")
+                            .on("mouseover", function(event, d) {
+                                d3.select(this)
+                                    .style("cursor", "grab")
+                                    .style("stroke-width", 7)
+                                    .style("opacity", 1);
+                                tip
+                                    .style("display", "block")
+                                    .html("<h3 style='margin: 0px;'>" + d.description + "</h3></br>1KGP Abbreviation: " + d.abbreviation + "</br>Number of Sampled Individuals: " + d.sampled_individuals.toLocaleString() + "</br>Number of Common Variants: " + d.common_variants.toLocaleString() + "</br>Number of Unshared Common Variants: "+d.unshared_common_variants.toLocaleString())
+                                    .style("border", d.color + " solid 7px")
+                                    .style("left", (event.pageX) + "px")
+                                    .style("top", (event.pageY+25) + "px");
+                            })
+                            .on("mouseout", function(d) {
+                                tip.style("display", "none");
+                                d3.select("#"+id)
+                                    .selectAll("path")
+                                        .style("opacity", 1)
+                                        .style("stroke-width", 3);
+                            })
+                            .call(d3.drag()
+                                .on("start", dragstart)
+                                .on("drag", dragging)
+                                .on("end", dragend));
+                }
+
+                function dragstart(event, d) {
+                    d3.select("body").style("cursor", "grabbing");
+                    d3.select("#"+id)
+                        .selectAll("path")
+                            .style("pointer-events", "none")
+                            .style("opacity", 0.25);
+                    d3.select(this)
+                        .style("opacity", 1);
+                    d3.select("#overlap_value").text(Math.round(calcAllOverlapArea(data)/10000000*100)+"%");
+                }
+
+                function dragging(event, d) {
+                    d3.select("#"+id)
+                        .selectAll("path")
+                            .style("pointer-events", "none")
+                            .style("opacity", 0.25);
+                    d3.select(this)
+                        .style("stroke-width", 7)
+                        .style("opacity", 1);
+                    d.h = d.h + event.dx*downscale;
+                    d.k = d.k + event.dy*downscale;
+                    d3.select(this)
+                        .attr("d", function(d) {
+                            return ["M", (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift), (d.k/downscale+shift-0.001)].join(' ')
+                        })
+                        .attr("transform", function(d) {
+                            return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift) + " " + (d.k/downscale+shift) + ")";
+                        });
+                    d3.select("#overlap_value").text(Math.round(calcAllOverlapArea(data)/10000000*100)+"%");
+                }
+
+                function dragend(event, d) {
+                    d3.select("body").style("cursor", "initial");
+                    d3.select("#"+id)
+                        .selectAll("path")
+                            .style("pointer-events", "initial")
+                            .style("opacity", 1);
+                    
+                    d3.selectAll("input")
+                        .filter(function() {
+                            return d3.select(this).attr("name") == d.abbreviation + ".k";
+                        })
+                        .attr("value", function(d) { return d.k; });
+                    
+                    d3.selectAll("input")
+                        .filter(function() {
+                            return d3.select(this).attr("name") == d.abbreviation + ".h";
+                        })
+                        .attr("value", function(d) { return d.h; });
+                    
+                    d3.select("#overlap_value").text(Math.round(calcAllOverlapArea(data)/10000000*100)+"%");
+                }
+                
+                if (title != "") {
+                    if (flip_title != "") {
+                        svg_container
+                            .append("text")
+                            .text(title)
+                            .attr("x", dim/2)
+                            .attr("y", dim/2)
+                            .attr("text-anchor", "middle")
+                            .attr("transform", "rotate(180, " + dim/2 + ", " + dim/2 + ")")
+                            .style("font-family", "Arial")
+                            .style("font-size", 25)
+                            .style("fill", title_color)
+                            .call(wrap, 300, 0, 1);
+                    } else {
+                        svg_container
+                            .append("text")
+                            .text(title)
+                            .attr("x", dim/2)
+                            .attr("y", dim/2)
+                            .attr("text-anchor", "middle")
+                            .style("font-family", "Arial")
+                            .style("font-size", 25)
+                            .style("fill", title_color)
+                            .call(wrap, 300, 0, 1);
+                    }
+                }
+            }   
+
+            d3_euler(
+                data = [
+                    {"abbreviation":"PEL","h":2493.9592,"k":-3127.3259,"a":1139.4186,"b":1374.1214,"phi":1.0056,"common_variants":5140058,"unshared_common_variants":99338,"description":"Peruvian in Lima, Peru","sampled_individuals":85,"color":"#E69F00","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"MXL","h":2493.9592,"k":3127.3259,"a":1298.0515,"b":1327.9438,"phi":-1.3532,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"CEU","h":-3603.8755,"k":1735.535,"a":1518.3666,"b":1150.6006,"phi":1.187,"common_variants":5726377,"unshared_common_variants":184313,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"CLM","h":-3603.8755,"k":-1735.535,"a":1247.0832,"b":1433.2207,"phi":-0.2126,"common_variants":5895649,"unshared_common_variants":37361,"description":"Colombian in Medellin, Colombia","sampled_individuals":94,"color":"#009E73","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"PUR","h":-890.0837,"k":3899.7116,"a":1435.6344,"b":1296.4881,"phi":-1.5072,"common_variants":6053543,"unshared_common_variants":51810,"description":"Puerto Rican in Puerto Rico","sampled_individuals":104,"color":"#000000","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"ASW","h":-890.0837,"k":-3899.7116,"a":1753.6272,"b":1346.1266,"phi":-1.7434,"common_variants":7631052,"unshared_common_variants":321566,"description":"African Ancestry in Southwest US","sampled_individuals":61,"color":"#0072B2","fill":"none","stroke_dasharray":"none"},
+                    {"abbreviation":"ACB","h":4000,"k":0,"a":1661.9991,"b":1482.8142,"phi":-2.3891,"common_variants":8018649,"unshared_common_variants":840969,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"none","stroke_dasharray":"none"}
+                ],
+                id = "americas_example_euler",
+                dim = 1000,
+                title = "Americas",
+                title_color = "#696969",
+                flip_title = "",
+                loc = "body",
+                interactive = true
+            )
+  
+        </script>
+
+        <script>
+            const scriptURL = "https://script.google.com/macros/s/AKfycbyK5W2y9UQDdoBpOThyY77QSZzjb3ZJvo8CQ6pvRD0yzxsnAihPKMrjmweA_bkxe0YP/exec"
+            const form = document.forms['submit-to-google-sheet']
+        
+            form.addEventListener('submit', e => {
+                e.preventDefault()
+                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                    .then(response => {window.location.href = "https://james-kitchens.com/blog/visualizing-human-genetic-diversity"})
+                    .catch(error => console.error('Error!', error.message))
+            })
+        </script>
+
+        
+    </body>
+</html>

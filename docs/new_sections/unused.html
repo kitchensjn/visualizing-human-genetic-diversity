@@ -1,0 +1,35 @@
+ellipse_container
+    .append("text")
+    .text(function(d) { return d.description; })
+    .attr("x", function(d) { return d.h/downscale+shift; })
+    .attr("y", function(d) { return d.k/downscale+shift; })
+    .attr("text-anchor", "middle")
+    .style("fill", function(d) { return d.color; })
+    .style("font-family", "Arial")
+    .style("font-weight", "bold")
+    .style("font-size", 14)
+    .call(wrap, 150, -0.75, 1);
+
+ellipse_container
+    .append("text")
+    .text(function(d) { return d.sampled_individuals.toLocaleString() + " individuals"; })
+    .attr("x", function(d) { return d.h/downscale+shift; })
+    .attr("y", function(d) { return d.k/downscale+shift; })
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "middle")
+    .style("fill", function(d) { return d.color; })
+    .style("font-family", "Arial")
+    .style("font-size", 14)
+    .call(wrap, 150, 2, 1);
+    
+ellipse_container
+    .append("text")
+    .text(function(d) { return d.common_variants.toLocaleString() + " variants"; })
+    .attr("x", function(d) { return d.h/downscale+shift; })
+    .attr("y", function(d) { return d.k/downscale+shift; })
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "middle")
+    .style("fill", function(d) { return d.color; })
+    .style("font-family", "Arial")
+    .style("font-size", 14)
+    .call(wrap, 150, 3.5, 1);

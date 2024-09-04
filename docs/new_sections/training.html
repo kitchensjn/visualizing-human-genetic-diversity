@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Visualizing Human Genetic Diversity</title>
+        <meta charset="utf-8">
+        <script defer src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+
+        <style>
+            html, body {
+                margin: 0;
+                height: 100%;
+                overflow: hidden;
+                touch-action: none;
+            }
+
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #app {
+                max-width: 900px;
+                width: 100%;
+                position: relative;
+            }
+
+            #box {
+                width: 900px;
+                height: 900px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                color: #053e4e;
+            }
+
+            .loader {
+                border: 20px solid #053e4e;
+                border-radius: 50%;
+                border-top: 20px solid #1eebb1;
+                width: 100px;
+                height: 100px;
+                animation: spinner 4s linear infinite;
+            }
+
+            @keyframes spinner {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            button {
+                color: #696969;
+                background-color: #dddddd;
+                width: 100%;
+                height: 50px;
+                font-size: 25px;
+                border-radius: 50px;
+                border: 0px;
+            }
+
+            button:hover {
+                background-color: #696969;
+                color: white;
+                cursor: pointer;
+            }
+
+            #figure {
+                margin: 25px 0px;
+            }
+
+            #stats {
+                display: flex;
+                justify-content: space-around;
+                font-size: 20px;
+                color: #696969;
+            }
+
+            #stats .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #stats .container .title {
+                margin: 0px;
+            }
+
+            #stats .container .value {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-end;
+            }
+
+            #stats .container .value .number {
+                font-size: 100px;
+                margin: 0px;
+            }
+
+            #overlay {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(255,255,255,0.75);
+            }
+
+            #lock {
+                position: absolute;
+                bottom: 30px;
+                right: 5px;
+                width: 50px;
+                height: 57px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <div id="stats"></div>
+            <div id="figure"></div>
+        </div>
+
+        <script>
+
+            //https://blog.hubspot.com/website/css-loading-animation
+            var loader = d3.select("#app").append("div").attr("id", "box")
+            loader.append("div").attr("class", "loader")
+            loader.append("h1").text("LOADING...")
+
+            //0,-167.7487
+            //718.0368,-167.7487
+            //655.979,84.2749
+
+            var data = [
+                {"abbreviation":"MXL","h":(Math.random()-0.5)*2000,"k":(Math.random()-0.5)*2000,"a":1342.6299,"b":1342.6299,"phi":0,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"none","stroke_dasharray":"none"},
+                {"abbreviation":"MXL","h":(Math.random()-0.5)*2000,"k":(Math.random()-0.5)*2000,"a":1342.6299,"b":1342.6299,"phi":0,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#CC79A7","fill":"none","stroke_dasharray":"none"}
+            ];
+            
+            var id = "training_1";
+            var width = 900;
+            var height = 600;
+            var line_width = 15;
+            var title_color = "#696969";
+            var flip_title = "";
+            var interactive = true;
+
+            var create_form = d3.select("#app").append("form").attr("name", "submit-to-google-sheet").attr("id", "form");
+                
+            create_form
+                .selectAll("ellipses")
+                .data(data)
+                .enter()
+                .append("input")
+                    .attr("type", "hidden")
+                    .attr("name", function(d) { return d.abbreviation + ".h"; })
+                    .attr("value", function(d) { return d.h; });
+            
+            create_form
+                .selectAll("ellipses")
+                .data(data)
+                .enter()
+                .append("input")
+                    .attr("type", "hidden")
+                    .attr("name", function(d) { return d.abbreviation + ".k"; })
+                    .attr("value", function(d) { return d.k; });
+
+            const scriptURL = "https://script.google.com/macros/s/AKfycbyK5W2y9UQDdoBpOThyY77QSZzjb3ZJvo8CQ6pvRD0yzxsnAihPKMrjmweA_bkxe0YP/exec"
+            const form = document.forms['submit-to-google-sheet']
+        
+            form.addEventListener('submit', e => {
+                e.preventDefault()
+                
+                var overlay = d3.select("#app").append("div").attr("id", "overlay");
+
+                //https://blog.hubspot.com/website/css-loading-animation
+                var loader = d3.select("#overlay").append("div").attr("id", "box");
+                loader.append("div").attr("class", "loader");
+                loader.append("h1").text("Submitting...");
+                
+                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                    .then(response => {
+                        document.getElementById("form").remove();
+                        document.getElementById("box").remove();
+                        d3.select("#overlay").style("background-color", "transparent")
+                            .append("div").attr("id", "lock")
+                                .append("svg") //<!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                    .attr("xmlns", "http://www.w3.org/2000/svg")
+                                    .attr("viewBox", "0 0 448 512")
+                                    .append("path")
+                                    .attr("d", "M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z")
+                                    .style("fill", "#696969");
+
+                    })
+                    .catch(error => console.error('Error!', error.message))
+            });
+        </script>
+
+        <script type="module">
+            const pyodide = await loadPyodide();
+            await pyodide.loadPackage(["shapely"]);
+            const shapely = await pyodide.pyimport("shapely");
+            
+            pyodide.runPython(`
+                import js
+                import math
+                from shapely.geometry import Polygon
+
+
+                def createPointsListForEllipse(x, y, a, b, angle):
+                    y = -y
+                    angle = -angle
+                    theta = [x * 2 * math.pi / 100 for x in range(100)]
+                    coords = []
+                    for i in theta:
+                        coords.append([a * math.cos(i) * math.cos(angle) - b * math.sin(i) * math.sin(angle) + x, a * math.cos(i) * math.sin(angle) + b * math.sin(i) * math.cos(angle) + y]) 
+                    return coords
+
+
+                def calcIntersectPercentage(data):
+                    u = Polygon(createPointsListForEllipse(data[0].h, data[0].k, data[0].a, data[0].b, data[0].phi))
+                    i = Polygon(createPointsListForEllipse(data[0].h, data[0].k, data[0].a, data[0].b, data[0].phi))
+                    for e in data[1:]:
+                        ellipse = Polygon(createPointsListForEllipse(e.h, e.k, e.a, e.b, e.phi))
+                        u = u.union(ellipse)
+                        i = i.intersection(ellipse)
+                    return i.area / u.area
+
+                def calcUniquePercentage(data):
+                    all = []
+                    u = Polygon(createPointsListForEllipse(data[0].h, data[0].k, data[0].a, data[0].b, data[0].phi))
+                    for i,p in enumerate(data):
+                        poly_p = Polygon(createPointsListForEllipse(p.h, p.k, p.a, p.b, p.phi))
+                        if i != 0:
+                            u = u.union(poly_p)
+                        for j,q in enumerate(data):
+                            if i != j:
+                                poly_q = Polygon(createPointsListForEllipse(q.h, q.k, q.a, q.b, q.phi))
+                                poly_p = poly_p.difference(poly_q)
+                        all.append(poly_p.area)
+                    return sum(all) / u.area
+
+                
+                js.intersectionStats = calcIntersectPercentage
+                js.uniqueStats = calcUniquePercentage
+            `);
+
+            document.getElementById("box").remove();
+
+            var overlap = Math.round(intersectionStats(data)*100);
+            var percent_overlap = d3.select("#stats").append("div").attr("class", "container");
+            percent_overlap.append("p").attr("class", "title").text("common in all three samples");
+            var overlap_stats = percent_overlap.append("div").attr("class", "value");
+            overlap_stats.append("p").attr("id", "overlap_value").attr("class", "number").text(overlap);
+            overlap_stats.append("p").attr("class", "percent").text("%");
+
+            var unique = Math.round(uniqueStats(data)*100)
+            var percent_unique = d3.select("#stats").append("div").attr("class", "container");
+            percent_unique.append("p").attr("class", "title").text("common in only one sample");
+            var unique_stats = percent_unique.append("div").attr("class", "value");
+            unique_stats.append("p").attr("id", "unique_value").attr("class", "number").text(unique);
+            unique_stats.append("p").attr("class", "percent").text("%");
+
+            create_form
+                .append("input")
+                    .attr("type", "hidden")
+                    .attr("name", "overlap")
+                    .attr("value", overlap);
+            
+            create_form
+                .append("input")
+                    .attr("type", "hidden")
+                    .attr("name", "unique")
+                    .attr("value", unique);
+
+            create_form.append("button").attr("type", "submit").text("Submit Diagram");
+
+            var svg_container = d3.select("#figure")
+                .style("border", "1px solid #696969")
+                .append("svg")
+                .attr("id", id)
+                .attr("width", 900)
+                .attr("viewBox", "0 0 " + width + " " + height);
+
+            var downscale = 10;
+            var shift_h = width/2;
+            var shift_v = height/2;
+
+            svg_container
+                .selectAll("ellipses")
+                .data(data)
+                .enter()
+                .append("path")
+                .attr("id", function(d) { return d._row; })
+                .attr("stroke", function(d) { return d.color; })
+                .attr("stroke-width", line_width)
+                .attr("stroke-dasharray", function(d) { return d.stroke_dasharray; })
+                .attr("fill", function(d) { return d.fill; })
+                .attr("d", function(d) {
+                    return ["M", (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v-0.001)].join(' ')
+                })
+                .attr("transform", function(d) {
+                    return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_v) + ")"; 
+                });
+
+            if (interactive) {
+                svg_container
+                    .selectAll("path")
+                        .on("mouseover", function(event, d) {
+                            d3.select(this)
+                                .style("cursor", "grab")
+                                .style("stroke-width", line_width)
+                                .style("opacity", 1);
+                        })
+                        .on("mouseout", function(d) {
+                            d3.select("#"+id)
+                                .selectAll("path")
+                                    .style("opacity", 1)
+                                    .style("stroke-width", line_width);
+                        })
+                        .call(d3.drag()
+                            .on("start", dragstart)
+                            .on("drag", dragging)
+                            .on("end", dragend));
+            }
+
+            function dragstart(event, d) {
+                d3.select("body").style("cursor", "grabbing");
+                d3.select("#"+id)
+                    .selectAll("path")
+                        .style("pointer-events", "none")
+                        .style("opacity", 0.25);
+                d3.select(this)
+                    .style("opacity", 1);
+                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
+                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
+            }
+
+            function dragging(event, d) {
+                d3.select("#"+id)
+                    .selectAll("path")
+                        .style("pointer-events", "none")
+                        .style("opacity", 0.25);
+                d3.select(this)
+                    .style("stroke-width", line_width)
+                    .style("opacity", 1);
+                d.h = d.h + event.dx*downscale;
+                d.k = d.k + event.dy*downscale;
+                console.log(d.h, d.k);
+                if (d.h < -3500) {
+                    d.h = -3500;
+                } else if (d.h > 3500) {
+                    d.h = 3500;
+                }
+                if (d.k < -3000) {
+                    d.k = -3000;
+                } else if (d.k > 3000) {
+                    d.k = 3000;
+                }
+                d3.select(this)
+                    .attr("d", function(d) {
+                        return ["M", (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v-0.001)].join(' ')
+                    })
+                    .attr("transform", function(d) {
+                        return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_v) + ")";
+                    });
+                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
+                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
+            }
+
+            function dragend(event, d) {
+                d3.select("body").style("cursor", "initial");
+                d3.select("#"+id)
+                    .selectAll("path")
+                        .style("pointer-events", "initial")
+                        .style("opacity", 1);
+                
+                d3.selectAll("input")
+                    .filter(function() {
+                        return d3.select(this).attr("name") == d.abbreviation + ".k";
+                    })
+                    .attr("value", function(d) { return d.k; });
+                
+                d3.selectAll("input")
+                    .filter(function() {
+                        return d3.select(this).attr("name") == d.abbreviation + ".h";
+                    })
+                    .attr("value", function(d) { return d.h; });
+                
+                var overlap = Math.round(intersectionStats(data)*100);
+                var unique = Math.round(uniqueStats(data)*100);
+                
+                d3.selectAll("input")
+                    .filter(function() {
+                        return d3.select(this).attr("name") == "overlap";
+                    })
+                    .attr("value", overlap);
+
+                d3.selectAll("input")
+                    .filter(function() {
+                        return d3.select(this).attr("name") == "unique";
+                    })
+                    .attr("value", unique);
+                
+                d3.select("#overlap_value").text(overlap);
+                d3.select("#unique_value").text(unique);
+            }
+        </script>
+    </body>
+</html>
