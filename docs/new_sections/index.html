@@ -222,6 +222,7 @@
             var dim = 900;
             var downscale = 15;
             var shift = dim/2;
+            var active_count = 0;
 
 
             var menu = d3.select("#menu")
@@ -263,17 +264,19 @@
                         d3.select("#activity").select("#"+d3.select(this).attr("id")).style("display", "block");
                         d.active = "true";
                         var intersection = intersection_stats(data);
-                        d3.select("#overlap_value").text(Math.round(intersection[intersection.length-1]*100));
-                        d3.select("#unique_value").text(Math.round(intersection_stats(data)[0]*100));
+                        d3.select("#overlap_value").text(intersection[intersection.length-1]);
+                        d3.select("#unique_value").text(intersection[0]);
+                        active_count += 1
                     } else {
                         path.attr("fill", "white");
                         d3.select("#activity").select("#"+d3.select(this).attr("id")).style("display", "none");
                         d.active = "false";
+                        active_count -= 1;
                     }
                     d3.select(this).selectAll("text").style("fill", prev_fill);
                     var intersection = intersection_stats(data);
-                    d3.select("#overlap_value").text(Math.round(intersection[intersection.length-1]*100));
-                    d3.select("#unique_value").text(Math.round(intersection_stats(data)[0]*100));
+                    d3.select("#overlap_value").text(intersection[intersection.length-1]);
+                    d3.select("#unique_value").text(intersection[0]);
                 });
 
             ellipses
@@ -425,9 +428,9 @@
                         areas.append(a_sum)
                     if len(areas) > 0:
                         total = sum(areas)
-                        areas = [a/total for a in areas]
+                        areas = [round((a/total)*100) for a in areas]
                     else:
-                        areas = [0]
+                        areas = ["~"]
                     return areas
 
                 js.intersection_stats = calculate_intersection_areas
@@ -436,8 +439,8 @@
             document.getElementById("box").remove();
 
             var intersection = intersection_stats(data);
-            var overlap = Math.round(intersection[intersection.length-1]*100);
-            var unique = Math.round(intersection_stats(data)[0]*100);
+            var overlap = intersection[intersection.length-1];
+            var unique = intersection[0];
 
             var percent_overlap = d3.select("#stats").append("div").attr("class", "container");
             percent_overlap.append("p").attr("class", "title").text("common in all samples");
@@ -519,9 +522,14 @@
                         .style("opacity", 0.25);
                 d3.select(this)
                     .style("opacity", 1);
-                var intersection = intersection_stats(data);
-                d3.select("#overlap_value").text(Math.round(intersection[intersection.length-1]*100));
-                d3.select("#unique_value").text(Math.round(intersection_stats(data)[0]*100));
+                if (active_count < 6) {
+                    var intersection = intersection_stats(data);
+                    d3.select("#overlap_value").text(intersection[intersection.length-1]);
+                    d3.select("#unique_value").text(intersection[0]);
+                } else {
+                    d3.select("#overlap_value").text("~");
+                    d3.select("#unique_value").text("~");
+                }
             }
 
             function dragging(event, d) {
@@ -550,9 +558,14 @@
                     .attr("transform", function(d) {
                         return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_v) + ")";
                     });
-                var intersection = intersection_stats(data);
-                d3.select("#overlap_value").text(Math.round(intersection[intersection.length-1]*100));
-                d3.select("#unique_value").text(Math.round(intersection_stats(data)[0]*100));
+                if (active_count < 6) {
+                    var intersection = intersection_stats(data);
+                    d3.select("#overlap_value").text(intersection[intersection.length-1]);
+                    d3.select("#unique_value").text(intersection[0]);
+                } else {
+                    d3.select("#overlap_value").text("~");
+                    d3.select("#unique_value").text("~");
+                }
             }
 
             function dragend(event, d) {
@@ -575,8 +588,8 @@
                     .attr("value", function(d) { return d.h; });
                 
                 var intersection = intersection_stats(data);
-                var overlap = Math.round(intersection[intersection.length-1]*100);
-                var unique = Math.round(intersection_stats(data)[0]*100);
+                var overlap = intersection[intersection.length-1];
+                var unique = intersection[0];
                 
                 d3.selectAll("input")
                     .filter(function() {
