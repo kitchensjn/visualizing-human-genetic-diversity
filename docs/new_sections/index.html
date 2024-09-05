@@ -123,7 +123,7 @@
         <div id="app">
             <div id="menu"></div>
             <div id="sandbox">
-                <div id="stats"></div>
+                <div id="barplot"></div>
                 <div id="figure"></div>
             </div>
         </div>
@@ -219,6 +219,53 @@
                 {"abbreviation":"ACB","h":4000,"k":0,"a":1597.628,"b":1597.628,"phi":0,"common_variants":8018649,"unshared_common_variants":840969,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"white","stroke_dasharray":"none","active":"false"}
             ];
 
+            var barplot = d3.select("#barplot")
+                .append("svg")
+                .attr("width", 1000)
+                .attr("height", 240)
+                .append("g")
+                .attr("transform", `translate(30,20)`);;
+            
+            // Add Y axis
+            const y = d3.scaleLinear()
+                .domain([0, 100])
+                .range([200, 0]);
+            barplot.append("g").call(d3.axisLeft(y));
+
+
+            function update_barplot(fractions) {
+
+                var indices = [...Array(fractions.length).keys()];
+                var fractions = fractions.map((intersection_fraction, i) => ({ intersection_fraction, area_groups: indices[i]+1 }));
+
+                d3.select("#barplot").selectAll("rect").remove();
+                d3.select("#barplot").select("#barplot_x_axis").remove();
+
+                // X axis
+                var x = d3.scaleBand()
+                    .range([0, 900])
+                    .domain(fractions.map(d => d.area_groups))
+                    .padding(0.2);
+
+                barplot.append("g")
+                    .attr("id", "barplot_x_axis")
+                    .attr("transform", `translate(0, 200)`)
+                    .call(d3.axisBottom(x));
+
+                // Bars
+                var bars = barplot.selectAll("mybar")
+                    .data(fractions);
+
+                bars
+                    .enter()
+                    .append("rect")
+                        .attr("x", d => x(d.area_groups))
+                        .attr("y", d => y(d.intersection_fraction))
+                        .attr("width", x.bandwidth())
+                        .attr("height", d => 200 - y(d.intersection_fraction))
+                        .attr("fill", "black");
+            }
+
             var dim = 900;
             var downscale = 15;
             var shift = dim/2;
@@ -263,9 +310,6 @@
                         path.attr("fill", prev_stroke);
                         d3.select("#activity").select("#"+d3.select(this).attr("id")).style("display", "block");
                         d.active = "true";
-                        var intersection = intersection_stats(data);
-                        d3.select("#overlap_value").text(intersection[intersection.length-1]);
-                        d3.select("#unique_value").text(intersection[0]);
                         active_count += 1
                     } else {
                         path.attr("fill", "white");
@@ -277,6 +321,7 @@
                     var intersection = intersection_stats(data);
                     d3.select("#overlap_value").text(intersection[intersection.length-1]);
                     d3.select("#unique_value").text(intersection[0]);
+                    update_barplot(intersection);
                 });
 
             ellipses
@@ -522,10 +567,11 @@
                         .style("opacity", 0.25);
                 d3.select(this)
                     .style("opacity", 1);
-                if (active_count < 6) {
+                if (active_count < 5) {
                     var intersection = intersection_stats(data);
                     d3.select("#overlap_value").text(intersection[intersection.length-1]);
                     d3.select("#unique_value").text(intersection[0]);
+                    update_barplot(intersection);
                 } else {
                     d3.select("#overlap_value").text("~");
                     d3.select("#unique_value").text("~");
@@ -558,10 +604,11 @@
                     .attr("transform", function(d) {
                         return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_v) + ")";
                     });
-                if (active_count < 6) {
+                if (active_count < 5) {
                     var intersection = intersection_stats(data);
                     d3.select("#overlap_value").text(intersection[intersection.length-1]);
                     d3.select("#unique_value").text(intersection[0]);
+                    update_barplot(intersection);
                 } else {
                     d3.select("#overlap_value").text("~");
                     d3.select("#unique_value").text("~");
@@ -590,6 +637,7 @@
                 var intersection = intersection_stats(data);
                 var overlap = intersection[intersection.length-1];
                 var unique = intersection[0];
+                update_barplot(intersection);
                 
                 d3.selectAll("input")
                     .filter(function() {
