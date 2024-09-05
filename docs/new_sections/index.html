@@ -262,16 +262,18 @@
                         path.attr("fill", prev_stroke);
                         d3.select("#activity").select("#"+d3.select(this).attr("id")).style("display", "block");
                         d.active = "true";
-                        d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
-                        d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
+                        var intersection = intersection_stats(data);
+                        d3.select("#overlap_value").text(Math.round(intersection[intersection.length-1]*100));
+                        d3.select("#unique_value").text(Math.round(intersection_stats(data)[0]*100));
                     } else {
                         path.attr("fill", "white");
                         d3.select("#activity").select("#"+d3.select(this).attr("id")).style("display", "none");
                         d.active = "false";
                     }
                     d3.select(this).selectAll("text").style("fill", prev_fill);
-                    d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
-                    d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
+                    var intersection = intersection_stats(data);
+                    d3.select("#overlap_value").text(Math.round(intersection[intersection.length-1]*100));
+                    d3.select("#unique_value").text(Math.round(intersection_stats(data)[0]*100));
                 });
 
             ellipses
@@ -390,6 +392,8 @@
                 import js
                 import math
                 from shapely.geometry import Polygon
+                from shapely.ops import unary_union
+                from itertools import combinations
 
 
                 def createPointsListForEllipse(x, y, a, b, angle):
@@ -401,65 +405,46 @@
                         coords.append([a * math.cos(i) * math.cos(angle) - b * math.sin(i) * math.sin(angle) + x, a * math.cos(i) * math.sin(angle) + b * math.sin(i) * math.cos(angle) + y]) 
                     return coords
 
-
-                def calcIntersectPercentage(data):
-                    filtered = []
+                def calculate_intersection_areas(data):
+                    ellipses = []
                     for ellipse in data:
                         if ellipse.active == "true":
-                            filtered.append(ellipse)
-                    data = filtered
-                    if len(data) > 1:
-                        u = Polygon(createPointsListForEllipse(data[0].h, data[0].k, data[0].a, data[0].b, data[0].phi))
-                        i = Polygon(createPointsListForEllipse(data[0].h, data[0].k, data[0].a, data[0].b, data[0].phi))
-                        for e in data[1:]:
-                            ellipse = Polygon(createPointsListForEllipse(e.h, e.k, e.a, e.b, e.phi))
-                            u = u.union(ellipse)
-                            i = i.intersection(ellipse)
-                        return i.area / u.area
-                    elif len(data) > 0:
-                        return 1
+                            poly = Polygon(createPointsListForEllipse(ellipse.h, ellipse.k, ellipse.a, ellipse.b, ellipse.phi))
+                            ellipses.append(poly)
+                    areas = []
+                    for a in range(len(ellipses)):
+                        a_sum = 0
+                        for combo in combinations(ellipses, a+1):
+                            poly_combo = combo[0]
+                            for i in range(len(combo)-1):
+                                poly_combo = poly_combo.intersection(combo[i+1])
+                            not_combo = [e for e in ellipses if e not in combo]
+                            poly_not = unary_union(not_combo)
+                            diff = poly_combo.difference(poly_not)
+                            a_sum += diff.area
+                        areas.append(a_sum)
+                    if len(areas) > 0:
+                        total = sum(areas)
+                        areas = [a/total for a in areas]
                     else:
-                        return 0
+                        areas = [0]
+                    return areas
 
-                def calcUniquePercentage(data):
-                    filtered = []
-                    for ellipse in data:
-                        if ellipse.active == "true":
-                            filtered.append(ellipse)
-                    data = filtered
-                    if len(data) > 1:
-                        all = []
-                        u = Polygon(createPointsListForEllipse(data[0].h, data[0].k, data[0].a, data[0].b, data[0].phi))
-                        for i,p in enumerate(data):
-                            poly_p = Polygon(createPointsListForEllipse(p.h, p.k, p.a, p.b, p.phi))
-                            if i != 0:
-                                u = u.union(poly_p)
-                            for j,q in enumerate(data):
-                                if i != j:
-                                    poly_q = Polygon(createPointsListForEllipse(q.h, q.k, q.a, q.b, q.phi))
-                                    poly_p = poly_p.difference(poly_q)
-                            all.append(poly_p.area)
-                        return sum(all) / u.area
-                    elif len(data) > 0:
-                        return 1
-                    else:
-                        return 0
-
-                
-                js.intersectionStats = calcIntersectPercentage
-                js.uniqueStats = calcUniquePercentage
+                js.intersection_stats = calculate_intersection_areas
             `);
 
             document.getElementById("box").remove();
 
-            var overlap = Math.round(intersectionStats(data)*100);
+            var intersection = intersection_stats(data);
+            var overlap = Math.round(intersection[intersection.length-1]*100);
+            var unique = Math.round(intersection_stats(data)[0]*100);
+
             var percent_overlap = d3.select("#stats").append("div").attr("class", "container");
             percent_overlap.append("p").attr("class", "title").text("common in all samples");
             var overlap_stats = percent_overlap.append("div").attr("class", "value");
             overlap_stats.append("p").attr("id", "overlap_value").attr("class", "number").text(overlap);
             overlap_stats.append("p").attr("class", "percent").text("%");
 
-            var unique = Math.round(uniqueStats(data)*100)
             var percent_unique = d3.select("#stats").append("div").attr("class", "container");
             percent_unique.append("p").attr("class", "title").text("common in only one sample");
             var unique_stats = percent_unique.append("div").attr("class", "value");
@@ -534,8 +519,9 @@
                         .style("opacity", 0.25);
                 d3.select(this)
                     .style("opacity", 1);
-                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
-                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
+                var intersection = intersection_stats(data);
+                d3.select("#overlap_value").text(Math.round(intersection[intersection.length-1]*100));
+                d3.select("#unique_value").text(Math.round(intersection_stats(data)[0]*100));
             }
 
             function dragging(event, d) {
@@ -564,8 +550,9 @@
                     .attr("transform", function(d) {
                         return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_v) + ")";
                     });
-                d3.select("#overlap_value").text(Math.round(intersectionStats(data)*100));
-                d3.select("#unique_value").text(Math.round(uniqueStats(data)*100));
+                var intersection = intersection_stats(data);
+                d3.select("#overlap_value").text(Math.round(intersection[intersection.length-1]*100));
+                d3.select("#unique_value").text(Math.round(intersection_stats(data)[0]*100));
             }
 
             function dragend(event, d) {
@@ -587,8 +574,9 @@
                     })
                     .attr("value", function(d) { return d.h; });
                 
-                var overlap = Math.round(intersectionStats(data)*100);
-                var unique = Math.round(uniqueStats(data)*100);
+                var intersection = intersection_stats(data);
+                var overlap = Math.round(intersection[intersection.length-1]*100);
+                var unique = Math.round(intersection_stats(data)[0]*100);
                 
                 d3.selectAll("input")
                     .filter(function() {
