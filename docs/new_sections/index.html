@@ -15,7 +15,9 @@
             body {
                 margin: 0;
                 width: 100%;
+                min-width: 100vw;
                 height: 100%;
+                min-height: 100vh;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -30,13 +32,16 @@
             }
 
             #box {
-                width: 1000px;
-                height: 1000px;
+                width: 100%;
+                height: 100%;
+                position: absolute;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
                 color: #053e4e;
+                z-index: 9999;
+                background-color: white;
             }
 
             .loader {
@@ -120,6 +125,7 @@
         </style>
     </head>
     <body>
+        <div id="box"></div>
         <div id="app">
             <div id="menu"></div>
             <div id="sandbox">
@@ -221,7 +227,7 @@
 
             var barplot = d3.select("#barplot")
                 .append("svg")
-                .attr("width", 1000)
+                .attr("width", 900)
                 .attr("height", 240)
                 .append("g")
                 .attr("transform", `translate(30,20)`);;
@@ -231,7 +237,6 @@
                 .domain([0, 100])
                 .range([200, 0]);
             barplot.append("g").call(d3.axisLeft(y));
-
 
             function update_barplot(fractions) {
 
@@ -270,7 +275,6 @@
             var downscale = 15;
             var shift = dim/2;
             var active_count = 0;
-
 
             var menu = d3.select("#menu")
                 .append("svg")
@@ -374,9 +378,9 @@
                 .call(wrap, 150, 3.5, 1);
 
             //https://blog.hubspot.com/website/css-loading-animation
-            var loader = d3.select("#app").append("div").attr("id", "box")
-            loader.append("div").attr("class", "loader")
-            loader.append("h1").text("LOADING...")
+            var loader = d3.select("#box");
+            loader.append("div").attr("class", "loader");
+            loader.append("h1").text("LOADING...");
             
             var id = "activity";
 
