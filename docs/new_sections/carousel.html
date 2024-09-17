@@ -15,6 +15,9 @@
 
             .figure {
                 background-color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .full {
@@ -77,7 +80,7 @@
                 <div class="carousel-item active full">
                     <div class="d-block full figure"></div>
                     <div class="carousel-caption">
-                        <p id="desc_0" class="desc">Welcome! This activity was created to measure the effectiveness of Euler diagrams and their application to human genetic datasets. Your responses to questions within this activity will be anonymously recorded; once you've submitted your answer to each section, you will not be able to change it. Your performance in this activity will not be graded on correctness and your participation helps in our study. If you have any questions, please reach out to James Kitchens or Professor Graham Coop.</p>
+                        <p id="desc_0" class="desc">Welcome! This activity was created to measure the effectiveness of Euler diagrams and their application to human genetic datasets. Your responses to questions within this activity will be anonymously recorded; once you've submitted your answer to each section, you will not be able to change it. Your performance in this activity will not be graded on correctness. Your participation helps in our study. If you have any questions, please reach out to James Kitchens or Professor Graham Coop.</p>
                     </div>
                 </div>
                 <div class="carousel-item full">
@@ -131,7 +134,9 @@
                     </div>
                 </div>
                 <div class="carousel-item full">
-                    <div class="d-block full figure"></div>
+                    <div class="full figure">
+                        <img src="../ACB_CEU_MXL.svg" class="d-block w-75">
+                    </div>
                     <div class="carousel-caption">
                         <button id="hide_6" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                             <p id="hide_text_6" class="caption-control-text" style="display: none;">Hide Caption</p>
@@ -161,8 +166,8 @@
                     document.getElementById("desc_"+num).style.display = "none";
                 } else {
                     document.getElementById("hide_text_"+num).innerText = "Hide Caption";
-                    document.getElementById("desc_"+num).style.display = "block";
                     document.getElementById("hide_icon_"+num).style.transform = "rotate(-90deg)";
+                    document.getElementById("desc_"+num).style.display = "block";
                 }
             }
         </script>
