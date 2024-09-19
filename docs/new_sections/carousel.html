@@ -25,6 +25,13 @@
                 height: 100%;
             }
 
+            .carousel-caption {
+                background-color: rgba(255,255,255,0.9);
+                padding: 10px 20px;
+                outline: 1px lightgrey solid;
+                bottom: 2.5rem;
+            }
+
             .carousel-control-hide-caption{
                 background: 0 0;
                 border: 0;
@@ -60,6 +67,28 @@
                     text-align: left;
                 }
             }
+
+            th,td {
+                padding: 10px;
+                text-align: center;
+                border: 1px solid black;
+            }
+
+            .highlight_both {
+                background-color: lightseagreen;
+            }
+
+            .highlight_blue {
+                background-color: lightblue;
+            }
+
+            .highlight_green {
+                background-color: lightgreen;
+            }
+
+            .no_outline {
+                border: none;
+            }
             
 
             
@@ -75,6 +104,8 @@
                 <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
                 <button type="button" data-bs-target="#carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
                 <button type="button" data-bs-target="#carousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="7" aria-label="Slide 8"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="8" aria-label="Slide 9"></button>
             </div>
             <div class="carousel-inner full">
                 <div class="carousel-item active full">
@@ -124,7 +155,34 @@
                     </div>
                 </div>
                 <div class="carousel-item full">
-                    <div class="d-block full figure"></div>
+                    <div class="full figure">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="no_outline" scope="col" colspan="2"></th>
+                                    <th class="highlight_green" scope="col" colspan="2">Hair Length</th>
+                                </tr>
+                                <tr>
+                                    <th class="no_outline" scope="col" colspan="2"></th>
+                                    <th class="highlight_green" scope="col">Long</th>
+                                    <th scope="col">Short</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th class="highlight_blue" scope="row" rowspan="2">Hat</th>
+                                    <th class="highlight_blue" scope="row">Yes</th>
+                                    <td class="highlight_both">50</td>
+                                    <td class="highlight_blue">25</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">No</th>
+                                    <td class="highlight_green">25</td>
+                                    <td>50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="carousel-caption">
                         <button id="hide_5" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                             <p id="hide_text_5" class="caption-control-text" style="display: none;">Hide Caption</p>
@@ -143,6 +201,16 @@
                             <span id="hide_icon_6" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                         </button>
                         <p id="desc_6" class="desc">There are 75 students who have long hair; 25 of those students are not wearing a hat and 50 are wearing a hat. At the same time, there are 75 students who are wearing a hat; 25 of those students have short hair and 50 have long hair. So the area of each circle is 75 square units and the area of the overlap should be 50 square units (or 50% of the total area of the figure). Drag these circles so that they overlap accordingly.</p>
+                    </div>
+                </div>
+                <div class="carousel-item full">
+                    <div class="d-block full figure"></div>
+                    <div class="carousel-caption">
+                        <button id="hide_7" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                            <p id="hide_text_7" class="caption-control-text" style="display: none;">Hide Caption</p>
+                            <span id="hide_icon_7" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                        </button>
+                        <p id="desc_7" class="desc">How close were your estimates? Did you over-/underestimate specific regions of within the diagram? Let's do one more practice. Once you are done, check your answers by clicking SUBMIT.</p>
                     </div>
                 </div>
             </div>
