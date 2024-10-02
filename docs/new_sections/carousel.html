@@ -20,18 +20,36 @@
                 align-items: center;
                 justify-content: center;
                 flex-direction: column;
+                height: calc(100% - 150px);
+                padding: 50px 0px;
             }
 
             .full {
                 width: 100%;
-                height: 100%;
+                height: 100%; 
+            }
+
+            #welcome {
+                background-color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                padding: 50px 15%;
+            }
+
+            #welcome-text {
+                max-height: 100%;
+                overflow: auto;
             }
 
             .carousel-caption {
-                background-color: rgba(255,255,255,0.9);
+                background-color: rgba(255,255,255,1);
                 padding: 10px 20px;
                 outline: 1px lightgrey solid;
                 bottom: 2.5rem;
+                max-height: calc(100dvh - 75px);
+                overflow: auto
             }
 
             .carousel-control-hide-caption{
@@ -141,16 +159,38 @@
                 word-wrap: break-word;
                 font-size: 40px;
             }
+
+            .center {
+                text-align: center;
+            }
+
+            .region_input {
+                display: flex;
+                flex-direction: column;
+                padding: 0px 10px;
+            }
+
+            .answer {
+                color: green;
+                opacity: 0;
+            }
+
+            .region3 {
+                height: 29.736px;
+                margin: 0px;
+            }
         </style>
     </head>
     <body>
         <form name="submit-to-google-sheet" id="form">
-            <div id="carousel" class="carousel carousel-dark slide carousel-fade full" data-bs-touch="false" data-bs-ride="false" data-bs-wrap="false">
+            <div id="carousel" class="carousel carousel-dark slide full" data-bs-touch="false" data-bs-ride="false" data-bs-wrap="false">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
                     <!--
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
@@ -158,17 +198,17 @@
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="7" aria-label="Slide 8"></button>
                     -->
                 </div>
-                <div class="carousel-inner full">
+                <div id="slide0" class="carousel-inner full">
                     <div class="carousel-item active full">
-                        <div class="d-block full figure"></div>
-                        <div class="carousel-caption">
-                            <p id="desc_0" class="desc">Welcome! This activity was created to measure the effectiveness of Euler diagrams and their application to human genetic datasets. Your responses to questions within this activity will be anonymously recorded; once you've submitted your answer to each section, you will not be able to change it. Your performance in this activity will not be graded on correctness. Your participation helps in our study. If you have any questions, please reach out to James Kitchens or Professor Graham Coop.</p>
+                        <div id="welcome" class="full">
+                            <div id="welcome-text">
+                                <p id="desc_0" class="desc">Welcome! This activity was created to measure the effectiveness of Euler diagrams and their application to human genetic datasets. Your responses to questions in this activity will be anonymously recorded; once you've submitted your answer to each section, you will not be able to change it. Your performance in this activity will not be graded on correctness. Your participation helps in our study. If you have any questions, please reach out to James Kitchens or Professor Graham Coop.<br><br>This activity is split into two parts. The first part will serve as an introduction to Euler diagrams and give chances to practice constructing these figures. In the second part, you will apply these Euler diagrams to a dataset of human genetic diversity.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="carousel-item full">
-                        <div class="full figure">
-                            <label for="region1">Region 1</label>
-                            <input type="text" id="region1" name="region1">
+                    <div id="slide1" class="carousel-item full">
+                        <div class="figure">
+                            <img height="100%" src="assets/SVG/Asset 1.svg"/>
                         </div>
                         <div class="carousel-caption">
                             <button id="hide_1" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -178,10 +218,9 @@
                             <p id="desc_1" class="desc">Like Venn diagrams, Euler diagrams are a method for visualizing the overlap in groups. Euler diagrams have the added property that the areas of the overlaps are proportional to the amount shared between the respective groups.</p>
                         </div>
                     </div>
-                    <div class="carousel-item full">
-                        <div class="full figure">
-                            <label for="region2">Region 2</label>
-                            <input type="text" id="region2" name="region2">
+                    <div id="slide2" class="carousel-item full">
+                        <div class="figure">
+                            <img height="100%" src="assets/SVG/Asset 2.svg"/>
                         </div>
                         <div class="carousel-caption">
                             <button id="hide_2" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -191,89 +230,103 @@
                             <p id="desc_2" class="desc">The area percentage of each region is equal to the size of that area divided by the total area of the diagram.</p>
                         </div>
                     </div>
-                    <div class="carousel-item full">
-                        <div class="full figure">
-                            <input type="submit" value="Submit">
+                    <div id="slide3" class="carousel-item full">
+                        <div class="figure">
+                            <div style="width: 50%; display: flex; flex-wrap: wrap; justify-content: space-around; text-align: center; padding-bottom: 50px;">
+                                <div class="region_input">
+                                    <label for="slide3_region1">Region 1</label>
+                                    <div>
+                                        <input class="region_percent" type="number" id="slide3_region1" name="slide3_region1" min="0" max="100" value="0" onChange="answer_change(this.id)">
+                                        %
+                                    </div>
+                                    <p class="answer">40%</p>
+                                </div>
+                                <div class="region_input">
+                                    <label for="slide3_region2">Region 2</label>
+                                    <div>
+                                        <input class="region_percent" type="number" id="slide3_region2" name="slide3_region2" min="0" max="100" value="0" onChange="answer_change(this.id)">
+                                        %
+                                    </div>
+                                    <p class="answer">20%</p>
+                                </div>
+                                <div class="region_input">
+                                    <label>Region 3</label>
+                                    <p class="region3">100%</p>
+                                    <p class="answer">40%</p>
+                                </div>
+                                <button id="slide3_check" type="button" onclick="check_answers(this.id)">Check Answers</button>
+                            </div>
+                            <svg viewbox="0 0 100 100">
+                                <text x="50" y="25" text-anchor="middle">1</text>
+                                <text x="50" y="55" text-anchor="middle">2</text>
+                                <text x="50" y="85" text-anchor="middle">3</text>
+                                <ellipse cx="50" cy="32.9" rx="30.9" ry="30.9" fill="transparent" stroke="black" stroke-width="1px" />
+                                <ellipse cx="50" cy="67.1" rx="30.9" ry="30.9" fill="transparent" stroke="black" stroke-width="1px"/>
+                            </svg>
                         </div>
                         <div class="carousel-caption">
                             <button id="hide_3" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p id="hide_text_3" class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span id="hide_icon_3" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p id="desc_3" class="desc">Here's some practice reading Euler diagrams. Fill in your estimates for the area percentage of each region in the above Euler diagram. A hint - your percentages should sum to 100%. Once you are done, check your answers by clicking SUBMIT.</p>
+                            <p id="desc_3" class="desc">Here's some practice reading Euler diagrams. Fill in your estimates for the area percentage of each region in the above Euler diagram. Once you are done, click CHECK ANSWERS.</p>
                         </div>
                     </div>
-                    <!--
-                    <div class="carousel-item full">
-                        <div class="d-block full figure"></div>
+                    <div id="slide4" class="carousel-item full">
+                        <div class="figure">
+                            <div style="width: 50%; display: flex; flex-wrap: wrap; justify-content: space-around; text-align: center; padding-bottom: 50px;">
+                                <div class="region_input">
+                                    <label for="slide4_region1">Region 1</label>
+                                    <div>
+                                        <input class="region_percent" type="number" id="slide4_region1" name="slide4_region1" min="0" max="100" value="0" onChange="answer_change(this.id)">
+                                        %
+                                    </div>
+                                    <p class="answer">15.4%</p>
+                                </div>
+                                <div class="region_input">
+                                    <label for="slide4_region2">Region 2</label>
+                                    <div>
+                                        <input class="region_percent" type="number" id="slide4_region2" name="slide4_region2" min="0" max="100" value="0" onChange="answer_change(this.id)">
+                                        %
+                                    </div>
+                                    <p class="answer">7.7%</p>
+                                </div>
+                                <div class="region_input">
+                                    <label>Region 3</label>
+                                    <p class="region3">100%</p>
+                                    <p class="answer">76.9%</p>
+                                </div>
+                                <button id="slide4_check" type="button" onclick="check_answers(this.id)">Check Answers</button>
+                            </div>
+                            <svg viewbox="0 0 200 200">
+                                <text x="100" y="65" text-anchor="middle">1</text>
+                                <text x="100" y="92" text-anchor="middle">2</text>
+                                <text x="100" y="140" text-anchor="middle">3</text>
+                                <ellipse cx="100" cy="68" rx="30.9" ry="30.9" fill="transparent" stroke="black" stroke-width="2px" />
+                                <ellipse cx="100" cy="132.9" rx="59.2" ry="59.2" fill="transparent" stroke="black" stroke-width="2px"/>
+                            </svg>
+                        </div>
                         <div class="carousel-caption">
                             <button id="hide_4" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p id="hide_text_4" class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span id="hide_icon_4" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p id="desc_4" class="desc">How close were your estimates? Did you over-/underestimate specific regions of within the diagram? Let's do one more practice. Once you are done, check your answers by clicking SUBMIT.</p>
+                            <p id="desc_4" class="desc">Here's some practice reading Euler diagrams. Fill in your estimates for the area percentage of each region in the above Euler diagram. Once you are done, click CHECK ANSWERS. Your answers will be locked.</p>
                         </div>
                     </div>
-                    <div class="carousel-item full">
-                        <div class="full figure">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th class="no_outline" scope="col" colspan="2"></th>
-                                        <th class="highlight_green" scope="col" colspan="2">Hair Length</th>
-                                    </tr>
-                                    <tr>
-                                        <th class="no_outline" scope="col" colspan="2"></th>
-                                        <th class="highlight_green" scope="col">Long</th>
-                                        <th scope="col">Short</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th class="highlight_blue" scope="row" rowspan="2">Hat</th>
-                                        <th class="highlight_blue" scope="row">Yes</th>
-                                        <td class="highlight_both">50</td>
-                                        <td class="highlight_blue">25</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">No</th>
-                                        <td class="highlight_green">25</td>
-                                        <td>50</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div id="slide5" class="carousel-item full">
+                        <div class="figure">
+                            <button type="button" onclick="submit()">Check Answers</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="hide_5" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p id="hide_text_5" class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span id="hide_icon_5" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p id="desc_5" class="desc">Now, let's build a figure from scratch using an example dataset. Say we have a classroom of 150 students and we group them in two categories - long versus short hair and wearing a hat versus not. The above table shows the numbers of students in each category; for our diagram, we are going to focus just on the highlighted cells within the table.</p>
+                            <p id="desc_5" class="desc">How close were your estimates? Did you over-/underestimate specific regions of within the diagram? Let's do one more practice. Once you are done, click CHECK ANSWERS.
+                            </p>
                         </div>
                     </div>
-                    <div class="carousel-item full">
-                        <div class="full figure">
-                            <img src="../ACB_CEU_MXL.svg" class="d-block w-75">
-                        </div>
-                        <div class="carousel-caption">
-                            <button id="hide_6" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
-                                <p id="hide_text_6" class="caption-control-text" style="display: none;">Hide Caption</p>
-                                <span id="hide_icon_6" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
-                            </button>
-                            <p id="desc_6" class="desc">There are 75 students who have long hair; 25 of those students are not wearing a hat and 50 are wearing a hat. At the same time, there are 75 students who are wearing a hat; 25 of those students have short hair and 50 have long hair. So the area of each circle is 75 square units and the area of the overlap should be 50 square units (or 50% of the total area of the figure). Drag these circles so that they overlap accordingly.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item full">
-                        <div class="d-block full figure"></div>
-                        <div class="carousel-caption">
-                            <button id="hide_7" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
-                                <p id="hide_text_7" class="caption-control-text" style="display: none;">Hide Caption</p>
-                                <span id="hide_icon_7" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
-                            </button>
-                            <p id="desc_7" class="desc">How close were your estimates? Did you over-/underestimate specific regions of within the diagram? Let's do one more practice. Once you are done, check your answers by clicking SUBMIT.</p>
-                        </div>
-                    </div>
-                    -->
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -301,6 +354,23 @@
                 }
             }
 
+            function answer_change(id) {
+                var s = id.split("_")[0];
+                document.getElementById(s).getElementsByClassName("region3")[0].innerHTML = String(100 - document.getElementById(s+"_region1").value - document.getElementById(s+"_region2").value) + "%";
+            }
+
+            function check_answers(id) {
+                var s = id.split("_")[0];
+                var inputs = document.getElementById(s).getElementsByClassName("region_percent");
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].readOnly = true;
+                }
+                var answers = document.getElementById(s).getElementsByClassName("answer");
+                for (let i = 0; i < answers.length; i++) {
+                    answers[i].style.opacity = 1;
+                }
+            }
+
             function copy_to_clipboard(value) {
                 navigator.clipboard.writeText(value);
             }
@@ -308,7 +378,7 @@
             const scriptURL = "https://script.google.com/macros/s/AKfycbyK5W2y9UQDdoBpOThyY77QSZzjb3ZJvo8CQ6pvRD0yzxsnAihPKMrjmweA_bkxe0YP/exec"
             const form = document.forms['submit-to-google-sheet']
         
-            form.addEventListener('submit', e => {
+            form.addEventListener("submit", e => {
                 e.preventDefault();
 
                 function randomString(length, chars) {
