@@ -21,7 +21,7 @@
                 justify-content: center;
                 flex-direction: column;
                 height: calc(100% - 150px);
-                padding: 50px 0px;
+                padding: 50px 15%;
             }
 
             .full {
@@ -88,6 +88,15 @@
                 }
             }
 
+            .input-dashboard {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                text-align: center;
+                padding-bottom: 50px;
+            }
+
             th,td {
                 padding: 10px;
                 text-align: center;
@@ -147,7 +156,7 @@
             #complete {
                 width: 100%;
                 height: 100%;
-                padding: 20px;
+                padding: 50px 15%;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -157,7 +166,7 @@
             #codename_display {
                 max-width: 100%;
                 word-wrap: break-word;
-                font-size: 40px;
+                font-size: 30px;
             }
 
             .center {
@@ -179,6 +188,25 @@
                 height: 29.736px;
                 margin: 0px;
             }
+
+
+
+            .circle, .line{
+                fill: none;
+                stroke: #231f20;
+                stroke-miterlimit: 10;
+            }
+            .circle {
+                stroke-width: 2px;
+            }
+            .line {
+                stroke-width: 1px;
+            }
+            .text, .label {
+                font-size: 12px;
+                fill: #231f20;
+                font-family: MyriadPro-Regular, Myriad Pro;
+            }
         </style>
     </head>
     <body>
@@ -191,48 +219,86 @@
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
-                    <!--
-                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
-                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="7" aria-label="Slide 8"></button>
-                    -->
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="8" aria-label="Slide 9"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="9" aria-label="Slide 10"></button>
                 </div>
-                <div id="slide0" class="carousel-inner full">
-                    <div class="carousel-item active full">
+                <div class="carousel-inner full">
+                    <div id="slide0" class="carousel-item active full">
                         <div id="welcome" class="full">
                             <div id="welcome-text">
-                                <p id="desc_0" class="desc">Welcome! This activity was created to measure the effectiveness of Euler diagrams and their application to human genetic datasets. Your responses to questions in this activity will be anonymously recorded; once you've submitted your answer to each section, you will not be able to change it. Your performance in this activity will not be graded on correctness. Your participation helps in our study. If you have any questions, please reach out to James Kitchens or Professor Graham Coop.<br><br>This activity is split into two parts. The first part will serve as an introduction to Euler diagrams and give chances to practice constructing these figures. In the second part, you will apply these Euler diagrams to a dataset of human genetic diversity.</p>
+                                <p class="desc">Welcome! This activity was created to measure the effectiveness of Euler diagrams and their application to human genetic datasets. Your responses to questions in this activity will be anonymously recorded; once you've submitted your answer to each section, you will not be able to change it. Your performance in this activity will not be graded on correctness. Your participation helps in our study. If you have any questions, please reach out to James Kitchens or Professor Graham Coop.<br><br>This activity is split into two parts. The first part will serve as an introduction to Euler diagrams and give chances to practice constructing these figures. In the second part, you will apply these Euler diagrams to a dataset of human genetic diversity.</p>
                             </div>
                         </div>
                     </div>
                     <div id="slide1" class="carousel-item full">
                         <div class="figure">
-                            <img height="100%" src="assets/SVG/Asset 1.svg"/>
+                            <svg viewBox="0 0 117.64 268.74">
+                                <circle class="circle" cx="30.15" cy="223.98" r="15.61"/>
+                                <circle class="circle" cx="67.7" cy="223.98" r="43.76"/>
+                                <circle class="circle" cx="43.1" cy="55.64" r="28.46"/>
+                                <circle class="circle" cx="82.9" cy="55.64" r="28.46"/>
+                                <text class="text" transform="translate(27.47 10.04)">
+                                    Venn Diagram
+                                </text>
+                                <text class="text" transform="translate(8.36 123.83)">
+                                    and its corresponding
+                                </text>
+                                <text class="text" transform="translate(28.3 162.17)">
+                                    Euler diagram
+                                </text>
+                                <text class="label" transform="translate(29.09 58.36)">20</text>
+                                <text class="label" transform="translate(79.04 58.36)">500</text>
+                                <text class="label" transform="translate(56.57 58.36)">50</text>
+                                <text class="label" transform="translate(0 204.73)">20</text>
+                                <text class="label" transform="translate(63 227.56)">500</text>
+                                <text class="label" transform="translate(28.06 227.55)">50</text>
+                                <line class="line" x1="12" y1="207" x2="17.26" y2="212.55"/>
+                            </svg>
                         </div>
                         <div class="carousel-caption">
-                            <button id="hide_1" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
-                                <p id="hide_text_1" class="caption-control-text">Hide Caption</p>
-                                <span id="hide_icon_1" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            <button id="slide1_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p id="desc_1" class="desc">Like Venn diagrams, Euler diagrams are a method for visualizing the overlap in groups. Euler diagrams have the added property that the areas of the overlaps are proportional to the amount shared between the respective groups.</p>
+                            <p class="desc">Like Venn diagrams, Euler diagrams are a method for visualizing the overlap in groups. Euler diagrams have the added property that the areas of the overlaps are proportional to the amount shared between the respective groups.</p>
                         </div>
                     </div>
                     <div id="slide2" class="carousel-item full">
                         <div class="figure">
-                            <img height="100%" src="assets/SVG/Asset 2.svg"/>
+                            <svg viewBox="0 0 138.17 237.31">
+                                <text class="text" transform="translate(14.27 113.75)">
+                                    20 + 50 + 500 = 570 total
+                                </text>
+                                <circle class="circle" cx="43.37" cy="44.76" r="15.61"/>
+                                <circle class="circle" cx="80.92" cy="44.76" r="43.76"/>
+                                <text class="label" transform="translate(13.22 25.52)">20</text>
+                                <text class="label" transform="translate(76.22 48.34)">500</text>
+                                <text class="label" transform="translate(41.28 48.34)">50</text>
+                                <line class="line" x1="25.23" y1="27.79" x2="30.49" y2="33.34"/>
+                                <circle class="circle" cx="49.79" cy="192.54" r="15.61"/>
+                                <circle class="circle" cx="87.33" cy="192.54" r="43.76"/>
+                                <text class="label" transform="translate(0 156.4)">
+                                    20/570 =<tspan x="10.15" y="14.4">3.5%</tspan>
+                                </text>
+                                <text class="label" transform="translate(82.63 196.12)">87.7%</text>
+                                <text class="label" transform="translate(25.23 232.75)">8.8%</text>
+                                <line class="line" x1="31.64" y1="175.56" x2="36.9" y2="181.11"/>
+                                <line class="line" x1="49.19" y1="198.4" x2="41.79" y2="220.94"/>
+                            </svg>
                         </div>
                         <div class="carousel-caption">
-                            <button id="hide_2" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
-                                <p id="hide_text_2" class="caption-control-text" style="display: none;">Hide Caption</p>
-                                <span id="hide_icon_2" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            <button id="slide2_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p id="desc_2" class="desc">The area percentage of each region is equal to the size of that area divided by the total area of the diagram.</p>
+                            <p class="desc">The area percentage of each region is equal to the size of that area divided by the total area of the diagram.</p>
                         </div>
                     </div>
                     <div id="slide3" class="carousel-item full">
                         <div class="figure">
-                            <div style="width: 50%; display: flex; flex-wrap: wrap; justify-content: space-around; text-align: center; padding-bottom: 50px;">
+                            <div class="input-dashboard">
                                 <div class="region_input">
                                     <label for="slide3_region1">Region 1</label>
                                     <div>
@@ -265,16 +331,16 @@
                             </svg>
                         </div>
                         <div class="carousel-caption">
-                            <button id="hide_3" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
-                                <p id="hide_text_3" class="caption-control-text" style="display: none;">Hide Caption</p>
-                                <span id="hide_icon_3" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            <button id="slide3_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p id="desc_3" class="desc">Here's some practice reading Euler diagrams. Fill in your estimates for the area percentage of each region in the above Euler diagram. Once you are done, click CHECK ANSWERS.</p>
+                            <p class="desc">Here's some practice reading Euler diagrams. Fill in your estimates for the area percentage of each region in the above Euler diagram. Once you are done, click CHECK ANSWERS.</p>
                         </div>
                     </div>
                     <div id="slide4" class="carousel-item full">
                         <div class="figure">
-                            <div style="width: 50%; display: flex; flex-wrap: wrap; justify-content: space-around; text-align: center; padding-bottom: 50px;">
+                            <div class="input-dashboard">
                                 <div class="region_input">
                                     <label for="slide4_region1">Region 1</label>
                                     <div>
@@ -307,24 +373,129 @@
                             </svg>
                         </div>
                         <div class="carousel-caption">
-                            <button id="hide_4" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
-                                <p id="hide_text_4" class="caption-control-text" style="display: none;">Hide Caption</p>
-                                <span id="hide_icon_4" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            <button id="slide4_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p id="desc_4" class="desc">Here's some practice reading Euler diagrams. Fill in your estimates for the area percentage of each region in the above Euler diagram. Once you are done, click CHECK ANSWERS. Your answers will be locked.</p>
+                            <p class="desc">Here's some practice reading Euler diagrams. Fill in your estimates for the area percentage of each region in the above Euler diagram. Once you are done, click CHECK ANSWERS. Your answers will be locked.</p>
                         </div>
                     </div>
                     <div id="slide5" class="carousel-item full">
                         <div class="figure">
-                            <button type="button" onclick="submit()">Check Answers</button>
+                            <svg viewBox="0 0 138.17 237.31">
+                                <text class="text" transform="translate(14.27 113.75)">
+                                    20 + 50 + 500 = 570 total
+                                </text>
+                                <circle class="circle" cx="43.37" cy="44.76" r="15.61"/>
+                                <circle class="circle" cx="80.92" cy="44.76" r="43.76"/>
+                                <text class="label" transform="translate(13.22 25.52)">20</text>
+                                <text class="label" transform="translate(76.22 48.34)">500</text>
+                                <text class="label" transform="translate(41.28 48.34)">50</text>
+                                <line class="line" x1="25.23" y1="27.79" x2="30.49" y2="33.34"/>
+                                <circle class="circle" cx="49.79" cy="192.54" r="15.61"/>
+                                <circle class="circle" cx="87.33" cy="192.54" r="43.76"/>
+                                <text class="label" transform="translate(0 156.4)">
+                                    20/570 =<tspan x="10.15" y="14.4">3.5%</tspan>
+                                </text>
+                                <text class="label" transform="translate(82.63 196.12)">87.7%</text>
+                                <text class="label" transform="translate(25.23 232.75)">8.8%</text>
+                                <line class="line" x1="31.64" y1="175.56" x2="36.9" y2="181.11"/>
+                                <line class="line" x1="49.19" y1="198.4" x2="41.79" y2="220.94"/>
+                            </svg>
                         </div>
                         <div class="carousel-caption">
-                            <button id="hide_5" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
-                                <p id="hide_text_5" class="caption-control-text" style="display: none;">Hide Caption</p>
-                                <span id="hide_icon_5" class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            <button id="slide5_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p id="desc_5" class="desc">How close were your estimates? Did you over-/underestimate specific regions of within the diagram? Let's do one more practice. Once you are done, click CHECK ANSWERS.
+                            <p class="desc">If the blue and green circles each represent a group of 75 students and you know that there are students that are shared between the groups, drag these circles so that they overlap accordingly, then click SUBMIT.</p>
+                        </div>
+                    </div>
+                    <div id="slide6" class="carousel-item full">
+                        <div class="figure">
+                            <svg viewBox="0 0 138.17 237.31">
+                                <text class="text" transform="translate(14.27 113.75)">
+                                    20 + 50 + 500 = 570 total
+                                </text>
+                                <circle class="circle" cx="43.37" cy="44.76" r="15.61"/>
+                                <circle class="circle" cx="80.92" cy="44.76" r="43.76"/>
+                                <text class="label" transform="translate(13.22 25.52)">20</text>
+                                <text class="label" transform="translate(76.22 48.34)">500</text>
+                                <text class="label" transform="translate(41.28 48.34)">50</text>
+                                <line class="line" x1="25.23" y1="27.79" x2="30.49" y2="33.34"/>
+                                <circle class="circle" cx="49.79" cy="192.54" r="15.61"/>
+                                <circle class="circle" cx="87.33" cy="192.54" r="43.76"/>
+                                <text class="label" transform="translate(0 156.4)">
+                                    20/570 =<tspan x="10.15" y="14.4">3.5%</tspan>
+                                </text>
+                                <text class="label" transform="translate(82.63 196.12)">87.7%</text>
+                                <text class="label" transform="translate(25.23 232.75)">8.8%</text>
+                                <line class="line" x1="31.64" y1="175.56" x2="36.9" y2="181.11"/>
+                                <line class="line" x1="49.19" y1="198.4" x2="41.79" y2="220.94"/>
+                            </svg>
+                        </div>
+                        <div class="carousel-caption">
+                            <button id="slide6_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">One last practice! The blue circle now represents 100 students and the green circle 25 students. You also know that there are 10 students shared between the groups. Drag these circles so that they overlap accordingly, then click SUBMIT.
                             </p>
+                        </div>
+                    </div>
+                    <div id="slide5" class="carousel-item full">
+                        <div class="figure">
+                            <svg viewBox="0 0 138.17 237.31">
+                                <text class="text" transform="translate(14.27 113.75)">
+                                    20 + 50 + 500 = 570 total
+                                </text>
+                                <circle class="circle" cx="43.37" cy="44.76" r="15.61"/>
+                                <circle class="circle" cx="80.92" cy="44.76" r="43.76"/>
+                                <text class="label" transform="translate(13.22 25.52)">20</text>
+                                <text class="label" transform="translate(76.22 48.34)">500</text>
+                                <text class="label" transform="translate(41.28 48.34)">50</text>
+                                <line class="line" x1="25.23" y1="27.79" x2="30.49" y2="33.34"/>
+                                <circle class="circle" cx="49.79" cy="192.54" r="15.61"/>
+                                <circle class="circle" cx="87.33" cy="192.54" r="43.76"/>
+                                <text class="label" transform="translate(0 156.4)">
+                                    20/570 =<tspan x="10.15" y="14.4">3.5%</tspan>
+                                </text>
+                                <text class="label" transform="translate(82.63 196.12)">87.7%</text>
+                                <text class="label" transform="translate(25.23 232.75)">8.8%</text>
+                                <line class="line" x1="31.64" y1="175.56" x2="36.9" y2="181.11"/>
+                                <line class="line" x1="49.19" y1="198.4" x2="41.79" y2="220.94"/>
+                            </svg>
+                        </div>
+                        <div class="carousel-caption">
+                            <button id="slide5_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">One last practice! The blue circle now represents 100 students and the green circle 25 students. You also know that there are 10 students shared between the groups. Drag these circles so that they overlap accordingly, then click SUBMIT.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="slide7" class="carousel-item full">
+                        <div class="figure">
+                        </div>
+                        <div class="carousel-caption">
+                            <button id="slide7_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">Now that you are acquainted with Euler diagrams, you are going to apply these diagrams to a dataset of human genetic diversity.</p>
+                        </div>
+                    </div>
+                    <div id="slide10" class="carousel-item full">
+                        <div class="figure">
+                            <button type="submit">SUBMIT</button>
+                        </div>
+                        <div class="carousel-caption">
+                            <button id="slide5_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">Click SUBMIT to complete this activity!</p>
                         </div>
                     </div>
                 </div>
@@ -341,16 +512,17 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
         <script>
             function modify_caption(id) {
-                var s = id.split("_");
-                var num = s[s.length-1];
-                if (document.getElementById("hide_text_"+num).innerText == "Hide Caption") {
-                    document.getElementById("hide_text_"+num).innerText = "Show Caption";
-                    document.getElementById("hide_icon_"+num).style.transform = "rotate(90deg)";
-                    document.getElementById("desc_"+num).style.display = "none";
+                var s = id.split("_")[0];
+                //var num = s[s.length-1];
+                var slide = document.getElementById(s);
+                if (slide.getElementsByClassName("caption-control-text")[0].innerText == "Hide Caption") {
+                    slide.getElementsByClassName("caption-control-text")[0].innerText = "Show Caption";
+                    slide.getElementsByClassName("hide-caption-icon")[0].style.transform = "rotate(90deg)"
+                    slide.getElementsByClassName("desc")[0].style.display = "none";
                 } else {
-                    document.getElementById("hide_text_"+num).innerText = "Hide Caption";
-                    document.getElementById("hide_icon_"+num).style.transform = "rotate(-90deg)";
-                    document.getElementById("desc_"+num).style.display = "block";
+                    slide.getElementsByClassName("caption-control-text")[0].innerText = "Hide Caption";
+                    slide.getElementsByClassName("hide-caption-icon")[0].style.transform = "rotate(-90deg)"
+                    slide.getElementsByClassName("desc")[0].style.display = "block";
                 }
             }
 
@@ -391,7 +563,7 @@
                     .attr("type", "hidden")
                     .attr("id", "codename")
                     .attr("name", "codename")
-                    .attr("value", randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'))
+                    .attr("value", randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'))
                 
                 var overlay = d3.select("body").append("div").attr("id", "overlay");
 
