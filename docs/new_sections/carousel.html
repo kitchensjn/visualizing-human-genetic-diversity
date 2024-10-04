@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
         <title>Euler Diagrams and Visualizing Human Genetic Diversity</title>
+        <script defer src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
         <script src="https://d3js.org/d3.v7.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
         <style>
@@ -210,6 +211,147 @@
         </style>
     </head>
     <body>
+        <script type="module">
+            const pyodide = await loadPyodide();
+            await pyodide.loadPackage(["shapely"]);
+            const shapely = await pyodide.pyimport("shapely");
+            
+            pyodide.runPython(`
+                import js
+                import math
+                from shapely.geometry import Polygon
+                from shapely.ops import unary_union
+                from itertools import combinations
+
+
+                def createPointsListForEllipse(x, y, a, b, angle):
+                    y = -y
+                    angle = -angle
+                    theta = [x * 2 * math.pi / 100 for x in range(100)]
+                    coords = []
+                    for i in theta:
+                        coords.append([a * math.cos(i) * math.cos(angle) - b * math.sin(i) * math.sin(angle) + x, a * math.cos(i) * math.sin(angle) + b * math.sin(i) * math.cos(angle) + y]) 
+                    return coords
+
+                def calculate_intersection_areas(data):
+                    ellipses = []
+                    for ellipse in data:
+                        poly = Polygon(createPointsListForEllipse(ellipse.h, ellipse.k, ellipse.a, ellipse.b, ellipse.phi))
+                        ellipses.append(poly)
+                    areas = []
+                    for a in range(len(ellipses)):
+                        a_sum = 0
+                        for combo in combinations(range(len(ellipses)), a+1):
+                            poly_combo = ellipses[combo[0]]
+                            for i in range(len(combo)-1):
+                                poly_combo = poly_combo.intersection(ellipses[combo[i+1]])
+                            not_combo = [e for i,e in enumerate(ellipses) if i not in combo]
+                            poly_not = unary_union(not_combo)
+                            diff = poly_combo.difference(poly_not)
+                            a_sum += diff.area
+                        areas.append(a_sum)
+                    if len(areas) > 0:
+                        total = sum(areas)
+                        areas = [round((a/total)*100) for a in areas]
+                    else:
+                        areas = ["~"]
+                    return areas
+
+                js.intersection_stats = calculate_intersection_areas
+            `);
+        </script>
+        <script>
+            function create_interactive_euler_diagram(id, where, data, dim, downscale, bottom_y, top_y, overlap_output) {
+                var shift_h = dim/2;
+                var shift_v = dim/2;
+
+                var svg_container = d3.select("#"+where)
+                    .append("svg")
+                    .attr("id", id)
+                    .attr("width", "100%")
+                    .attr("height", "100%")
+                    .attr("viewBox", "0 0 " + dim + " " + dim);
+
+                svg_container
+                    .selectAll("ellipses")
+                    .data(data)
+                    .enter()
+                    .append("path")
+                    .attr("stroke", function(d) { return d.color; })
+                    .attr("stroke-width", 15)
+                    .attr("stroke-dasharray", function(d) { return d.stroke_dasharray; })
+                    .attr("fill", "none")
+                    .attr("d", function(d) {
+                        return ["M", (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v-0.001)].join(' ')
+                    })
+                    .attr("transform", function(d) {
+                        return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_h) + ")"; 
+                    });
+
+                svg_container
+                    .selectAll("path")
+                        .on("mouseover", function(event, d) {
+                            d3.select(this)
+                                .style("cursor", "grab")
+                                .style("opacity", 1);
+                        })
+                        .on("mouseout", function(d) {
+                            d3.select("#"+id)
+                                .selectAll("path")
+                                    .style("opacity", 1);
+                        })
+                        .call(d3.drag()
+                            .on("start", dragstart)
+                            .on("drag", dragging)
+                            .on("end", dragend));
+
+                function dragstart(event, d) {
+                    d3.select("body").style("cursor", "grabbing");
+                    d3.select("#"+id)
+                        .selectAll("path")
+                            .style("pointer-events", "none")
+                            .style("opacity", 0.25);
+                    d3.select(this)
+                        .style("opacity", 1);
+                }
+
+                function dragging(event, d) {
+                    d3.select("#"+id)
+                        .selectAll("path")
+                            .style("pointer-events", "none")
+                            .style("opacity", 0.25);
+                    d3.select(this)
+                        .style("opacity", 1);
+                    d.k = d.k + event.dy*downscale;
+                    if (d.k < top_y) {
+                        d.k = top_y;
+                    } else if (d.k > bottom_y) {
+                        d.k = bottom_y;
+                    }
+                    d3.select(this)
+                        .attr("d", function(d) {
+                            return ["M", (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v-0.001)].join(' ')
+                        })
+                        .attr("transform", function(d) {
+                            return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_v) + ")";
+                        });
+                }
+
+                function dragend(event, d) {
+                    d3.select("body").style("cursor", "initial");
+                    d3.select("#"+id)
+                        .selectAll("path")
+                            .style("pointer-events", "initial")
+                            .style("opacity", 1);
+                    var intersection = intersection_stats(data);
+                    d3.selectAll("input")
+                        .filter(function() {
+                            return d3.select(this).attr("name") == overlap_output;
+                        })
+                        .attr("value", intersection[intersection.length-1]);
+                }
+            }
+        </script>
         <form name="submit-to-google-sheet" id="form">
             <div id="carousel" class="carousel carousel-dark slide full" data-bs-touch="false" data-bs-ride="false" data-bs-wrap="false">
                 <div class="carousel-indicators">
@@ -381,27 +523,25 @@
                         </div>
                     </div>
                     <div id="slide5" class="carousel-item full">
-                        <div class="figure">
-                            <svg viewBox="0 0 138.17 237.31">
-                                <text class="text" transform="translate(14.27 113.75)">
-                                    20 + 50 + 500 = 570 total
-                                </text>
-                                <circle class="circle" cx="43.37" cy="44.76" r="15.61"/>
-                                <circle class="circle" cx="80.92" cy="44.76" r="43.76"/>
-                                <text class="label" transform="translate(13.22 25.52)">20</text>
-                                <text class="label" transform="translate(76.22 48.34)">500</text>
-                                <text class="label" transform="translate(41.28 48.34)">50</text>
-                                <line class="line" x1="25.23" y1="27.79" x2="30.49" y2="33.34"/>
-                                <circle class="circle" cx="49.79" cy="192.54" r="15.61"/>
-                                <circle class="circle" cx="87.33" cy="192.54" r="43.76"/>
-                                <text class="label" transform="translate(0 156.4)">
-                                    20/570 =<tspan x="10.15" y="14.4">3.5%</tspan>
-                                </text>
-                                <text class="label" transform="translate(82.63 196.12)">87.7%</text>
-                                <text class="label" transform="translate(25.23 232.75)">8.8%</text>
-                                <line class="line" x1="31.64" y1="175.56" x2="36.9" y2="181.11"/>
-                                <line class="line" x1="49.19" y1="198.4" x2="41.79" y2="220.94"/>
-                            </svg>
+                        <div id="slide5_figure" class="figure">
+                            <input type="hidden" id="slide5_overlap" name="slide5_overlap">
+                            <script>                                
+                                var data = [
+                                    {"abbreviation":"","h":0,"k":-1750,"a":1500,"b":1500,"phi":0,"color":"#000000","stroke_dasharray":"none"},
+                                    {"abbreviation":"","h":0,"k":1750,"a":1500,"b":1500,"phi":0,"color":"#000000","stroke_dasharray":"none"}
+                                ];
+
+                                create_interactive_euler_diagram(
+                                    id="slide5_activity",
+                                    where="slide5_figure",
+                                    data=data,
+                                    dim=450,
+                                    downscale=15,
+                                    bottom_y=1750,
+                                    top_y=-1750,
+                                    overlap_output="slide5_overlap"
+                                );
+                            </script>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide5_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -412,27 +552,25 @@
                         </div>
                     </div>
                     <div id="slide6" class="carousel-item full">
-                        <div class="figure">
-                            <svg viewBox="0 0 138.17 237.31">
-                                <text class="text" transform="translate(14.27 113.75)">
-                                    20 + 50 + 500 = 570 total
-                                </text>
-                                <circle class="circle" cx="43.37" cy="44.76" r="15.61"/>
-                                <circle class="circle" cx="80.92" cy="44.76" r="43.76"/>
-                                <text class="label" transform="translate(13.22 25.52)">20</text>
-                                <text class="label" transform="translate(76.22 48.34)">500</text>
-                                <text class="label" transform="translate(41.28 48.34)">50</text>
-                                <line class="line" x1="25.23" y1="27.79" x2="30.49" y2="33.34"/>
-                                <circle class="circle" cx="49.79" cy="192.54" r="15.61"/>
-                                <circle class="circle" cx="87.33" cy="192.54" r="43.76"/>
-                                <text class="label" transform="translate(0 156.4)">
-                                    20/570 =<tspan x="10.15" y="14.4">3.5%</tspan>
-                                </text>
-                                <text class="label" transform="translate(82.63 196.12)">87.7%</text>
-                                <text class="label" transform="translate(25.23 232.75)">8.8%</text>
-                                <line class="line" x1="31.64" y1="175.56" x2="36.9" y2="181.11"/>
-                                <line class="line" x1="49.19" y1="198.4" x2="41.79" y2="220.94"/>
-                            </svg>
+                        <div id="slide6_figure" class="figure">
+                            <input type="hidden" id="slide6_overlap" name="slide6_overlap">
+                            <script>                                
+                                var data = [
+                                    {"abbreviation":"","h":0,"k":-1750,"a":1500,"b":1500,"phi":0,"color":"#000000","stroke_dasharray":"none"},
+                                    {"abbreviation":"","h":0,"k":1750,"a":1000,"b":1000,"phi":0,"color":"#000000","stroke_dasharray":"none"}
+                                ];
+
+                                create_interactive_euler_diagram(
+                                    id="slide6_activity",
+                                    where="slide6_figure",
+                                    data=data,
+                                    dim=450,
+                                    downscale=15,
+                                    bottom_y=1750,
+                                    top_y=-1750,
+                                    overlap_output="slide6_overlap"
+                                );
+                            </script>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide6_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -443,7 +581,7 @@
                             </p>
                         </div>
                     </div>
-                    <div id="slide5" class="carousel-item full">
+                    <div id="slide7" class="carousel-item full">
                         <div class="figure">
                             <svg viewBox="0 0 138.17 237.31">
                                 <text class="text" transform="translate(14.27 113.75)">
@@ -467,7 +605,7 @@
                             </svg>
                         </div>
                         <div class="carousel-caption">
-                            <button id="slide5_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                            <button id="slide7_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
@@ -475,11 +613,11 @@
                             </p>
                         </div>
                     </div>
-                    <div id="slide7" class="carousel-item full">
+                    <div id="slide8" class="carousel-item full">
                         <div class="figure">
                         </div>
                         <div class="carousel-caption">
-                            <button id="slide7_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                            <button id="slide8_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
@@ -491,7 +629,7 @@
                             <button type="submit">SUBMIT</button>
                         </div>
                         <div class="carousel-caption">
-                            <button id="slide5_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                            <button id="slide10_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
@@ -513,7 +651,6 @@
         <script>
             function modify_caption(id) {
                 var s = id.split("_")[0];
-                //var num = s[s.length-1];
                 var slide = document.getElementById(s);
                 if (slide.getElementsByClassName("caption-control-text")[0].innerText == "Hide Caption") {
                     slide.getElementsByClassName("caption-control-text")[0].innerText = "Show Caption";
@@ -563,7 +700,7 @@
                     .attr("type", "hidden")
                     .attr("id", "codename")
                     .attr("name", "codename")
-                    .attr("value", randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'))
+                    .attr("value", randomString(6, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'))
                 
                 var overlay = d3.select("body").append("div").attr("id", "overlay");
 
