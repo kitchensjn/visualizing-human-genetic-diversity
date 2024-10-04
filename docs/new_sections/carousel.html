@@ -98,28 +98,6 @@
                 padding-bottom: 50px;
             }
 
-            th,td {
-                padding: 10px;
-                text-align: center;
-                border: 1px solid black;
-            }
-
-            .highlight_both {
-                background-color: lightseagreen;
-            }
-
-            .highlight_blue {
-                background-color: lightblue;
-            }
-
-            .highlight_green {
-                background-color: lightgreen;
-            }
-
-            .no_outline {
-                border: none;
-            }
-
             #overlay {
                 position: absolute;
                 top: 0px;
@@ -211,6 +189,7 @@
         </style>
     </head>
     <body>
+        <div id="box"></div>
         <script type="module">
             const pyodide = await loadPyodide();
             await pyodide.loadPackage(["shapely"]);
@@ -259,8 +238,14 @@
 
                 js.intersection_stats = calculate_intersection_areas
             `);
+
+            document.getElementById("box").remove();
         </script>
         <script>
+            var loader = d3.select("#box");
+            loader.append("div").attr("class", "loader");
+            loader.append("h1").text("LOADING...");
+
             function create_interactive_euler_diagram(id, where, data, dim, downscale, bottom_y, top_y, overlap_output) {
                 var shift_h = dim/2;
                 var shift_v = dim/2;
@@ -375,6 +360,7 @@
                             return d3.select(this).attr("name") == overlap_output;
                         })
                         .attr("value", intersection[intersection.length-1]);
+                    d3.select("#"+where).select(".answer").text("Your diagram shows " + intersection[intersection.length-1] +"% overlap.");
                 }
             }
         </script>
@@ -599,6 +585,7 @@
                                     overlap_output="slide6_overlap"
                                 );
                             </script>
+                            <p class="answer"></p>
                             <button id="slide6_check" type="button" onclick="check_answers(this.id)">Check Answer</button>
                         </div>
                         <div class="carousel-caption">
