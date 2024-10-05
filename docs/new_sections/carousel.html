@@ -554,7 +554,7 @@
                                     overlap_output="slide5_overlap"
                                 );
                             </script>
-                            <p class="answer"></p>
+                            <p class="answer">Your diagram shows ~% overlap.</p>
                             <button id="slide5_check" type="button" onclick="check_answers(this.id)">Check Answer</button>
                         </div>
                         <div class="carousel-caption">
@@ -585,7 +585,7 @@
                                     overlap_output="slide6_overlap"
                                 );
                             </script>
-                            <p class="answer"></p>
+                            <p class="answer">Your diagram shows ~% overlap.</p>
                             <button id="slide6_check" type="button" onclick="check_answers(this.id)">Check Answer</button>
                         </div>
                         <div class="carousel-caption">
@@ -660,6 +660,13 @@
                 var answers = document.getElementById(s).getElementsByClassName("answer");
                 for (let i = 0; i < answers.length; i++) {
                     answers[i].style.opacity = 1;
+                }
+                if (["slide5", "slide6"].includes(s)) {
+                    d3.select("#"+s).selectAll("path")
+                        .call(d3.drag()
+                            .on("start", null)
+                            .on("drag", null)
+                            .on("end", null));
                 }
             }
 
