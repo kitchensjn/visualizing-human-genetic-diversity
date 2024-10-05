@@ -377,6 +377,11 @@
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="7" aria-label="Slide 8"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="8" aria-label="Slide 9"></button>
                     <button type="button" data-bs-target="#carousel" data-bs-slide-to="9" aria-label="Slide 10"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="10" aria-label="Slide 11"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="11" aria-label="Slide 12"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="12" aria-label="Slide 13"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="13" aria-label="Slide 14"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="14" aria-label="Slide 15"></button>
                 </div>
                 <div class="carousel-inner full">
                     <div id="slide0" class="carousel-item active full">
@@ -607,12 +612,132 @@
                             <p class="desc">Now that you are acquainted with Euler diagrams, you are going to apply these diagrams to a dataset of human genetic diversity.</p>
                         </div>
                     </div>
+                    <div id="slide8" class="carousel-item full">
+                        <div class="figure"></div>
+                        <div class="carousel-caption">
+                            <button id="slide8_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">The 1000 Genomes Project sampled individuals from around the world, including 609 individuals from seven groups in the Americas. Hover over the dots to learn more about each group.</p>
+                        </div>
+                    </div>
+                    <div id="slide9" class="carousel-item full">
+                        <div class="figure"></div>
+                        <div class="carousel-caption">
+                            <button id="slide9_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">Across the 609 individuals from the Americas, the majority of sites in their genome are the same. Even when there is a polymorphism at a site, the mutation is often found at low frequencies within the population. Here, we observe approximately 10 million sites (marked in blue) where the mutation is found at higher than 5% in any of the Americas’ subgroups.</p>
+                        </div>
+                    </div>
                     <div id="slide10" class="carousel-item full">
+                        <div class="figure"></div>
+                        <div class="carousel-caption">
+                            <button id="slide10_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">For this activity, we are going to focus on just three of the Americas’ subgroups from the 1000 Genomes project. We are going to create three Euler diagrams from the three different pairs of subgroups that we have here.</p>
+                        </div>
+                    </div>
+                    <div id="slide11" class="carousel-item full">
+                        <div id="slide11_figure" class="figure">
+                            <input type="hidden" id="slide11_overlap" name="slide11_overlap">
+                            <script>                                
+                                var data = [
+                                    {"abbreviation":"CEU","h":0,"k":Math.random()*(1750+1750)-1750,"a":1350.0972,"b":1350.0972,"phi":0,"common_variants":5726377,"unshared_common_variants":184313,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"white","stroke_dasharray":"none","active":"false"},
+                                    {"abbreviation":"ACB","h":0,"k":Math.random()*(1750+1750)-1750,"a":1597.628,"b":1597.628,"phi":0,"common_variants":8018649,"unshared_common_variants":840969,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"white","stroke_dasharray":"none","active":"false"}
+                                ];
+
+                                create_interactive_euler_diagram(
+                                    id="slide11_activity",
+                                    where="slide11_figure",
+                                    data=data,
+                                    dim=450,
+                                    downscale=15,
+                                    bottom_y=1750,
+                                    top_y=-1750,
+                                    overlap_output="slide11_overlap"
+                                );
+                            </script>
+                            <button id="slide11_check" type="button" onclick="check_answers(this.id)">Submit</button>
+                        </div>
+                        <div class="carousel-caption">
+                            <button id="slide11_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">Drag the circles for African Ancestry in Southwest US (dark blue) and Utah Residents (CEPH) (pink) to estimate the amount of overlap in common genetic variation. Once you are done, click SUBMIT. You will be able to compare your diagram to the real one after you’ve completed all three pairs.</p>
+                        </div>
+                    </div>
+                    <div id="slide12" class="carousel-item full">
+                        <div id="slide12_figure" class="figure">
+                            <input type="hidden" id="slide12_overlap" name="slide12_overlap">
+                            <script>                                
+                                var data = [
+                                    {"abbreviation":"MXL","h":0,"k":Math.random()*(1750+1750)-1750,"a":1342.6299,"b":1342.6299,"phi":0,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"white","stroke_dasharray":"none","active":"false"},
+                                    {"abbreviation":"ACB","h":0,"k":Math.random()*(1750+1750)-1750,"a":1597.628,"b":1597.628,"phi":0,"common_variants":8018649,"unshared_common_variants":840969,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"white","stroke_dasharray":"none","active":"false"}
+                                ];
+
+                                create_interactive_euler_diagram(
+                                    id="slide12_activity",
+                                    where="slide12_figure",
+                                    data=data,
+                                    dim=450,
+                                    downscale=15,
+                                    bottom_y=1750,
+                                    top_y=-1750,
+                                    overlap_output="slide12_overlap"
+                                );
+                            </script>
+                            <button id="slide12_check" type="button" onclick="check_answers(this.id)">Submit</button>
+                        </div>
+                        <div class="carousel-caption">
+                            <button id="slide12_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">Drag the circles for African Ancestry in Southwest US (dark blue) and Mexican Ancestry in Los Angeles, California (light blue) to estimate the amount of overlap in common genetic variation. Once you are done, click SUBMIT. You will be able to compare your diagram to the real one after you’ve completed all three pairs.</p>
+                        </div>
+                    </div>
+                    <div id="slide13" class="carousel-item full">
+                        <div id="slide13_figure" class="figure">
+                            <input type="hidden" id="slide13_overlap" name="slide13_overlap">
+                            <script>                                
+                                var data = [
+                                    {"abbreviation":"MXL","h":0,"k":Math.random()*(1750+1750)-1750,"a":1342.6299,"b":1342.6299,"phi":0,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"white","stroke_dasharray":"none","active":"false"},
+                                    {"abbreviation":"CEU","h":0,"k":Math.random()*(1750+1750)-1750,"a":1350.0972,"b":1350.0972,"phi":0,"common_variants":5726377,"unshared_common_variants":184313,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"white","stroke_dasharray":"none","active":"false"}
+                                ];
+
+                                create_interactive_euler_diagram(
+                                    id="slide13_activity",
+                                    where="slide13_figure",
+                                    data=data,
+                                    dim=450,
+                                    downscale=15,
+                                    bottom_y=1750,
+                                    top_y=-1750,
+                                    overlap_output="slide13_overlap"
+                                );
+                            </script>
+                            <button id="slide13_check" type="button" onclick="check_answers(this.id)">Submit</button>
+                        </div>
+                        <div class="carousel-caption">
+                            <button id="slide13_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">Drag the circles for Utah Residents (CEPH) (pink) and Mexican Ancestry in Los Angeles, California (light blue) to estimate the amount of overlap in common genetic variation. Once you are done, click SUBMIT. You will be able to compare your diagram to the real one after you’ve completed all three pairs.</p>
+                        </div>
+                    </div>
+                    <div id="slide20" class="carousel-item full">
                         <div class="figure">
                             <button type="submit">SUBMIT</button>
                         </div>
                         <div class="carousel-caption">
-                            <button id="slide10_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                            <button id="slide20_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
@@ -661,7 +786,7 @@
                 for (let i = 0; i < answers.length; i++) {
                     answers[i].style.opacity = 1;
                 }
-                if (["slide5", "slide6"].includes(s)) {
+                if (["slide5", "slide6", "slide11", "slide12", "slide13"].includes(s)) {
                     d3.select("#"+s).selectAll("path")
                         .call(d3.drag()
                             .on("start", null)
