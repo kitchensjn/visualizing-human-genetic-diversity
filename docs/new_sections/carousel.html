@@ -23,6 +23,7 @@
                 flex-direction: column;
                 height: calc(100% - 150px);
                 padding: 50px 15%;
+                text-align: center;
             }
 
             .full {
@@ -147,7 +148,7 @@
                 display: flex;
                 flex-direction: column;
                 text-align: center;
-                padding-top: 50px;
+                padding-bottom: 50px;
             }
 
             .answer {
@@ -181,6 +182,30 @@
                 font-size: 12px;
                 fill: #231f20;
                 font-family: MyriadPro-Regular, Myriad Pro;
+            }
+
+            .grid-container {
+                grid-template-columns: 25% 25% 50%;
+                grid-template-rows: 10% 30% 30% 30%;
+                width: 100%;
+                height: 100%;
+                border: black 1px solid;
+                display: none;
+            }
+
+            .grid-item {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0px;
+            }
+
+            .outline-right {
+                border-right: black 1px solid;
+            }
+
+            .outline-bottom {
+                border-bottom: black 1px solid;
             }
         </style>
     </head>
@@ -242,7 +267,7 @@
             loader.append("div").attr("class", "loader");
             loader.append("h1").text("LOADING...");
 
-            function create_interactive_euler_diagram(id, where, data, dim, downscale, bottom_y, top_y, overlap_output) {
+            function create_interactive_euler_diagram(id, where, data, dim, downscale, bottom_y, top_y, overlap_output, interactive) {
                 var shift_h = dim/2;
                 var shift_v = dim/2;
 
@@ -253,31 +278,33 @@
                     .attr("height", "100%")
                     .attr("viewBox", "0 0 " + dim + " " + dim);
 
-                svg_container
-                    .append("line")
-                    .attr("x1", 0)
-                    .attr("x2", 0)
-                    .attr("y1", bottom_y/downscale)
-                    .attr("y2", top_y/downscale)
-                    .attr("transform", "translate(" + shift_h + ", " + shift_v + ")")
-                    .attr("stroke", "lightgrey")
-                    .attr("stroke-width", 2);
+                if (interactive) {
+                    svg_container
+                        .append("line")
+                        .attr("x1", 0)
+                        .attr("x2", 0)
+                        .attr("y1", bottom_y/downscale)
+                        .attr("y2", top_y/downscale)
+                        .attr("transform", "translate(" + shift_h + ", " + shift_v + ")")
+                        .attr("stroke", "lightgrey")
+                        .attr("stroke-width", 2);
 
-                svg_container
-                    .append("circle")
-                    .attr("cx", 0)
-                    .attr("cy", bottom_y/downscale)
-                    .attr("r", 5)
-                    .attr("transform", "translate(" + shift_h + ", " + shift_v + ")")
-                    .attr("fill", "lightgrey");
-                
-                svg_container
-                    .append("circle")
-                    .attr("cx", 0)
-                    .attr("cy", top_y/downscale)
-                    .attr("r", 5)
-                    .attr("transform", "translate(" + shift_h + ", " + shift_v + ")")
-                    .attr("fill", "lightgrey");
+                    svg_container
+                        .append("circle")
+                        .attr("cx", 0)
+                        .attr("cy", bottom_y/downscale)
+                        .attr("r", 5)
+                        .attr("transform", "translate(" + shift_h + ", " + shift_v + ")")
+                        .attr("fill", "lightgrey");
+                    
+                    svg_container
+                        .append("circle")
+                        .attr("cx", 0)
+                        .attr("cy", top_y/downscale)
+                        .attr("r", 5)
+                        .attr("transform", "translate(" + shift_h + ", " + shift_v + ")")
+                        .attr("fill", "lightgrey");
+                }
 
                 svg_container
                     .selectAll("ellipses")
@@ -295,68 +322,70 @@
                         return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_h) + ")"; 
                     });
             
-                svg_container
-                    .selectAll("path")
-                        .on("mouseover", function(event, d) {
-                            d3.select(this)
-                                .style("cursor", "grab")
-                                .style("opacity", 1);
-                        })
-                        .on("mouseout", function(d) {
-                            d3.select("#"+id)
-                                .selectAll("path")
+                if (interactive) {
+                    svg_container
+                        .selectAll("path")
+                            .on("mouseover", function(event, d) {
+                                d3.select(this)
+                                    .style("cursor", "grab")
                                     .style("opacity", 1);
-                        })
-                        .call(d3.drag()
-                            .on("start", dragstart)
-                            .on("drag", dragging)
-                            .on("end", dragend));
+                            })
+                            .on("mouseout", function(d) {
+                                d3.select("#"+id)
+                                    .selectAll("path")
+                                        .style("opacity", 1);
+                            })
+                            .call(d3.drag()
+                                .on("start", dragstart)
+                                .on("drag", dragging)
+                                .on("end", dragend));
 
-                function dragstart(event, d) {
-                    d3.select("body").style("cursor", "grabbing");
-                    d3.select("#"+id)
-                        .selectAll("path")
-                            .style("pointer-events", "none")
-                            .style("opacity", 0.25);
-                    d3.select(this)
-                        .style("opacity", 1);
-                }
-
-                function dragging(event, d) {
-                    d3.select("#"+id)
-                        .selectAll("path")
-                            .style("pointer-events", "none")
-                            .style("opacity", 0.25);
-                    d3.select(this)
-                        .style("opacity", 1);
-                    d.k = d.k + event.dy*downscale;
-                    if (d.k < top_y) {
-                        d.k = top_y;
-                    } else if (d.k > bottom_y) {
-                        d.k = bottom_y;
-                    }
-                    d3.select(this)
-                        .attr("d", function(d) {
-                            return ["M", (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v-0.001)].join(' ')
-                        })
-                        .attr("transform", function(d) {
-                            return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_v) + ")";
-                        });
-                }
-
-                function dragend(event, d) {
-                    d3.select("body").style("cursor", "initial");
-                    d3.select("#"+id)
-                        .selectAll("path")
-                            .style("pointer-events", "initial")
+                    function dragstart(event, d) {
+                        d3.select("body").style("cursor", "grabbing");
+                        d3.select("#"+id)
+                            .selectAll("path")
+                                .style("pointer-events", "none")
+                                .style("opacity", 0.25);
+                        d3.select(this)
                             .style("opacity", 1);
-                    var intersection = intersection_stats(data);
-                    d3.selectAll("input")
-                        .filter(function() {
-                            return d3.select(this).attr("name") == overlap_output;
-                        })
-                        .attr("value", intersection[intersection.length-1]);
-                    d3.select("#"+where).select(".answer").text("Your diagram shows " + intersection[intersection.length-1] +"% overlap.");
+                    }
+
+                    function dragging(event, d) {
+                        d3.select("#"+id)
+                            .selectAll("path")
+                                .style("pointer-events", "none")
+                                .style("opacity", 0.25);
+                        d3.select(this)
+                            .style("opacity", 1);
+                        d.k = d.k + event.dy*downscale;
+                        if (d.k < top_y) {
+                            d.k = top_y;
+                        } else if (d.k > bottom_y) {
+                            d.k = bottom_y;
+                        }
+                        d3.select(this)
+                            .attr("d", function(d) {
+                                return ["M", (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v), "A", d.a/downscale, d.b/downscale, 0, 1, 1, (d.h/downscale+d.a/downscale+shift_h), (d.k/downscale+shift_v-0.001)].join(' ')
+                            })
+                            .attr("transform", function(d) {
+                                return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_v) + ")";
+                            });
+                    }
+
+                    function dragend(event, d) {
+                        d3.select("body").style("cursor", "initial");
+                        d3.select("#"+id)
+                            .selectAll("path")
+                                .style("pointer-events", "initial")
+                                .style("opacity", 1);
+                        var intersection = intersection_stats(data);
+                        d3.selectAll("input")
+                            .filter(function() {
+                                return d3.select(this).attr("name") == overlap_output;
+                            })
+                            .attr("value", intersection[intersection.length-1]);
+                        d3.select("#"+where).select(".percent").text(intersection[intersection.length-1] +"%");
+                    }
                 }
             }
         </script>
@@ -383,7 +412,7 @@
                     <div id="slide0" class="carousel-item active full">
                         <div id="welcome" class="full">
                             <div id="welcome-text">
-                                <p class="desc">Welcome! This activity was created to measure the effectiveness of Euler diagrams and their application to human genetic datasets. Your responses to questions in this activity will be anonymously recorded; once you've submitted your answer to each section, you will not be able to change it. Your performance in this activity will not be graded on correctness. Your participation helps in our study. If you have any questions, please reach out to James Kitchens or Professor Graham Coop.<br><br>This activity is split into two parts. The first part will serve as an introduction to Euler diagrams and give chances to practice constructing these figures. In the second part, you will apply these Euler diagrams to a dataset of human genetic diversity.</p>
+                                <p class="desc">Welcome! This activity was created to help design a classroom exercise on Euler diagrams and their application to human genetic datasets. Your performance in this activity will not be graded on correctness. Once you submit an answer, you will not be able to change it. Your answers will not be associated with your name. You will receive a code at the end of the exercise as proof of completion. If you have any questions, please reach out to James Kitchens or Professor Graham Coop.<br><br>This activity is split into two parts. The first set of questions explore the interpretability of Euler diagrams. In the second part, you will apply these Euler diagrams to a dataset of human genetic diversity.</p>
                             </div>
                         </div>
                     </div>
@@ -476,6 +505,15 @@
                     </div>
                     <div id="slide3" class="carousel-item full">
                         <div class="figure">
+                            <div class="region_input">
+                                <label for="slide3_region2">Region 2</label>
+                                <div style="padding-bottom: 20px;">
+                                    <input class="region_percent" type="number" id="slide3_region2" name="slide3_region2" min="0" max="100" value="0">
+                                    %
+                                </div>
+                                <button id="slide3_check" type="button" onclick="check_answers(this.id)">Check Answer</button>
+                                <p class="answer">The true overlap is 20%.</p>
+                            </div>
                             <svg viewbox="0 0 100 100">
                                 <text x="50" y="25" text-anchor="middle">1</text>
                                 <text x="50" y="55" text-anchor="middle">2</text>
@@ -483,15 +521,6 @@
                                 <ellipse cx="50" cy="32.9" rx="30.9" ry="30.9" fill="transparent" stroke="black" stroke-width="1px" />
                                 <ellipse cx="50" cy="67.1" rx="30.9" ry="30.9" fill="transparent" stroke="black" stroke-width="1px"/>
                             </svg>
-                            <div class="region_input">
-                                <label for="slide3_region2">Region 2</label>
-                                <div style="padding-bottom: 50px;">
-                                    <input class="region_percent" type="number" id="slide3_region2" name="slide3_region2" min="0" max="100" value="0">
-                                    %
-                                </div>
-                                <p class="answer">The true overlap is 20%.</p>
-                            </div>
-                            <button id="slide3_check" type="button" onclick="check_answers(this.id)">Check Answer</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide3_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -505,6 +534,8 @@
                         <div id="slide5_figure" class="figure">
                             <input type="hidden" id="slide5_overlap" name="slide5_overlap">
                             <p class="text-top">Set overlap to 20%</p>
+                            <button id="slide5_check" type="button" onclick="check_answers(this.id)">Check Answer</button>
+                            <p class="answer">Your diagram shows <span class="percent">~%</span> overlap.</p>
                             <script>                                
                                 var data = [
                                     {"abbreviation":"","h":0,"k":Math.random()*(1750+1750)-1750,"a":1500,"b":1500,"phi":0,"color":"#000000","stroke_dasharray":"none"},
@@ -519,11 +550,10 @@
                                     downscale=20,
                                     bottom_y=1750,
                                     top_y=-1750,
-                                    overlap_output="slide5_overlap"
+                                    overlap_output="slide5_overlap",
+                                    interactive=true
                                 );
                             </script>
-                            <p class="answer">Your diagram shows ~% overlap.</p>
-                            <button id="slide5_check" type="button" onclick="check_answers(this.id)">Check Answer</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide5_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -537,6 +567,8 @@
                         <div id="slide6_figure" class="figure">
                             <input type="hidden" id="slide6_overlap" name="slide6_overlap">
                             <p class="text-top">Set overlap to 10%</p>
+                            <button id="slide6_check" type="button" onclick="check_answers(this.id)">Check Answer</button>
+                            <p class="answer">Your diagram shows <span class="percent">~%</span> overlap.</p>
                             <script>                                
                                 var data = [
                                     {"abbreviation":"","h":0,"k":Math.random()*(1750+1750)-1750,"a":564*3,"b":564*3,"phi":0,"color":"#000000","stroke_dasharray":"none"},
@@ -551,11 +583,10 @@
                                     downscale=20,
                                     bottom_y=1750,
                                     top_y=-1750,
-                                    overlap_output="slide6_overlap"
+                                    overlap_output="slide6_overlap",
+                                    interactive=true
                                 );
                             </script>
-                            <p class="answer">Your diagram shows ~% overlap.</p>
-                            <button id="slide6_check" type="button" onclick="check_answers(this.id)">Check Answer</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide6_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -564,16 +595,6 @@
                             </button>
                             <p class="desc">One last practice! The larger circle now represents 90 students and the smaller circle 20 students. There are 10 students shared between the circles. Drag the circles so that they overlap accordingly (10%), then click CHECK ANSWER.
                             </p>
-                        </div>
-                    </div>
-                    <div id="slide7" class="carousel-item full">
-                        <div class="figure"></div>
-                        <div class="carousel-caption">
-                            <button id="slide7_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
-                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
-                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
-                            </button>
-                            <p class="desc">Now that you are acquainted with Euler diagrams, you are going to apply these diagrams to a dataset of human genetic diversity.</p>
                         </div>
                     </div>
                     <div id="slide8" class="carousel-item full">
@@ -656,6 +677,10 @@
                         <div id="slide11_figure" class="figure">
                             <input type="hidden" id="slide11_overlap" name="slide11_overlap">
                             <p class="text-top"><span style="color:#D55E00;">African Caribbean in Barbados</span> and <span style="color:#CC79A7;">Utah residents (CEPH) with Northern and Western European ancestry</span></p>
+                            <div style="padding: 20px 0px;">
+                                <button id="slide11_check" type="button" onclick="check_answers(this.id)">Lock Diagram</button>
+                                <p class="answer" style="opacity: 1; padding-top: 20px;">Your diagram shows <span class="percent">~%</span> overlap.</p>
+                            </div>
                             <script>                                
                                 var data = [
                                     {"abbreviation":"CEU","h":0,"k":Math.random()*(1750+1750)-1750,"a":1350.0972,"b":1350.0972,"phi":0,"common_variants":5726377,"unshared_common_variants":184313,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"white","stroke_dasharray":"none","active":"false"},
@@ -670,11 +695,10 @@
                                     downscale=20,
                                     bottom_y=1750,
                                     top_y=-1750,
-                                    overlap_output="slide11_overlap"
+                                    overlap_output="slide11_overlap",
+                                    interactive=true
                                 );
                             </script>
-                            <p class="answer" style="opacity: 1;">Your diagram shows ~% overlap.</p>
-                            <button id="slide11_check" type="button" onclick="check_answers(this.id)">Lock Diagram</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide11_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -688,6 +712,10 @@
                         <div id="slide12_figure" class="figure">
                             <input type="hidden" id="slide12_overlap" name="slide12_overlap">
                             <p class="text-top"><span style="color:#D55E00;">African Caribbean in Barbados</span> and <span style="color:#56B4E9;">Mexican Ancestry in Los Angeles, California</span></p>
+                            <div style="padding: 20px 0px;">
+                                <button id="slide12_check" type="button" onclick="check_answers(this.id)">Lock Diagram</button>
+                                <p class="answer" style="opacity: 1; padding-top: 20px;">Your diagram shows <span class="percent">~%</span> overlap.</p>
+                            </div>
                             <script>                                
                                 var data = [
                                     {"abbreviation":"MXL","h":0,"k":Math.random()*(1750+1750)-1750,"a":1342.6299,"b":1342.6299,"phi":0,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"white","stroke_dasharray":"none","active":"false"},
@@ -702,11 +730,10 @@
                                     downscale=20,
                                     bottom_y=1750,
                                     top_y=-1750,
-                                    overlap_output="slide12_overlap"
+                                    overlap_output="slide12_overlap",
+                                    interactive=true
                                 );
                             </script>
-                            <p class="answer" style="opacity: 1;">Your diagram shows ~% overlap.</p>
-                            <button id="slide12_check" type="button" onclick="check_answers(this.id)">Lock Diagram</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide12_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -720,6 +747,10 @@
                         <div id="slide13_figure" class="figure">
                             <input type="hidden" id="slide13_overlap" name="slide13_overlap">
                             <p class="text-top"><span style="color:#CC79A7;">Utah residents (CEPH) with Northern and Western European ancestry</span> and <span style="color:#56B4E9;">Mexican Ancestry in Los Angeles, California</span></p>
+                            <div style="padding: 20px 0px;">
+                                <button id="slide13_check" type="button" onclick="check_answers(this.id)">Lock Diagram</button>
+                                <p class="answer" style="opacity: 1; padding-top: 20px;">Your diagram shows <span class="percent">~%</span> overlap.</p>
+                            </div>
                             <script>                                
                                 var data = [
                                     {"abbreviation":"MXL","h":0,"k":Math.random()*(1750+1750)-1750,"a":1342.6299,"b":1342.6299,"phi":0,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"white","stroke_dasharray":"none","active":"false"},
@@ -734,11 +765,10 @@
                                     downscale=20,
                                     bottom_y=1750,
                                     top_y=-1750,
-                                    overlap_output="slide13_overlap"
+                                    overlap_output="slide13_overlap",
+                                    interactive=true
                                 );
                             </script>
-                            <p class="answer" style="opacity: 1;">Your diagram shows ~% overlap.</p>
-                            <button id="slide13_check" type="button" onclick="check_answers(this.id)">Lock Diagram</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide13_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -746,6 +776,88 @@
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
                             <p class="desc">Drag the circles for Utah residents (CEPH) with Northern and Western European ancestry (pink) and Mexican Ancestry in Los Angeles, California (blue) to estimate the amount of overlap in common genetic variation. Once you are done, click Lock Diagram. You will be able to compare your diagram to the real one after you’ve completed all three pairs.</p>
+                        </div>
+                    </div>
+                    <div id="slide14" class="carousel-item full">
+                        <div class="figure">
+                            <p class="warning">You need to complete all of the exercises to view this page.</p>
+                            <div class="grid-container">
+                                <p class="grid-item outline-right outline-bottom">You</p>
+                                <p class="grid-item outline-bottom" style="grid-column-start: 2; grid-column-end: 4;">1000 Genomes</p>
+                                <p id="slide11_answer" class="grid-item outline-right">51.9%</p>
+                                <p class="grid-item">51.4%</p>
+                                <div id="slide14_figure_1" class="grid-item">
+                                    <script>                                
+                                        var data = [
+                                            {"abbreviation":"ACB","h":-238.8997,"k":0,"a":1597.628,"b":1597.628,"phi":-2.7958,"common_variants":8018649,"unshared_common_variants":3352536,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"none","stroke_dasharray":"none"},
+                                            {"abbreviation":"CEU","h":471.7744,"k":0,"a":1350.0972,"b":1350.0972,"phi":-2.7958,"common_variants":5726377,"unshared_common_variants":1060264,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"none","stroke_dasharray":"none"}
+                                        ];
+        
+                                        create_interactive_euler_diagram(
+                                            id="slide14_activity_1",
+                                            where="slide14_figure_1",
+                                            data=data,
+                                            dim=450,
+                                            downscale=15,
+                                            bottom_y=1750,
+                                            top_y=-1750,
+                                            overlap_output="",
+                                            interactive=false
+                                        );
+                                    </script>
+                                </div>
+                                <p id="slide12_answer" class="grid-item outline-right">51.9%</p>
+                                <p class="grid-item">51.9%</p>
+                                <div id="slide14_figure_2" class="grid-item">
+                                    <script>                                
+                                        var data = [
+                                            {"abbreviation":"ACB","h":-220.6838,"k":0,"a":1597.628,"b":1597.628,"phi":0.0848,"common_variants":8018649,"unshared_common_variants":3346084,"description":"African Caribbean in Barbados","sampled_individuals":96,"color":"#D55E00","fill":"none","stroke_dasharray":"none"},
+                                            {"abbreviation":"MXL","h":474.7646,"k":0,"a":1342.6299,"b":1342.6299,"phi":0.0848,"common_variants":5663208,"unshared_common_variants":990643,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"none","stroke_dasharray":"none"}
+                                        ];
+        
+                                        create_interactive_euler_diagram(
+                                            id="slide14_activity_1",
+                                            where="slide14_figure_2",
+                                            data=data,
+                                            dim=450,
+                                            downscale=15,
+                                            bottom_y=1750,
+                                            top_y=-1750,
+                                            overlap_output="",
+                                            interactive=false
+                                        );
+                                    </script>
+                                </div>
+                                <p id="slide13_answer" class="grid-item outline-right">51.9%</p>
+                                <p class="grid-item">78.2%</p>
+                                <div id="slide14_figure_3" class="grid-item">
+                                    <script>                                
+                                        var data = [
+                                            {"abbreviation":"CEU","h":125.9225,"k":0,"a":1350.0972,"b":1350.0972,"phi":2.7188,"common_variants":5726377,"unshared_common_variants":727290,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"none","stroke_dasharray":"none"},
+                                            {"abbreviation":"MXL","h":-132.7322,"k":0,"a":1342.6299,"b":1342.6299,"phi":2.7188,"common_variants":5663208,"unshared_common_variants":664121,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"none","stroke_dasharray":"none"}
+                                        ];
+        
+                                        create_interactive_euler_diagram(
+                                            id="slide14_activity_3",
+                                            where="slide14_figure_3",
+                                            data=data,
+                                            dim=450,
+                                            downscale=15,
+                                            bottom_y=1750,
+                                            top_y=-1750,
+                                            overlap_output="",
+                                            interactive=false
+                                        );
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-caption">
+                            <button id="slide14_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">Compare your guesses with the real diagrams!</p>
                         </div>
                     </div>
                     <div id="slide20" class="carousel-item full">
@@ -787,16 +899,17 @@
                 }
             }
 
+
+            let checker = (arr, target) => target.every(v => arr.includes(v));
+            var submitted_exercises = [];
+
             function check_answers(id) {
                 var s = id.split("_")[0];
                 var inputs = document.getElementById(s).getElementsByClassName("region_percent");
                 for (let i = 0; i < inputs.length; i++) {
                     inputs[i].readOnly = true;
                 }
-                var answers = document.getElementById(s).getElementsByClassName("answer");
-                for (let i = 0; i < answers.length; i++) {
-                    answers[i].style.opacity = 1;
-                }
+                document.getElementById(s).getElementsByClassName("answer")[0].style.opacity = 1;
                 if (["slide5", "slide6", "slide11", "slide12", "slide13"].includes(s)) {
                     d3.select("#"+s).selectAll("path")
                         .on("mouseover", function(event, d) {
@@ -807,11 +920,20 @@
                             .on("drag", null)
                             .on("end", null));
                 }
+                if (["slide11", "slide12", "slide13"].includes(s)) {
+                    document.getElementById(s+"_answer").innerHTML = document.getElementById(s).getElementsByClassName("percent")[0].innerHTML
+                }
                 document.getElementById(s).getElementsByTagName("button")[0].style.opacity = 0;
+                submitted_exercises.push(s);
+                if (checker(submitted_exercises, ["slide11", "slide12", "slide13"])) {
+                    document.getElementsByClassName("grid-container")[0].style.display = "grid";
+                    document.getElementsByClassName("warning")[0].style.display = "none";
+                }
             }
 
             function copy_to_clipboard(value) {
                 navigator.clipboard.writeText(value);
+                document.getElementById("copied").innerText = "COPIED!";
             }
 
             const scriptURL = "https://script.google.com/macros/s/AKfycbyK5W2y9UQDdoBpOThyY77QSZzjb3ZJvo8CQ6pvRD0yzxsnAihPKMrjmweA_bkxe0YP/exec"
@@ -847,7 +969,7 @@
                         var complete = overlay.append("div").attr("id", "complete");
                         complete.append("p").text("Thank you for completing this activity. For student's seeking extra credit, please copy the following unique codeword and submit it via the corresponding assignment on Canvas.");
                         complete.append("button").attr("id", "codename_display").attr("value", codename).attr("onclick", "copy_to_clipboard(this.value)").text(codename);
-                        complete.append("p").text("Click the codeword to copy it to your clipboard.")
+                        complete.append("p").attr("id", "copied").text("Click the codeword to copy it to your clipboard.")
                         complete.append("p").text("For any questions about the content of this activity, please reach out to James Kitchens at XXXXXX@XXXXXX.XXXXXXX.")
                     })
                     .catch(error => console.error('Error!', error.message))
