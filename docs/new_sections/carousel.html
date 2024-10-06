@@ -3630,7 +3630,7 @@
                     </div>
                     <div id="slide20" class="carousel-item full">
                         <div class="figure">
-                            <p class="warning">You need to complete all of the exercises to view this page.</p>
+                            <p class="warning">A SUBMIT button will only appear once you have answered all of the questions. Click back through the activity to find any that are incomplete.</p>
                             <button id="final" type="submit">SUBMIT</button>
                         </div>
                         <div class="carousel-caption">
@@ -3740,7 +3740,7 @@
                         document.getElementById("form").remove();
                         document.getElementById("box").remove();
                         var complete = overlay.append("div").attr("id", "complete");
-                        complete.append("p").text("Thank you for completing this activity. For student's seeking extra credit, please copy the following unique codeword and submit it via the corresponding assignment on Canvas.");
+                        complete.append("p").text("Thank you for completing this activity. To get homework points for this, please copy the following unique codeword and submit it via the corresponding assignment on Canvas.");
                         complete.append("button").attr("id", "codename_display").attr("value", codename).attr("onclick", "copy_to_clipboard(this.value)").text(codename);
                         complete.append("p").attr("id", "copied").text("Click the codeword to copy it to your clipboard.")
                         complete.append("p").text("For any questions about the content of this activity, please reach out to James Kitchens at jkitchens@ucdavis.edu.")
