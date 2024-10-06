@@ -207,6 +207,10 @@
             .outline-bottom {
                 border-bottom: black 1px solid;
             }
+
+            #final {
+                display: none;
+            }
         </style>
     </head>
     <body>
@@ -3626,7 +3630,8 @@
                     </div>
                     <div id="slide20" class="carousel-item full">
                         <div class="figure">
-                            <button type="submit">SUBMIT</button>
+                            <p class="warning">You need to complete all of the exercises to view this page.</p>
+                            <button id="final" type="submit">SUBMIT</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide20_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
@@ -3691,7 +3696,11 @@
                 submitted_exercises.push(s);
                 if (checker(submitted_exercises, ["slide11", "slide12", "slide13"])) {
                     document.getElementsByClassName("grid-container")[0].style.display = "grid";
-                    document.getElementsByClassName("warning")[0].style.display = "none";
+                    document.getElementById("slide14").getElementsByClassName("warning")[0].style.display = "none";
+                }
+                if (checker(submitted_exercises, ["slide3", "slide5", "slide6", "slide11", "slide12", "slide13"])) {
+                    document.getElementById("final").style.display = "block";
+                    document.getElementById("slide20").getElementsByClassName("warning")[0].style.display = "none";
                 }
             }
 
@@ -3734,7 +3743,7 @@
                         complete.append("p").text("Thank you for completing this activity. For student's seeking extra credit, please copy the following unique codeword and submit it via the corresponding assignment on Canvas.");
                         complete.append("button").attr("id", "codename_display").attr("value", codename).attr("onclick", "copy_to_clipboard(this.value)").text(codename);
                         complete.append("p").attr("id", "copied").text("Click the codeword to copy it to your clipboard.")
-                        complete.append("p").text("For any questions about the content of this activity, please reach out to James Kitchens at XXXXXX@XXXXXX.XXXXXXX.")
+                        complete.append("p").text("For any questions about the content of this activity, please reach out to James Kitchens at jkitchens@ucdavis.edu.")
                     })
                     .catch(error => console.error('Error!', error.message))
             });
