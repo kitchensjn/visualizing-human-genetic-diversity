@@ -89,15 +89,6 @@
                 }
             }
 
-            .input-dashboard {
-                width: 100%;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-around;
-                text-align: center;
-                padding-bottom: 50px;
-            }
-
             #overlay {
                 position: absolute;
                 top: 0px;
@@ -155,11 +146,11 @@
             .region_input {
                 display: flex;
                 flex-direction: column;
-                padding: 0px 10px;
+                text-align: center;
+                padding-top: 50px;
             }
 
             .answer {
-                color: green;
                 opacity: 0;
             }
 
@@ -186,15 +177,6 @@
                 fill: #231f20;
                 font-family: MyriadPro-Regular, Myriad Pro;
             }
-
-
-
-
-
-            #ACB>path {
-                stroke: 
-            }
-
         </style>
     </head>
     <body>
@@ -307,7 +289,7 @@
                     .attr("transform", function(d) {
                         return "rotate(" + d.phi*(180/Math.PI) + " " + (d.h/downscale+shift_h) + " " + (d.k/downscale+shift_h) + ")"; 
                     });
-
+            
                 svg_container
                     .selectAll("path")
                         .on("mouseover", function(event, d) {
@@ -464,32 +446,31 @@
                             <p class="desc">The area percentage of each region is equal to the size of that area divided by the total area of the diagram.</p>
                         </div>
                     </div>
+                    <div id="slide4" class="carousel-item full">
+                        <div class="figure">
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <!-- Generator: Adobe Illustrator 25.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                viewBox="0 0 138.2 91.3" style="enable-background:new 0 0 138.2 91.3;" xml:space="preserve">
+                                <g>
+                                    <circle class="circle" cx="63.5" cy="45.6" r="15.6"/>
+                                    <circle class="circle" cx="85.9" cy="45.6" r="43.8"/>
+                                    <text class="label" transform="matrix(1 0 0 1 88.54 49.221)">87.3%</text>
+                                    <text class="label" transform="matrix(1 0 0 1 8.54 23.101)">12.7%</text>
+                                    <line class="line" x1="30.2" y1="28.7" x2="63.5" y2="45.6"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="carousel-caption">
+                            <button id="slide2_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
+                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
+                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
+                            </button>
+                            <p class="desc">Note that circles of different sizes cannot be entirely overlapping. In these cases, the overlapping area percentage will always be less than 100%.</p>
+                        </div>
+                    </div>
                     <div id="slide3" class="carousel-item full">
                         <div class="figure">
-                            <div class="input-dashboard">
-                                <div class="region_input">
-                                    <label for="slide3_region1">Region 1</label>
-                                    <div>
-                                        <input class="region_percent" type="number" id="slide3_region1" name="slide3_region1" min="0" max="100" value="0" onChange="answer_change(this.id)">
-                                        %
-                                    </div>
-                                    <p class="answer">40%</p>
-                                </div>
-                                <div class="region_input">
-                                    <label for="slide3_region2">Region 2</label>
-                                    <div>
-                                        <input class="region_percent" type="number" id="slide3_region2" name="slide3_region2" min="0" max="100" value="0" onChange="answer_change(this.id)">
-                                        %
-                                    </div>
-                                    <p class="answer">20%</p>
-                                </div>
-                                <div class="region_input">
-                                    <label>Region 3</label>
-                                    <p class="region3">100%</p>
-                                    <p class="answer">40%</p>
-                                </div>
-                                <button id="slide3_check" type="button" onclick="check_answers(this.id)">Check Answers</button>
-                            </div>
                             <svg viewbox="0 0 100 100">
                                 <text x="50" y="25" text-anchor="middle">1</text>
                                 <text x="50" y="55" text-anchor="middle">2</text>
@@ -497,60 +478,28 @@
                                 <ellipse cx="50" cy="32.9" rx="30.9" ry="30.9" fill="transparent" stroke="black" stroke-width="1px" />
                                 <ellipse cx="50" cy="67.1" rx="30.9" ry="30.9" fill="transparent" stroke="black" stroke-width="1px"/>
                             </svg>
+                            <div class="region_input">
+                                <label for="slide3_region2">Region 2</label>
+                                <div style="padding-bottom: 50px;">
+                                    <input class="region_percent" type="number" id="slide3_region2" name="slide3_region2" min="0" max="100" value="0">
+                                    %
+                                </div>
+                                <p class="answer">The true overlap is 20%.</p>
+                            </div>
+                            <button id="slide3_check" type="button" onclick="check_answers(this.id)">Check Answer</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide3_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p class="desc">Here's some practice reading Euler diagrams. Fill in your estimates for the area percentage of each region in the above Euler diagram. Once you are done, click CHECK ANSWERS.</p>
-                        </div>
-                    </div>
-                    <div id="slide4" class="carousel-item full">
-                        <div class="figure">
-                            <div class="input-dashboard">
-                                <div class="region_input">
-                                    <label for="slide4_region1">Region 1</label>
-                                    <div>
-                                        <input class="region_percent" type="number" id="slide4_region1" name="slide4_region1" min="0" max="100" value="0" onChange="answer_change(this.id)">
-                                        %
-                                    </div>
-                                    <p class="answer">15.4%</p>
-                                </div>
-                                <div class="region_input">
-                                    <label for="slide4_region2">Region 2</label>
-                                    <div>
-                                        <input class="region_percent" type="number" id="slide4_region2" name="slide4_region2" min="0" max="100" value="0" onChange="answer_change(this.id)">
-                                        %
-                                    </div>
-                                    <p class="answer">7.7%</p>
-                                </div>
-                                <div class="region_input">
-                                    <label>Region 3</label>
-                                    <p class="region3">100%</p>
-                                    <p class="answer">76.9%</p>
-                                </div>
-                                <button id="slide4_check" type="button" onclick="check_answers(this.id)">Check Answers</button>
-                            </div>
-                            <svg viewbox="0 0 200 200">
-                                <text x="100" y="65" text-anchor="middle">1</text>
-                                <text x="100" y="92" text-anchor="middle">2</text>
-                                <text x="100" y="140" text-anchor="middle">3</text>
-                                <ellipse cx="100" cy="68" rx="30.9" ry="30.9" fill="transparent" stroke="black" stroke-width="2px" />
-                                <ellipse cx="100" cy="132.9" rx="59.2" ry="59.2" fill="transparent" stroke="black" stroke-width="2px"/>
-                            </svg>
-                        </div>
-                        <div class="carousel-caption">
-                            <button id="slide4_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
-                                <p class="caption-control-text" style="display: none;">Hide Caption</p>
-                                <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
-                            </button>
-                            <p class="desc">Here's some practice reading Euler diagrams. Fill in your estimates for the area percentage of each region in the above Euler diagram. Once you are done, click CHECK ANSWERS. Your answers will be locked.</p>
+                            <p class="desc">Here's some practice reading Euler diagrams. Fill in your estimates for the area percentage of the overlapping region in the above Euler diagram. Once you are done, click CHECK ANSWER.</p>
                         </div>
                     </div>
                     <div id="slide5" class="carousel-item full">
                         <div id="slide5_figure" class="figure">
                             <input type="hidden" id="slide5_overlap" name="slide5_overlap">
+                            <p>Set overlap to 20%</p>
                             <script>                                
                                 var data = [
                                     {"abbreviation":"","h":0,"k":Math.random()*(1750+1750)-1750,"a":1500,"b":1500,"phi":0,"color":"#000000","stroke_dasharray":"none"},
@@ -576,16 +525,17 @@
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p class="desc">If the blue and green circles each represent a group of 75 students and you know that there are students that are shared between the groups, drag these circles so that they overlap accordingly, then click SUBMIT.</p>
+                            <p class="desc">Giving you more control now! Here, the two circles each represent a school club with 75 students. There are 25 students that participate in both clubs. Drag the circles so that they overlap accordingly (20%), then click CHECK ANSWER.</p>
                         </div>
                     </div>
                     <div id="slide6" class="carousel-item full">
                         <div id="slide6_figure" class="figure">
                             <input type="hidden" id="slide6_overlap" name="slide6_overlap">
+                            <p>Set overlap to 10%</p>
                             <script>                                
                                 var data = [
-                                    {"abbreviation":"","h":0,"k":Math.random()*(1750+1750)-1750,"a":1500,"b":1500,"phi":0,"color":"#000000","stroke_dasharray":"none"},
-                                    {"abbreviation":"","h":0,"k":Math.random()*(1750+1750)-1750,"a":1000,"b":1000,"phi":0,"color":"#000000","stroke_dasharray":"none"}
+                                    {"abbreviation":"","h":0,"k":Math.random()*(1750+1750)-1750,"a":564*3,"b":564*3,"phi":0,"color":"#000000","stroke_dasharray":"none"},
+                                    {"abbreviation":"","h":0,"k":Math.random()*(1750+1750)-1750,"a":252*3,"b":252*3,"phi":0,"color":"#000000","stroke_dasharray":"none"}
                                 ];
 
                                 create_interactive_euler_diagram(
@@ -607,7 +557,7 @@
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p class="desc">One last practice! The blue circle now represents 100 students and the green circle 25 students. You also know that there are 10 students shared between the groups. Drag these circles so that they overlap accordingly, then click SUBMIT.
+                            <p class="desc">One last practice! The larger circle now represents 90 students and the smaller circle 20 students. There are 10 students shared between the circles. Drag the circles so that they overlap accordingly (10%), then click CHECK ANSWER.
                             </p>
                         </div>
                     </div>
@@ -694,12 +644,13 @@
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p class="desc">For this activity, we are going to focus on just three of the Americas’ subgroups from the 1000 Genomes project. We are going to create three Euler diagrams from the three different pairs of subgroups that we have here.</p>
+                            <p class="desc">For this activity, we are going to focus on just three of the Americas’ subgroups from the 1000 Genomes project. Each circle is sized proportionally to the number of common variants found in that subgroup. We are going to create three Euler diagrams from the three different pairs of subgroups that we have here.</p>
                         </div>
                     </div>
                     <div id="slide11" class="carousel-item full">
                         <div id="slide11_figure" class="figure">
                             <input type="hidden" id="slide11_overlap" name="slide11_overlap">
+                            <p style="text-align: center; font-size: 20px;"><span style="color:#D55E00;">African Caribbean in Barbados</span> and <span style="color:#CC79A7;">Utah residents (CEPH) with Northern and Western European ancestry</span></p>
                             <script>                                
                                 var data = [
                                     {"abbreviation":"CEU","h":0,"k":Math.random()*(1750+1750)-1750,"a":1350.0972,"b":1350.0972,"phi":0,"common_variants":5726377,"unshared_common_variants":184313,"description":"Utah residents (CEPH) with Northern and Western European ancestry","sampled_individuals":99,"color":"#CC79A7","fill":"white","stroke_dasharray":"none","active":"false"},
@@ -717,19 +668,21 @@
                                     overlap_output="slide11_overlap"
                                 );
                             </script>
-                            <button id="slide11_check" type="button" onclick="check_answers(this.id)">Submit</button>
+                            <p class="answer" style="opacity: 1;">Your diagram shows ~% overlap.</p>
+                            <button id="slide11_check" type="button" onclick="check_answers(this.id)">Lock Diagram</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide11_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p class="desc">Drag the circles for African Ancestry in Southwest US (dark blue) and Utah Residents (CEPH) (pink) to estimate the amount of overlap in common genetic variation. Once you are done, click SUBMIT. You will be able to compare your diagram to the real one after you’ve completed all three pairs.</p>
+                            <p class="desc">Drag the circles for African Caribbean in Barbados (orange) and Utah residents (CEPH) with Northern and Western European ancestry (pink) to estimate the amount of overlap in common genetic variation. Once you are done, click Lock Diagram. You will be able to compare your diagram to the real one after you’ve completed all three pairs.</p>
                         </div>
                     </div>
                     <div id="slide12" class="carousel-item full">
                         <div id="slide12_figure" class="figure">
                             <input type="hidden" id="slide12_overlap" name="slide12_overlap">
+                            <p style="text-align: center; font-size: 20px;"><span style="color:#D55E00;">African Caribbean in Barbados</span> and <span style="color:#56B4E9;">Mexican Ancestry in Los Angeles, California</span></p>
                             <script>                                
                                 var data = [
                                     {"abbreviation":"MXL","h":0,"k":Math.random()*(1750+1750)-1750,"a":1342.6299,"b":1342.6299,"phi":0,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"white","stroke_dasharray":"none","active":"false"},
@@ -747,19 +700,21 @@
                                     overlap_output="slide12_overlap"
                                 );
                             </script>
-                            <button id="slide12_check" type="button" onclick="check_answers(this.id)">Submit</button>
+                            <p class="answer" style="opacity: 1;">Your diagram shows ~% overlap.</p>
+                            <button id="slide12_check" type="button" onclick="check_answers(this.id)">Lock Diagram</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide12_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p class="desc">Drag the circles for African Ancestry in Southwest US (dark blue) and Mexican Ancestry in Los Angeles, California (light blue) to estimate the amount of overlap in common genetic variation. Once you are done, click SUBMIT. You will be able to compare your diagram to the real one after you’ve completed all three pairs.</p>
+                            <p class="desc">Drag the circles for African Caribbean in Barbados (orange) and Mexican Ancestry in Los Angeles, California (blue) to estimate the amount of overlap in common genetic variation. Once you are done, click Lock Diagram. You will be able to compare your diagram to the real one after you’ve completed all three pairs.</p>
                         </div>
                     </div>
                     <div id="slide13" class="carousel-item full">
                         <div id="slide13_figure" class="figure">
                             <input type="hidden" id="slide13_overlap" name="slide13_overlap">
+                            <p style="text-align: center; font-size: 20px;"><span style="color:#CC79A7;">Utah residents (CEPH) with Northern and Western European ancestry</span> and <span style="color:#56B4E9;">Mexican Ancestry in Los Angeles, California</span></p>
                             <script>                                
                                 var data = [
                                     {"abbreviation":"MXL","h":0,"k":Math.random()*(1750+1750)-1750,"a":1342.6299,"b":1342.6299,"phi":0,"common_variants":5663208,"unshared_common_variants":43322,"description":"Mexican Ancestry in Los Angeles, California","sampled_individuals":64,"color":"#56B4E9","fill":"white","stroke_dasharray":"none","active":"false"},
@@ -777,14 +732,15 @@
                                     overlap_output="slide13_overlap"
                                 );
                             </script>
-                            <button id="slide13_check" type="button" onclick="check_answers(this.id)">Submit</button>
+                            <p class="answer" style="opacity: 1;">Your diagram shows ~% overlap.</p>
+                            <button id="slide13_check" type="button" onclick="check_answers(this.id)">Lock Diagram</button>
                         </div>
                         <div class="carousel-caption">
                             <button id="slide13_hide" class="carousel-control-hide-caption" type="button" onclick="modify_caption(this.id)">
                                 <p class="caption-control-text" style="display: none;">Hide Caption</p>
                                 <span class="carousel-control-prev-icon hide-caption-icon" aria-hidden="true"></span>
                             </button>
-                            <p class="desc">Drag the circles for Utah Residents (CEPH) (pink) and Mexican Ancestry in Los Angeles, California (light blue) to estimate the amount of overlap in common genetic variation. Once you are done, click SUBMIT. You will be able to compare your diagram to the real one after you’ve completed all three pairs.</p>
+                            <p class="desc">Drag the circles for Utah residents (CEPH) with Northern and Western European ancestry (pink) and Mexican Ancestry in Los Angeles, California (blue) to estimate the amount of overlap in common genetic variation. Once you are done, click Lock Diagram. You will be able to compare your diagram to the real one after you’ve completed all three pairs.</p>
                         </div>
                     </div>
                     <div id="slide20" class="carousel-item full">
@@ -826,11 +782,6 @@
                 }
             }
 
-            function answer_change(id) {
-                var s = id.split("_")[0];
-                document.getElementById(s).getElementsByClassName("region3")[0].innerHTML = String(100 - document.getElementById(s+"_region1").value - document.getElementById(s+"_region2").value) + "%";
-            }
-
             function check_answers(id) {
                 var s = id.split("_")[0];
                 var inputs = document.getElementById(s).getElementsByClassName("region_percent");
@@ -843,11 +794,15 @@
                 }
                 if (["slide5", "slide6", "slide11", "slide12", "slide13"].includes(s)) {
                     d3.select("#"+s).selectAll("path")
+                        .on("mouseover", function(event, d) {
+                            d3.select(this).style("cursor", "initial");
+                        })
                         .call(d3.drag()
                             .on("start", null)
                             .on("drag", null)
                             .on("end", null));
                 }
+                document.getElementById(s).getElementsByTagName("button")[0].style.opacity = 0;
             }
 
             function copy_to_clipboard(value) {
