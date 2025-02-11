@@ -1,0 +1,16 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 538.7 1463.78">
+    <defs>
+        <style>
+            .cls-1{font-size:100px;font-family:MyriadPro-Regular, Myriad Pro;}
+            .cls-2{letter-spacing:-0.01em;}.cls-3{letter-spacing:0em;}
+            .cls-4{letter-spacing:-0.01em;}.cls-5{letter-spacing:0em;}
+            .cls-6{letter-spacing:0em;}.cls-7{fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:10px;}
+        </style>
+    </defs>
+    <text class="cls-1" transform="translate(0 83.7)">Environment</text>
+    <text class="cls-1" transform="translate(88.5 1438.78)">Genetics</text>
+    <line x1="267.8" y1="318.48" x2="267.8" y2="1154.5"/>
+    <line class="cls-7" x1="267.8" y1="378.83" x2="267.8" y2="1094.14"/>
+    <path d="M560.69,713c-10.53,28.4-28.51,63.63-47.56,85.47l47.56-17.2,47.55,17.2C589.2,776.63,571.22,741.4,560.69,713Z" transform="translate(-292.9 -394.52)"/>
+    <path d="M560.69,1549c-10.53-28.4-28.51-63.64-47.56-85.48l47.56,17.21,47.55-17.21C589.2,1485.38,571.22,1520.62,560.69,1549Z" transform="translate(-292.9 -394.52)"/>
+</svg>

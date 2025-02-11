@@ -166,5 +166,5 @@ def calculate_intersection_areas(data):
 print(calculate_intersection_areas(data=data))
 
 for c in combinations([1,1,2], 2):
-    print(c)
+    for 
 #print(new_calculate_intersection_areas(data=data))
