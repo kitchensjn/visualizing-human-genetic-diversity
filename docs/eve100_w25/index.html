@@ -3876,7 +3876,7 @@
                 document.getElementById("copied").innerText = "COPIED!";
             }
 
-            const scriptURL = "https://script.google.com/macros/s/AKfycbwSkipi8c7Z-hW53dBeD5IgWtiEix3Vh-4MgjJN7rghTCoPvatRl53SSVy1lAvsWYzg/exec"
+            const scriptURL = "https://script.google.com/macros/s/AKfycbxqy4DOKc8HvDBCohiCgcavqbKWrETR5qPLF3apa6nzn2liAgR0l-HaRcBOtqowTaUl/exec"
             const form = document.forms['submit-to-google-sheet']
         
             form.addEventListener("submit", e => {
@@ -3914,7 +3914,7 @@
 							complete.append("p").text("Thank you for completing this activity. To get homework points for this, please copy the following unique code and submit it via the corresponding assignment on Canvas.");
 							complete.append("button").attr("id", "codename_display").attr("value", codename).attr("onclick", "copy_to_clipboard(this.value)").text(codename);
 							complete.append("p").attr("id", "copied").text("Click the codeword to copy it to your clipboard.");
-							complete.append("div").append("p").html("For any questions about the content of this activity, please reach out to James Kitchens at (jkitchens <span style='font-style: italic;'>at</span> ucdavis.edu.");
+							complete.append("div").append("p").html("For any questions about the content of this activity, please reach out to James Kitchens at jkitchens <span style='font-style: italic;'>at</span> ucdavis.edu.");
 						})
 						.catch(error => console.error('Error!', error.message));
 				} else {
@@ -3939,7 +3939,7 @@
 							complete.append("p").text("Thank you for completing this activity. To get homework points for this, please copy the following unique codeword and submit it via the corresponding assignment on Canvas.");
 							complete.append("button").attr("id", "codename_display").attr("value", codename).attr("onclick", "copy_to_clipboard(this.value)").text(codename);
 							complete.append("p").attr("id", "copied").text("Click the codeword to copy it to your clipboard.");
-							complete.append("div").append("p").html("For any questions about the content of this activity, please reach out to James Kitchens at (jkitchens <span style='font-style: italic;'>at</span> ucdavis.edu.")
+							complete.append("div").append("p").html("For any questions about the content of this activity, please reach out to James Kitchens at jkitchens <span style='font-style: italic;'>at</span> ucdavis.edu.")
 						})
 						.catch(error => console.error('Error!', error.message));
 				}
