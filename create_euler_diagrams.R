@@ -58,8 +58,7 @@ generate_euler_plot <- function(pairwise_file, poplist, selected_pops=c(), cutof
   }
   
   euler_data <- shared_common_snps$unique_snps
-  names(euler_data) <- apply(shared_common_snps, 1, function(x){paste(names(x)[which(x==1)],collapse="&")})
-  print(euler_data)
+  names(euler_data) <- apply(shared_common_snps[selected_pops], 1, function(x){paste(names(x)[which(x==1)],collapse="&")})
   return(list("sets"=euler_data,"euler"=eulerr::euler(euler_data, shape = "ellipse"),"size"=sum(shared_common_snps$unique_snps)))
 }
 
