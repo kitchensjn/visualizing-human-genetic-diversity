@@ -1,0 +1,102 @@
+<style>
+    .grid-background {
+        background-size: 40px 40px; /* Size of each grid cell */
+        background-image:
+            linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    }
+
+    .in_stage1 {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+</style>
+
+<div id="intro" class="carousel-item full grid-background">
+    <svg class="figure" viewBox="0 0 1000 1000">
+        <g class="diagram">
+            <g id="globe"></g>
+            <g id="dna"></g>
+        </g>
+        <g class="text-content">
+            <g class="in_stage0">
+                <text x=100 y=375>As geneticists, we are interested in studying the levels</text>
+                <text x=100 y=425>of genetic diversity observed around the world. This</text>
+                <text x=100 y=475>often involves grouping samples by geographic</text>
+                <text x=100 y=525>location and then comparing the genetic variation</text>
+                <text x=100 y=575>within and amongst the groupings.</text>
+                <text x=100 y=675>A central question then arises… <tspan font-weight="bold">how much overlap in</tspan></text>
+                <text x=100 y=725><tspan font-weight="bold">genetic variation is there between groups?</tspan></text>
+            </g>
+            <g class="in_stage1">
+                <text x=100 y=375>This activity includes:</text>
+                <text x=150 y=425>1. An introduction of Euler diagrams</text>
+                <text x=150 y=475>2. Measuring the effectiveness of these</text>
+                <text x=200 y=525>diagrams in communicating overlap</text>
+                <text x=150 y=575>3. Questionnaire on the impact of environment and</text> 
+                <text x=200 y=625>genetics on traits</text>
+                <text x=150 y=675>4. Visualizing human genetic diversity with Euler</text>
+                <text x=200 y=725>diagrams</text>
+            </g>
+        </g>
+        <g>
+            <g id="intro_buttons" class="in_stage0"></g>
+            <g id="overview_buttons" class="in_stage1"></g>
+        </g>
+    </svg>
+
+    <script>
+
+
+        create_button("intro_buttons", "intro_next", "Next", 450, 900, 100, 50);
+        d3.select("#intro_next")
+            .on("click", function(event,d) {
+                    d3.selectAll(".in_stage0").style("display", "none");
+                    d3.selectAll(".in_stage1").style("display", "block").transition().style("opacity", "1");
+                });
+
+        create_button("overview_buttons", "overview_next", "Next", 450, 900, 100, 50);
+        d3.select("#overview_next")
+            .on("click", function(event,d) {
+                    $(".carousel").carousel("next");
+
+                    setTimeout(function() {
+                        d3.selectAll(".in_stage1").style("display", "none").style("opacity", "0");
+                        d3.selectAll(".in_stage0").style("display", "block").transition().style("opacity", "1");
+                    }, 1000);
+                });
+
+
+        var globe_container = document.getElementById("globe");
+        var rc = rough.svg(globe_container);
+        var globe = rc.path("M20.13,72.18,31.3,83.34a11.55,11.55,0,0,0,8.17,3.4h7.77a11.55,11.55,0,0,1,8.17,3.4L66,100.73a11.58,11.58,0,0,1,3.39,8.17v13.55a11.55,11.55,0,0,0,3.4,8.17l4.81,4.81a11.51,11.51,0,0,1,3.4,8.16v6.76a11.57,11.57,0,1,0,23.13,0v-1a11.58,11.58,0,0,1,3.39-8.17l16.38-16.37a11.54,11.54,0,0,0,3.39-8.17V104.13a11.55,11.55,0,0,0-11.56-11.57H85.84a11.55,11.55,0,0,1-8.17-3.4l-5.78-5.78a8.17,8.17,0,0,1,5.78-13.95H90.21a8.17,8.17,0,0,0,5.78-14l-7.12-7.12a6.94,6.94,0,0,1-2.13-5,7,7,0,0,1,2.06-4.95l6.26-6.25a11.24,11.24,0,0,0,3.28-7.92A11.1,11.1,0,0,0,96,17.42c-1.16,0-2.31-.07-3.47-.07A75.22,75.22,0,0,0,20.17,72.18ZM167.7,92.53a74.23,74.23,0,0,0-8.46-34.63,11.42,11.42,0,0,0-6.47,3.29L147.93,66a11.55,11.55,0,0,0-3.4,8.17V86.74A11.56,11.56,0,0,0,156.1,98.31h8.71a12.64,12.64,0,0,0,2.64-.29c.14-1.81.18-3.65.18-5.49ZM0,92.53a92.53,92.53,0,1,1,92.53,92.52A92.52,92.52,0,0,1,0,92.53Z",
+            {
+                fill: "rgba(0,0,255,0.2)",
+                fillStyle: "solid",
+                strokeWidth: "3"
+            }
+        );
+        globe_container.appendChild(globe.children[0]);
+        globe_container.appendChild(globe.children[0]);
+
+        d3.selectAll("#globe>path")
+            .attr("transform", "translate(460, 100)");
+
+        var dna_container = document.getElementById("dna");
+        var rc = rough.svg(dna_container);
+        var dna = rc.path("M127.19,0a11.55,11.55,0,0,1,11.56,11.56c0,20.89-8.82,37.87-20.74,52.21C109.3,74.22,98.57,83.68,87.8,92.5c10.77,8.85,21.5,18.28,30.21,28.73,11.92,14.3,20.74,31.32,20.74,52.21a11.57,11.57,0,0,1-23.13,0H23.12a11.56,11.56,0,0,1-23.12,0c0-20.89,8.82-37.87,20.74-52.21C29.45,110.78,40.18,101.35,51,92.5c-10.77-8.85-21.5-18.28-30.21-28.73C8.82,49.43,0,32.45,0,11.56a11.56,11.56,0,0,1,23.12,0h92.5A11.55,11.55,0,0,1,127.19,0ZM102.44,138.75H36.35a69.72,69.72,0,0,0-7.44,11.56h81a75.38,75.38,0,0,0-7.45-11.56ZM86,121.41c-5.17-4.7-10.77-9.33-16.62-14.1-5.86,4.74-11.46,9.4-16.63,14.1ZM36.31,46.25H102.4a69.72,69.72,0,0,0,7.44-11.56h-81A75.3,75.3,0,0,0,36.31,46.25ZM52.75,63.59c5.17,4.7,10.77,9.33,16.63,14.1C75.23,73,80.83,68.29,86,63.59Z",
+            {
+                fill: "rgba(255,0,0,0.2)",
+                fillStyle: "solid",
+                strokeWidth: "3"
+            }
+        );
+        dna_container.appendChild(dna.children[0]);
+        dna_container.appendChild(dna.children[0]);
+
+        d3.selectAll("#dna>path")
+            .attr("transform", "translate(360, 100)");
+    </script>
+
+</div>

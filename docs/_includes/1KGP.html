@@ -1,0 +1,506 @@
+<style>
+    .kg_stage1, .kg_stage2, .kg_stage3, .kg_stage4, .kg_stage5, .kg_stage6, .kg_stage7 {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+
+    #kg4_submit, #kg5_submit, #kg6_submit {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+</style>
+
+<div id="thousand_genomes" class="carousel-item full grid-background">
+
+    <div class="form-responses">
+        <input type="hidden" id="thousand_genomes_overlap0" name="thousand_genomes_overlap0">
+        <input type="hidden" id="thousand_genomes_overlap1" name="thousand_genomes_overlap1">
+        <input type="hidden" id="thousand_genomes_overlap2" name="thousand_genomes_overlap2">
+    </div>
+
+    <svg class="figure" viewBox="0 0 1000 1000">
+        <g class="text-content">
+            <g class="kg_stage0">
+                <text x="100" y="100">The 1000 Genomes Project sampled people from</text>
+                <text x="100" y="150">around the world, including 609 individuals from</text>
+                <text x="100" y="200">seven regions in the Americas. The rest of this</text>
+                <text x="100" y="250">activity will focus on these people.</text>
+            </g>
+            <g class="kg_stage1">
+                <text x="100" y="100">Across the 609 people from the Americas, the</text>
+                <text x="100" y="150"><tspan font-weight="bold">majority of sites between their genomes are not</tspan></text>
+                <text x="100" y="200">variable (<tspan font-weight="bold">polymorphic</tspan>).</text>
+            </g>
+            <g class="kg_stage2">
+                <text x="100" y="100">Even when the site is polymorphic, <tspan font-weight="bold">the variant is</tspan></text>
+                <text x="100" y="150"><tspan font-weight="bold">often found at a low frequency</tspan>. Here, we observe</text>
+                <text x="100" y="200">only 10 million sites where the variant is found</text>
+                <text x="100" y="250">at >5% ("common") in any of the sampled regions.</text>
+            </g>
+            <g class="kg_stage3">
+                <text x="100" y="100">For the following three sample groups, <tspan font-weight="bold">each circle</text>
+                <text x="100" y="150"><tspan font-weight="bold">is sized proportionally to the number of common</tspan></text>
+                <text x="100" y="200"><tspan font-weight="bold">variants</tspan> within that sample group. For the final</text>
+                <text x="100" y="250">part of this activity, you are going to create Euler</text>
+                <text x="100" y="300">diagrams for the three different pairings of</text>
+                <text x="100" y="350">these sample groups.</text>
+            </g>
+            <g class="kg_stage4 kg_stage5 kg_stage6">
+                <text x="100" y="100"><tspan font-weight="bold">Slide the circles to estimate the amount of overlap</tspan></text>
+                <text x="100" y="150"><tspan font-weight="bold">in common genetic variation between the specified</tspan></text>
+                <text x="100" y="200"><tspan font-weight="bold">subgroups.</tspan> The starting position is random.</text>
+            </g>
+            <g class="kg_stage7">
+                <text x="100" y="100"><tspan font-weight="bold">Compare your guesses to the observed amount</tspan></text>
+                <text x="100" y="150"><tspan font-weight="bold">of overlap in common genetic variation between</tspan></text>
+                <text x="100" y="200"><tspan font-weight="bold">the subgroups in the 1000 Genomes Project.</tspan></text>
+            </g>
+        </g>
+        <g class="diagram" transform="translate(0, 50)">
+            <g class="kg_stage0">
+                <g id="land"></g>
+                <g id="ACB"></g>
+                <g id="ASW"></g>
+                <g id="CEU"></g>
+                <g id="CLM"></g>
+                <g id="MXL"></g>
+                <g id="PEL"></g>
+                <g id="PUR"></g>
+            </g>
+            <g class="subgroups">
+                <g class="kg_stage4">
+                    <g>
+                        <text x="300" y="300" text-anchor="middle" dominant-baseline="central" fill="rgba(255,85,0)">African Caribbean in</text>
+                        <text x="300" y="325" text-anchor="middle" dominant-baseline="central" fill="rgba(255,85,0)">Barbados</text>
+                    </g>
+                    <g>
+                        <text x="700" y="300" text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">Utah residents (CEPH) with</text>
+                        <text x="700" y="325" text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">Northern and Western</text>
+                        <text x="700" y="350" text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">European ancestry</text>
+                    </g>
+                </g>
+                <g class="kg_stage5">
+                    <g>
+                        <text x="300" y="300" text-anchor="middle" dominant-baseline="central" fill="rgba(255,85,0)">African Caribbean in</text>
+                        <text x="300" y="325" text-anchor="middle" dominant-baseline="central" fill="rgba(255,85,0)">Barbados</text>
+                    </g>
+                    <g>
+                        <text x="700" y="300" text-anchor="middle" dominant-baseline="central" fill="rgba(86,180,233)">Mexican Ancestry in</text>
+                        <text x="700" y="325" text-anchor="middle" dominant-baseline="central" fill="rgba(86,180,233)">Los Angeles, California</text>
+                    </g>
+                </g>
+                <g class="kg_stage6">
+                    <g>
+                        <text x="300" y="300" text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">Utah residents (CEPH) with</text>
+                        <text x="300" y="325" text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">Northern and Western</text>
+                        <text x="300" y="350" text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">European ancestry</text>
+                    </g>
+                    <g>
+                        <text x="700" y="300" text-anchor="middle" dominant-baseline="central" fill="rgba(86,180,233)">Mexican Ancestry in</text>
+                        <text x="700" y="325" text-anchor="middle" dominant-baseline="central" fill="rgba(86,180,233)">Los Angeles, California</text>
+                    </g>
+                </g>
+            </g>
+            <g class="kg_stage0"></g>
+            <g class="kg_stage1 kg_stage2">
+                <g id="genome_circle"></g>
+                <g id="variants_circle"></g>
+            </g>
+            <g class="kg_stage2">
+                <g id="common_circle"></g>
+            </g>
+            <g class="kg_stage3">
+                <g id="ACB_circle"></g>
+                <g id="CEU_circle"></g>
+                <g id="MXL_circle"></g>
+            </g>
+            <g class="kg_stage4">
+                <g id="ACB_CEU_ACB" class="interactive_circle"></g>
+                <g id="ACB_CEU_CEU" class="interactive_circle"></g>
+            </g>
+            <g class="kg_stage5">
+                <g id="ACB_MXL_ACB" class="interactive_circle"></g>
+                <g id="ACB_MXL_MXL" class="interactive_circle"></g>
+            </g>
+            <g class="kg_stage6">
+                <g id="CEU_MXL_CEU" class="interactive_circle"></g>
+                <g id="CEU_MXL_MXL" class="interactive_circle"></g>
+            </g>
+            <g class="kg_stage7">
+                <text x="200" y="250" text-anchor="middle" dominant-baseline="central">Your Guess</text>
+                <text x="800" y="235" text-anchor="middle" dominant-baseline="central">1000 Genomes</text>
+                <text x="800" y="265" text-anchor="middle" dominant-baseline="central">Project</text>
+
+                <g id="guess_ACB_CEU_ACB"></g>
+                <g id="guess_ACB_CEU_CEU"></g>
+                <g id="truth_ACB_CEU_ACB"></g>
+                <g id="truth_ACB_CEU_CEU"></g>
+                <text x="110" y="360" font-size=1.5em text-anchor="middle" dominant-baseline="central" id="kg_answer1_table">X%</text>
+                <text x="500" y="335" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,85,0)">African Caribbean in Barbados</text>
+                <text x="500" y="360" font-size=0.7em text-anchor="middle" dominant-baseline="central">-</text>
+                <text x="500" y="385" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">Utah residents (CEPH) with Northern</text>
+                <text x="500" y="410" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">and Western European ancestry</text>
+                <text id="kg_truth1_table" x="890" y="360" font-size=1.5em text-anchor="middle" dominant-baseline="central">51%</text>
+
+                <g id="guess_ACB_MXL_ACB"></g>
+                <g id="guess_ACB_MXL_MXL"></g>
+                <g id="truth_ACB_MXL_ACB"></g>
+                <g id="truth_ACB_MXL_MXL"></g>
+                <text x="110" y="535" font-size=1.5em text-anchor="middle" dominant-baseline="central" id="kg_answer2_table">X%</text>
+                <text x="500" y="510" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,85,0)">African Caribbean in Barbados</text>
+                <text x="500" y="535" font-size=0.7em text-anchor="middle" dominant-baseline="central">-</text>
+                <text x="500" y="560" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(86,180,233)">Mexican Ancestry in Los Angeles,</text>
+                <text x="500" y="585" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(86,180,233)">California</text>
+                <text id="kg_truth2_table" x="890" y="535" font-size=1.5em text-anchor="middle" dominant-baseline="central">52%</text>
+
+                <g id="guess_CEU_MXL_CEU"></g>
+                <g id="guess_CEU_MXL_MXL"></g>
+                <g id="truth_CEU_MXL_CEU"></g>
+                <g id="truth_CEU_MXL_MXL"></g>
+                <text x="110" y="710" font-size=1.5em text-anchor="middle" dominant-baseline="central" id="kg_answer3_table">X%</text>
+                <text x="500" y="660" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">Utah residents (CEPH) with Northern</text>
+                <text x="500" y="685" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">and Western European ancestry</text>
+                <text x="500" y="710" font-size=0.7em text-anchor="middle" dominant-baseline="central">-</text>
+                <text x="500" y="735" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(86,180,233)">Mexican Ancestry in Los Angeles,</text>
+                <text x="500" y="760" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(86,180,233)">California</text>
+                <text id="kg_truth3_table" x="890" y="710" font-size=1.5em text-anchor="middle" dominant-baseline="central">78%</text>
+            </g>
+            <g class="annotations">
+                <g class="kg_stage1 kg_stage2">
+                    <g id="measureable">
+                        <line x1="340" y1="675" x2="315" y2="700" stroke="black" stroke-width="1"></line>
+                        <line x1="315" y1="700" x2="290" y2="700" stroke="black" stroke-width="1"></line>
+                        <text x="160" y="675" text-anchor="middle" dominant-baseline="central" font-size="0.7em">Measurable locations</text>
+                        <text x="160" y="700" text-anchor="middle" dominant-baseline="central" font-size="0.7em">in the human genome</text>
+                        <text x="160" y="725" text-anchor="middle" dominant-baseline="central" font-size="0.7em">(~2.9 billion sites)</text>
+                    </g>
+                    <g id="observed">
+                        <line x1="425" y1="475" x2="450" y2="450" stroke="black" stroke-width="1"></line>
+                        <line x1="450" y1="450" x2="475" y2="450" stroke="black" stroke-width="1"></line>
+                        <text x="585" y="435" text-anchor="middle" dominant-baseline="central" font-size="0.7em">Observed polymorphic</text>
+                        <text x="585" y="460" text-anchor="middle" dominant-baseline="central" font-size="0.7em">(~39 million sites)</text>
+                    </g>
+                </g>
+                <g class="kg_stage2">
+                    <g id="common">
+                        <line x1="400" y1="510" x2="425" y2="535" stroke="black" stroke-width="1"></line>
+                        <line x1="425" y1="535" x2="450" y2="535" stroke="black" stroke-width="1"></line>
+                        <text x="560" y="520" text-anchor="middle" dominant-baseline="central" font-size="0.7em">Common variants</text>
+                        <text x="560" y="545" text-anchor="middle" dominant-baseline="central" font-size="0.7em">(~10 million sites)</text>
+                    </g>
+                </g>
+                <g class="kg_stage3">
+                    <g>
+                        <line x1="350" y1="425" x2="325" y2="400" stroke="black" stroke-width="1"></line>
+                        <line x1="300" y1="400" x2="325" y2="400" stroke="black" stroke-width="1"></line>
+                        <text x="200" y="385" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,85,0)">African Caribbean</text>
+                        <text x="200" y="415" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,85,0)">in Barbados</text>
+                        <text x="200" y="440" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,85,0)">-</text>
+                        <text x="200" y="465" font-size=0.6em text-anchor="middle" dominant-baseline="central" fill="rgba(255,85,0)">96 people</text>
+                        <text x="400" y="475" font-size=0.7em text-anchor="middle" dominant-baseline="central">~8.0 million</text>
+                        <text x="400" y="500" font-size=0.7em text-anchor="middle" dominant-baseline="central">common</text>
+                        <text x="400" y="525" font-size=0.7em text-anchor="middle" dominant-baseline="central">variants</text>
+                    </g>
+                    <g>
+                        <line x1="600" y1="460" x2="625" y2="435" stroke="black" stroke-width="1"></line>
+                        <line x1="625" y1="435" x2="650" y2="435" stroke="black" stroke-width="1"></line>
+                        <text x="800" y="405" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">Utah residents (CEPH)</text>
+                        <text x="800" y="435" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">with Northern and Western</text>
+                        <text x="800" y="465" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">European ancestry</text>
+                        <text x="800" y="490" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">-</text>
+                        <text x="800" y="515" font-size=0.6em text-anchor="middle" dominant-baseline="central" fill="rgba(255,0,141)">99 people</text>
+                        <text x="600" y="550" font-size=0.7em text-anchor="middle" dominant-baseline="central">~5.7 million</text>
+                    </g>
+                    <g>
+                        <line x1="550" y1="715" x2="575" y2="740" stroke="black" stroke-width="1"></line>
+                        <line x1="575" y1="740" x2="600" y2="740" stroke="black" stroke-width="1"></line>
+                        <text x="725" y="725" text-anchor="middle" dominant-baseline="central" font-size="0.7em" fill="rgba(86,180,233)">Mexican Ancestry in</text>
+                        <text x="725" y="755" text-anchor="middle" dominant-baseline="central" font-size="0.7em" fill="rgba(86,180,233)">Los Angeles, California</text>
+                        <text x="725" y="780" font-size=0.7em text-anchor="middle" dominant-baseline="central" fill="rgba(86,180,233)">-</text>
+                        <text x="725" y="805" font-size=0.6em text-anchor="middle" dominant-baseline="central" fill="rgba(86,180,233)">64 people</text>
+                        <text x="470" y="690" font-size=0.7em text-anchor="middle" dominant-baseline="central">~5.7 million</text>
+                    </g>
+                </g>
+            </g>
+            <g class="answers">
+                <g class="kg_stage4">
+                    <text x="500" y="775" text-anchor="middle" dominant-baseline="central">Your diagram shows a <tspan id="kg_answer1" font-weight="bold" dominant-baseline="central">X%</tspan> overlap.</text>
+                </g>
+                <g class="kg_stage5">
+                    <text x="500" y="775" text-anchor="middle" dominant-baseline="central">Your diagram shows a <tspan id="kg_answer2" font-weight="bold" dominant-baseline="central">X%</tspan> overlap.</text>
+                </g>
+                <g class="kg_stage6">
+                    <text x="500" y="775" text-anchor="middle" dominant-baseline="central">Your diagram shows a <tspan id="kg_answer3" font-weight="bold" dominant-baseline="central">X%</tspan> overlap.</text>
+                </g>
+            </g>
+        </g>
+        <g class="buttons">
+            <g id="kg0_buttons" class="kg_stage0"></g>
+            <g id="kg1_buttons" class="kg_stage1"></g>
+            <g id="kg2_buttons" class="kg_stage2"></g>
+            <g id="kg3_buttons" class="kg_stage3"></g>
+            <g id="kg4_buttons" class="kg_stage4"></g>
+            <g id="kg5_buttons" class="kg_stage5"></g>
+            <g id="kg6_buttons" class="kg_stage6"></g>
+            <g id="kg7_buttons" class="kg_stage7"></g>
+        </g>
+    </svg>
+
+    <button id="submit_form" type="submit"></button>
+
+    <script>
+
+
+        var land_container = document.getElementById("land");
+        var rc = rough.svg(land_container);
+        var land = rc.path("M222.53.8c-1.88.84-3.28.94-13.65.94-13.13.05-12.34-.19-13.79,4.27-.94,2.81-2.91,5.16-4.36,5.16-.52,0-1.17.28-1.45.66-.84.99.47,1.74,3.85,2.16,3.28.38,4.36.84,5.68,2.3.8.84,1.41.99,4.92.99,4.31,0,8.91-.61,10.93-1.45.7-.28,1.78-1.31,2.44-2.35.7-.99,1.6-1.83,2.06-1.78.42,0,2.35,1.97,4.27,4.36,2.21,2.81,4.41,5.02,6.19,6.19,1.5.99,2.77,2.06,2.77,2.35,0,.8-1.6,2.06-2.67,2.06-.52,0-1.74-.33-2.67-.7-.94-.42-3.38-1.08-5.35-1.45-1.97-.42-4.27-1.13-5.02-1.55-2.3-1.31-3.7-1.55-13.13-1.97-4.88-.23-9.52-.52-10.32-.66-1.13-.23-2.02.09-4.46,1.64-1.64,1.08-3.1,1.78-3.19,1.5-.42-1.27-3-4.31-3.61-4.31-.42,0-1.36.47-2.11.99-1.45,1.08-2.02,1.08-6.75-.28-3.14-.89-4.5-.7-8.49,1.22-3.24,1.6-4.92,1.69-11.59.66-4.31-.66-7.41-.56-7.41.23,0,.66-2.58,2.91-4.31,3.8-2.39,1.22-3.75,1.13-5.11-.33-2.44-2.67-7.69-4.13-12.24-3.42-2.49.38-3.99.33-7.27-.28-3.85-.7-6.14-.94-18.9-2.11-2.72-.23-6.94-.66-9.38-.94-3.14-.38-6.89-.33-12.76.05l-8.3.52-3.28-1.97-3.28-1.97-3.52.33c-3.24.33-3.61.28-5.07-.84-1.64-1.22-4.6-2.86-4.78-2.58-.05.09-.56.89-1.13,1.83s-1.36,1.97-1.74,2.3c-1.13.94-7.32,2.35-10.37,2.35-3.47,0-10.93,2.35-13.32,4.17-3.99,3.1-4.69,3.33-8.82,3-3.75-.28-3.85-.23-3.85.75,0,3.05,2.44,4.74,6.94,4.74,1.27,0,3.33.56,5.25,1.41,1.78.75,3.7,1.41,4.36,1.41,1.41,0,4.92,2.49,5.44,3.89.75,1.97.19,2.35-3.19,2.06-3.85-.33-6.8-1.36-9.05-3.19l-1.74-1.36-2.67,1.41c-1.45.75-3.14,1.41-3.7,1.41-1.31,0-9.24,2.25-9.76,2.77-.61.61,3.99,5.07,6.24,6.1,2.77,1.22,9.71,2.11,13.51,1.78,1.97-.19,3.7-.7,5.02-1.5,2.58-1.5,6.8-1.69,6.8-.33,0,1.08-1.22,2.77-2.49,3.47-.56.28-3.28.7-6.05.89-5.39.38-7.69,1.22-12.71,4.88-3.24,2.39-3.05,3.19,1.78,8.21,2.2,2.3,3.99,4.36,3.99,4.64,0,1.6,5.21-.38,7.36-2.77,2.2-2.49,4.22-1.45,3.66,1.83-.38,2.25.23,3.52,2.16,4.55,1.41.7,1.45.7,2.96-1.08l1.55-1.74,1.74,1.36c.99.8,2.25,1.78,2.81,2.25.99.8,1.22.84,2.44.19,2.2-1.08,3.7-1.31,4.64-.61,2.16,1.55-.7,4.36-7.04,6.85-1.55.61-6.38,2.72-10.79,4.69-4.36,2.02-8.58,3.75-9.38,3.94-1.6.42-2.11.99-2.11,2.49,0,2.58,2.77,2.3,12.85-1.31,3.05-1.13,6.24-1.92,7.69-2.02,2.06-.09,3.7-.75,9.9-3.94,4.13-2.11,7.83-3.85,8.26-3.85.47,0,1.74.84,2.86,1.88,2.81,2.58,4.64,2.58,8.58-.05,3-2.02,4.41-3.99,4.17-5.72-.14-.99-.33-1.03-3.56-.89-1.83.09-3.38,0-3.33-.23,0-.19.89-1.03,1.92-1.78,2.2-1.6,2.53-2.06,3.19-4.88.61-2.3,2.16-4.08,3.99-4.55,1.88-.47,2.11.23,1.08,3.24-.75,2.2-.8,2.86-.33,3.42.75.94,2.86.47,5.58-1.22,1.17-.7,2.96-1.45,3.99-1.64,2.39-.42,4.64-1.6,7.46-3.94,1.22-1.08,2.72-1.92,3.28-1.92.52,0,2.25.66,3.8,1.41,2.53,1.27,3.1,1.41,5.68,1.13,1.97-.19,3.56-.05,5.35.47,1.41.42,4.36,1.08,6.57,1.45s7.04,1.64,10.74,2.81c3.66,1.17,7.04,2.11,7.5,2.11,1.92,0,5.44,1.69,7.32,3.47,1.64,1.55,2.11,2.44,2.53,4.55.33,1.45.94,2.96,1.36,3.38.42.38,1.97.8,3.47.99,2.86.28,6.61,1.69,7.22,2.67.19.33.38,2.67.38,5.16.05,3.85.19,4.78,1.03,5.86,1.03,1.41,8.35,5.82,9.62,5.82,1.92,0,1.31-4.55-.94-7.18-1.74-1.97-2.49-6.43-1.08-6.43,1.03,0,1.83.84,3.52,3.85,1.88,3.28,3.52,5.02,5.77,6.05,1.08.52,2.53,1.74,3.19,2.72.99,1.45,1.22,2.21,1.13,4.55-.09,3.99,1.69,6.29,4.97,6.29,1.13,0,3.66,1.55,6.19,3.75.84.7,2.35,1.78,3.38,2.35,2.25,1.27,2.58,1.97,3.85,8.26.89,4.55.89,5.02.19,12.66-.38,4.36-.7,9.1-.7,10.55,0,4.64,2.49,10.04,6.94,15.1,1.13,1.22,3.24,4.08,4.78,6.33,2.86,4.22,7.97,9.9,9.76,10.83.56.28,1.69.52,2.53.52,3.56,0,5.44,2.3,11.44,14.02,3,5.91,4.08,7.5,5.39,8.35,3,1.88,4.22,3,4.22,3.94,0,.47-.75,1.92-1.69,3.24-2.39,3.28-2.11,3.99,1.69,4.03,1.69,0,3.28.05,3.56.09s2.11,1.88,4.08,4.08c2.81,3.14,3.61,4.36,3.61,5.44,0,1.27.28,1.55,2.96,2.72,1.64.75,3.33,1.92,3.89,2.67.56.75,1.74,1.78,2.67,2.25,1.55.89,1.69.89,2.86.14,2.44-1.64,1.41-3.8-3.94-8.07-2.91-2.3-3.24-2.77-3.7-4.92-.7-3.28-1.45-4.55-4.27-7.27-1.31-1.31-3.38-3.8-4.5-5.53-1.13-1.74-3.42-4.46-5.07-5.96-3.14-3-3.66-3.85-3.05-5.49.42-1.22,2.86-2.58,3.89-2.21.38.14,1.41,2.02,2.25,4.08,1.45,3.75,1.74,4.08,9.05,11.35,4.36,4.36,9.1,9.62,11.26,12.52,2.53,3.38,4.27,5.3,5.39,5.82,2.39,1.17,6.52,5.25,7.79,7.79.8,1.6,1.08,2.91,1.08,4.97-.05,1.55.19,3.28.52,3.89,1.74,3.33,2.91,4.22,10.93,8.21,6.85,3.47,8.44,4.46,10.65,6.75,2.86,3,4.64,3.75,8.77,3.75,3.14,0,4.55.56,6.94,2.77,3.1,2.81,3.7,2.86,6.33.28,1.69-1.64,2.67-2.25,4.08-2.44,2.39-.33,4.92.84,6.52,2.96,1.64,2.11,7.18,6.57,9.24,7.46.94.38,2.21.7,2.81.7.66,0,2.11.42,3.33.94,1.64.75,2.67.89,4.36.7,1.97-.28,2.67-.09,5.63,1.36,4.69,2.39,6.52,4.55,6.94,8.21.38,3.42,1.27,4.64,4.64,6.57,1.41.75,4.03,2.67,5.91,4.22,2.11,1.78,4.41,3.24,6.1,3.85,1.5.52,3.33,1.6,4.03,2.35,1.5,1.6,2.72,1.69,4.6.47,1.6-1.08,2.58-2.63,2.63-4.17,0-.94.23-1.03,2.3-1.03,3.52,0,3.85.38,8.54,9.85,1.55,3.1,1.6,6.05.28,11.49-.99,4.22-1.31,4.97-3.19,6.99-3.75,4.08-4.88,5.21-7.6,7.22-1.5,1.13-3.24,2.86-3.89,3.85l-1.17,1.78,1.17,3c.66,1.6,1.45,3.94,1.74,5.16l.61,2.16-2.44,3.61c-3.75,5.53-3.42,7.46,1.69,10.79,3.89,2.53,4.92,3.66,5.68,6.33.33,1.17,1.74,4.36,3.14,7.13,1.41,2.77,2.91,6.1,3.42,7.41.47,1.27,1.92,3.75,3.24,5.49,2.86,3.94,3.85,5.82,3.85,7.41,0,3.47,3.33,6.75,9.15,9.01,1.83.7,4.55,2.16,6.1,3.19,1.55,1.08,3.8,2.49,4.97,3.19,2.49,1.41,4.64,3.7,6.14,6.57.99,1.74,1.08,2.58.99,7.6,0,3.1-.56,9.62-1.22,14.54-.84,6.61-1.08,10.18-.94,13.88l.23,4.92-2.39,2.39c-2.53,2.49-2.77,3.14-1.69,4.55,1.03,1.36.89,1.92-.94,3.66l-1.69,1.55.99,2.77c1.41,4.17,1.22,5.91-1.27,11.54-1.22,2.67-2.81,5.91-3.56,7.13-1.08,1.74-1.41,2.81-1.36,4.46,0,1.92-.23,2.49-1.64,4.03-1.88,2.06-1.83,3.28.09,5.21,1.36,1.36,1.45,2.91.42,5.68-2.35,6.19-2.3,5.53-1.13,10.41l1.08,4.46-1.22,2.49c-.66,1.41-2.39,3.89-3.8,5.53-1.36,1.64-2.86,3.66-3.33,4.5-.75,1.5-.75,1.55.66,4.03.8,1.41,1.45,2.77,1.45,3s-.75,1.64-1.64,3.14c-.99,1.64-1.64,3.33-1.64,4.27,0,1.41.23,1.69,2.06,2.49,2.81,1.17,3,1.69,1.27,3.47-1.83,1.88-1.83,2.91,0,3.94,3.14,1.74,3.42,2.11,3.52,5.16.05,3.24.33,3.66,3.85,6.38,1.41,1.08,3.28,2.49,4.17,3.19,1.97,1.5,3.89,1.69,5.02.42.42-.47,1.13-1.97,1.6-3.38.84-2.63,1.88-3.38,3.14-2.3,1.27,1.08.7,2.3-2.35,4.97-1.69,1.5-3.05,2.86-3.05,3.05,0,.14.47.42,1.08.56.56.14,2.63.8,4.55,1.5,4.17,1.5,5.35,1.45,15.24-.7,7.69-1.69,9.62-2.25,9.62-2.86,0-.23-.14-.42-.33-.42-2.49,0-9.19-1.22-10.55-1.92-2.49-1.27-7.13-5.25-8.3-7.13-.7-1.17-.99-2.39-.99-4.55,0-3.47.14-3.61,8.3-9.76,4.27-3.24,5.35-4.31,6.14-6.1.99-2.16,1.22-3,1.08-4.17-.05-.33-1.45-.66-3.8-.89-3.05-.23-3.8-.47-3.99-1.17-.47-1.5.14-2.49,2.63-4.41,1.36-1.03,3.42-3,4.6-4.46,1.22-1.41,3.7-4.08,5.58-5.91,2.16-2.16,3.38-3.75,3.38-4.41,0-.99-.14-1.03-2.06-.75-2.53.38-3.66-.56-4.5-3.8-.8-3.24-.66-3.24,6.52-1.36,1.64.47,3.52.75,4.22.66,1.03-.14,1.22-.33,1.08-1.55-.61-7.27-.38-7.55,5.68-7.36,5.63.19,12.48-.66,13.65-1.69,1.97-1.78,7.32-9.85,7.32-11.07,0-.8-.66-1.88-1.88-3.1-.99-.99-2.49-2.96-3.24-4.31-1.36-2.3-1.45-2.77-1.41-6.94.05-4.03.09-4.27.52-2.35,1.78,8.54,2.53,9.8,6.52,10.98,5.68,1.69,8.21.75,14.87-5.58,4.69-4.46,5.35-5.49,6.85-10.6.99-3.38,2.53-4.92,4.36-4.31,1.83.66,2.35.33,3.52-1.88.52-1.08,2.06-3.1,3.42-4.55,4.41-4.74,4.5-5.02,3.19-10.65-1.22-5.21-.75-5.72,9.71-11.12,6.38-3.28,8.44-3.94,15.15-4.97,3.05-.47,5.82-1.13,6.19-1.41.38-.33,1.41-2.16,2.35-4.08.89-1.92,2.96-5.39,4.55-7.69,2.91-4.17,2.91-4.22,2.96-7.6.05-2.3.47-4.69,1.41-7.55l1.31-4.17-.84-3.19c-1.31-5.25-1.03-5.86,5.3-12.15,3.05-2.96,6.29-6.38,7.27-7.55,1.97-2.44,6.29-12.52,6.75-15.71.33-2.63-1.03-5.63-3.94-8.54-1.97-1.97-2.77-2.39-6.85-3.56-4.08-1.22-4.92-1.64-7.5-3.94-3.1-2.77-6.94-4.78-9.1-4.83-.7,0-2.91.14-4.88.33-4.03.33-3.38.56-12.48-4.6-6-3.42-9.24-4.6-12.9-4.6-2.72,0-4.08,1.22-6.05,5.49l-1.36,2.96-2.25-.05c-4.08-.05-4.27-.47-1.08-2.49,3.14-1.92,5.21-4.5,5.21-6.47,0-3.42-5.35-4.31-7.65-1.27-.56.8-1.55,1.74-2.2,2.06-1.83.94-5.39,1.36-6.52.75-1.41-.75-1.27-2.16.33-2.77.7-.28,2.77-1.08,4.55-1.78,1.83-.7,4.22-1.88,5.35-2.67,1.88-1.31,2.02-1.5,1.74-3.1-.33-2.16-1.64-3.89-3.28-4.31-1.83-.52-2.44-1.13-4.17-4.36-2.02-3.85-6.57-8.3-10.46-10.18-3.38-1.69-5.3-1.88-11.3-1.17l-3.38.42-1.69-1.83c-.89-.99-3.28-3.56-5.25-5.72l-3.56-3.85h-2.63c-1.45,0-3-.33-3.47-.66-.42-.33-1.31-.52-1.92-.42-1.83.38-1.83-.61-.09-4.13,1.69-3.38,2.39-5.77,2.06-7.32-.14-.66-.66-.19-2.16,1.83-2.25,3.05-3.14,3.33-4.83,1.5-2.63-2.81-7.04-3.8-10.51-2.35-1.13.47-1.69,1.08-1.92,2.02-.33,1.31-1.45,2.96-2.06,2.96-.14,0-.8-.84-1.36-1.92-1.78-3.14-6.14-4.13-9.1-2.06-1.69,1.17-2.63.84-3.99-1.45-2.25-3.85-2.44-3.99-4.36-3.47-2.16.61-5.25,3.28-6.24,5.35-.42.89-.99,2.86-1.27,4.36s-.66,2.91-.84,3.1c-.89.89-1.64-1.36-1.83-5.3-.19-3.75-.09-4.27,1.03-6.19.66-1.17,1.22-2.53,1.22-3.1,0-1.64-3-1.41-5.86.42-1.27.8-3.52,2.06-5.02,2.77-3.56,1.74-5.11,3.1-8.68,7.5-1.64,2.06-3.61,3.94-4.5,4.41-2.16.99-4.36.56-5.16-1.03-.7-1.5-2.44-2.77-4.83-3.61-1.6-.56-1.97-.56-2.77.05-.52.38-2.53,1.45-4.46,2.39-5.68,2.77-7.97,2.3-11.02-2.35-2.86-4.31-3.19-11.07-.84-18.43l.75-2.49-1.36-2.2c-1.5-2.44-5.3-5.35-6.99-5.35-.56,0-2.3.56-3.8,1.22-2.16.94-3.19,1.13-4.88.94-1.17-.14-3.33-.42-4.83-.56-1.5-.19-2.63-.42-2.53-.61,1.64-3,2.25-5.11,2.21-7.22-.19-4.46-.05-4.97,1.83-7.04,2.49-2.72,2.86-3.61,2.86-6.66,0-2.11-.19-2.81-1.08-3.7-.99-.99-1.27-1.03-4.55-.7-1.92.19-4.97.38-6.75.38-3,.05-3.28.14-4.78,1.64-1.6,1.6-1.64,1.64-1.31,4.69.28,2.86.23,3.1-.94,4.27-.89.89-1.5,1.13-2.06.89-1.83-.89-4.97-.42-7.32,1.13-3.47,2.25-4.6,2.06-8.96-1.45-4.03-3.24-7.79-7.08-8.68-8.82-2.02-3.85-2.49-13.04-.94-17.54,1.31-3.85,1.27-6.85-.23-8.58l-1.17-1.41.94-1.17c.56-.66,2.77-2.11,4.92-3.19,2.44-1.22,4.88-2.91,6.33-4.36l2.39-2.39,5.49-.14c5.68-.19,5.86-.14,11.73,2.2l2.49.99,1.13-1.13c.66-.66,1.17-1.6,1.17-2.11,0-1.64,2.16-2.86,5.21-2.86,1.5,0,4.88-.23,7.5-.56l4.78-.52,2.21,2.39c2.58,2.77,3.52,2.96,5.63,1.22.8-.7,1.55-1.13,1.69-.99s.75,2.3,1.36,4.78c1.55,6.14,2.67,8.3,5.3,10.22,1.64,1.17,2.39,2.11,2.91,3.66.66,1.92.84,2.06,2.35,2.06,1.31,0,1.78-.28,2.67-1.55,1.83-2.77,1.92-5.35.19-10.32-1.41-4.17-3.47-8.82-5.02-11.35-.89-1.5-.56-4.5.61-5.68.47-.47,2.16-1.64,3.75-2.63,1.64-.99,5.63-3.89,8.91-6.52,3.33-2.58,7.08-5.3,8.35-6,4.55-2.58,5.25-3.85,3.52-6.05-2.02-2.53-3.05-6.85-1.88-7.6.28-.19,1.22.14,2.11.7,1.5.94,1.69.94,3,.23,1.97-.99,2.49-2.2,2.11-4.69-.38-2.58.28-3.52,2.39-3.52s2.91-1.08,2.25-2.86c-.47-1.22-.42-1.45.7-2.35,1.08-.84,1.69-.94,3.99-.75,4.69.42,10.74-.8,11.3-2.25.09-.33-.33-1.36-.94-2.3-1.88-2.77-1.92-4.08-.14-6.1,2.06-2.39,3.75-3.14,8.11-3.66,3.1-.33,3.94-.61,4.74-1.5,1.22-1.45,3-2.39,3.56-1.83.23.23.52,1.45.7,2.72.7,5.91,1.88,6.43,7.69,3.38,3.47-1.83,5.3-2.39,12.24-3.85,8.16-1.69,10.27-2.44,10.27-3.8,0-.99-2.58-6-3.47-6.71-.66-.56-1.08-.33-3.1,1.55-1.27,1.17-2.63,2.16-3.05,2.16-1.74,0-2.53-.94-2.86-3.28-.19-1.31-.52-2.49-.75-2.63-.28-.19-1.41.38-2.53,1.17-1.17.8-2.39,1.45-2.77,1.45-.33,0-1.27-.8-2.06-1.74l-1.45-1.74.94-.99c1.41-1.5,1.17-3.38-.66-5.21-2.11-2.11-4.64-2.16-9.05-.19-1.74.8-5.07,1.97-7.41,2.58-2.3.61-4.74,1.27-5.39,1.45-1.27.38,3.61-3.33,11.07-8.35,5.3-3.56,6.47-3.8,9.99-2.25,1.78.84,2.16.89,2.81.28,1.69-1.5,2.06-1.13,2.11,2.06.05,1.69.23,3.33.42,3.61.56.89,2.16.7,4.83-.52,2.63-1.22,3.42-2.06,2.53-2.63-.28-.19.52-.47,1.92-.66,1.31-.19,3.42-.84,4.64-1.45,1.22-.61,3.24-1.41,4.46-1.69,1.55-.38,3.05-1.27,4.78-2.86,2.77-2.49,3.47-2.67,4.83-1.31,1.45,1.45,1.17,2.35-1.6,4.88-1.83,1.69-3.05,3.42-4.22,5.91-.94,1.92-1.92,3.85-2.2,4.27-.33.42-.42,1.13-.23,1.6.28.75.89.8,7.13.61,6.8-.23,6.85-.23,8.26.94l1.41,1.17,1.64-.84c2.06-1.13,5.91-1.13,7.18,0,1.13,1.03,1.88.56,1.88-1.17,0-1.36-4.22-8.49-5.82-9.8-.56-.47-1.5-.56-3.47-.38-2.35.23-2.96.14-4.55-.84-1.03-.61-2.35-1.17-2.91-1.17-.61,0-1.08-.09-1.08-.23,0-.09,1.17-2.16,2.63-4.55,4.64-7.6,4.69-7.69,4.03-8.49-.33-.42-2.06-1.17-3.85-1.69-2.96-.89-3.47-1.27-5.11-3.47-3.52-4.74-6-6.33-10.55-6.85-4.08-.47-4.31-.61-5.16-2.58-1.08-2.53-15.85-18.57-17.12-18.57-.38,0-2.63,1.97-4.92,4.41-5.11,5.3-6.24,5.77-10.27,3.89-2.53-1.13-5.49-3.8-5.49-4.92,0-.33.56-1.13,1.22-1.74,2.35-2.21.28-3.56-7.04-4.69-3.66-.52-5.07-1.03-8.54-2.91l-4.17-2.25-7.27.09c-3.99,0-8.11.23-9.15.47-1.78.38-1.92.56-2.44,2.72-.75,2.91-.89,5.63-.42,7.83.42,1.88,0,2.25-3.1,2.91-1.83.42-1.64.94.7,2.3,2.06,1.22,7.83,6.99,7.83,7.88,0,.99-1.36,3.61-2.39,4.6-1.41,1.36-4.31,2.86-5.49,2.86-.47,0-1.36-.52-1.97-1.17-1.27-1.36-3.94-1.64-4.41-.47-.14.38.47,1.64,1.41,2.86,1.69,2.16,3.38,7.22,3.8,11.26.33,2.67-.84,3.47-5.11,3.47-2.63,0-3.33-.19-4.13-1.03-1.08-1.17-1.17-1.88-.42-3.1.38-.61.42-1.83.19-3.66l-.33-2.77-1.74,1.97c-2.02,2.35-2.86,2.53-2.86.66,0-.75-.42-2.25-.94-3.38-.52-1.13-.94-2.49-.94-3.05,0-1.97-1.5-2.67-5.53-2.58-2.63.05-5.68-.38-10.22-1.36-11.02-2.39-12.48-2.81-16.84-4.74-4.41-1.97-6.24-2.25-10.37-1.6l-2.39.33-.84-2.16c-.99-2.58-2.63-4.03-4.5-4.03-3.19,0-4.64-1.74-4.64-5.58,0-2.77,1.45-4.46,7.36-8.4,3.05-2.06,6.71-4.69,8.11-5.91,4.03-3.52,4.69-3.7,11.26-4.03l5.82-.23.66-3.7c.66-3.66.7-3.7,1.27-2.3.33.8,1.6,2.11,2.77,2.91,1.17.84,2.16,1.74,2.16,2.06,0,.28-.66,1.22-1.5,2.06-1.55,1.6-1.55,1.5.75,2.2,1.03.33,4.41-.56,7.79-2.06,1.74-.75,3.99-1.5,5.11-1.69,2.25-.38,3.33.33,4.78,3.19.56,1.08,1.36,1.88,2.06,2.06,2.58.66,7.08-2.25,6.05-3.94-.56-.94-4.97-3.24-8.44-4.41-1.31-.47-3.38-1.69-4.6-2.77-2.16-1.92-2.25-1.92-3.99-1.41-2.35.66-4.41.66-5.11-.05-.33-.33-1.27-.52-2.16-.47-1.97.14-3.42-1.03-2.58-2.06.66-.8,5.39-.89,9.57-.14,2.72.47,3.24.38,7.79-.99,4.92-1.55,6.99-2.77,6.99-4.27,0-1.22-2.11-3.52-3.85-4.17-2.39-.94-2.81-1.41-2.16-2.2,1.36-1.69,3.42-2.25,8.82-2.49l5.39-.23.14-1.41c.09-.8.38-1.6.61-1.83.61-.66,2.21.99,2.53,2.58.28,1.31.38,1.36,3.38,1.36,3.19,0,5.77,1.17,5.77,2.63,0,1.64-1.97,4.41-3.7,5.35-3.47,1.74-3.05,2.06,3.24,2.58l3.52.28,1.45-1.55c.8-.84,1.92-2.25,2.49-3.1.56-.8,1.41-1.5,1.88-1.5,1.17,0,7.08,2.72,7.08,3.24,0,.23-1.55,1.03-3.38,1.74-3.33,1.22-3.89,1.69-7.32,5.77l-1.36,1.64-3.7-.56c-5.25-.8-7.41-.7-8.68.33-.99.8-1.13,1.27-1.03,3.8.09,4.27.42,4.46,5.39,3.33,3.56-.84,4.78-.89,10.83-.56,6.43.38,6.99.52,9.38,1.88,1.41.8,3.05,1.45,3.7,1.45.61,0,2.21.75,3.47,1.64,2.58,1.83,3.1,1.97,3.94.94.99-1.22,2.72-.8,4.83,1.13,1.88,1.74,2.16,1.83,6.05,2.16l4.08.33.7-1.41c1.17-2.3,3.66-2.25,7.88.14,1.13.66,2.2,1.17,2.44,1.17.56,0,0-5.16-.7-6.75-.61-1.36-2.63-2.77-7.04-4.97-1.64-.84-3.24-1.88-3.56-2.3-.84-1.08-.75-2.86.19-3.19,1.41-.56,5.96.75,10.09,2.91,2.25,1.17,4.55,2.11,5.07,2.11,1.88,0,7.55-3.42,9.66-5.82,2.35-2.67,2.3-2.72-2.21-3.52-4.88-.84-7.08-1.64-9.57-3.56-3.61-2.77-6.05-3.7-8.63-3.28-4.92.8-5.53.33-7.13-5.63-.61-2.35-1.36-4.22-1.78-4.41-.42-.23-1.69-.56-2.86-.75-14.26-2.25-22.42-4.69-33.87-10.13-3.28-1.6-6.71-3-7.6-3.24-.99-.19-5.07-.09-9.52.28-4.36.33-9.48.66-11.4.66s-5.25.23-7.36.52l-3.89.56.14,2.86.09,2.81-1.69.56c-.89.33-2.39.66-3.28.75-1.78.14-1.69.56-1.08-4.83.28-2.3.19-2.72-.89-3.99-1.74-2.02-4.31-1.88-11.12.7-6.14,2.35-8.16,3.56-7.83,4.69.14.42.56,1.88.99,3.28.84,3,2.44,4.78,5.63,6.38,2.06,1.03,3,1.17,7.5,1.22,2.86,0,6.14.19,7.32.33l2.11.33-.09,2.06c-.14,2.58-.61,3.14-3.66,4.03-1.97.56-2.72,1.08-3.52,2.35-1.08,1.78-2.25,2.58-3.61,2.58-.8,0-.89-.28-.7-2.81.23-3.14-.33-4.13-2.86-5.49-1.5-.75-2.53-.52-5.11,1.08-2.53,1.6-3.38,1.45-4.78-.94-.66-1.13-1.78-2.39-2.49-2.86s-3.19-2.72-5.44-4.97c-4.36-4.36-6.14-5.25-8.72-4.36-1.83.66-1.78,2.44.14,7.18,2.06,5.11,2.86,8.54,2.3,10.22-.38,1.08-.94,1.36-4.17,2.25-3.85,1.08-5.44.94-5.96-.42-.47-1.22-1.36-8.72-1.13-9.38.19-.47-.84-.56-5.02-.52-2.91.05-5.53.23-5.86.42-.94.61-.56,1.55.84,2.16,2.21.89,3.42,2.49,3.24,4.27-.09,1.31-.47,1.74-1.88,2.44-1.6.8-2.81.84-16.32.52-11.91-.28-14.73-.47-15.29-1.03-2.16-2.11,1.27-3.85,8.44-4.31,5.63-.38,8.11-1.13,10.27-3.14,2.81-2.77,1.08-4.69-4.92-5.39-2.16-.28-4.69-.89-5.68-1.36-2.3-1.17-5.49-4.41-5.49-5.49,0-.52.66-1.78,1.41-2.86.8-1.08,1.31-2.16,1.17-2.39-.19-.28-2.53-.47-5.3-.47s-5.96-.23-7.13-.52c-2.72-.61-4.22-.23-4.22,1.08,0,.56.56,3,1.27,5.39s1.13,4.5.94,4.64c-.56.56-1.78-.89-3.42-4.13-2.53-5.07-3.28-5.21-16.93-3.61l-5.3.61-3.42-1.69c-1.88-.94-4.08-1.88-4.83-2.06-2.58-.61-6.14-2.44-7.32-3.7-1.58-1.74-5.71-2.07-8.81-.76ZM192.56,108.21c.66.47,1.88,1.17,2.77,1.6,2.02.84,7.18,4.69,8.44,6.29,1.22,1.55,1.31,5.21.19,5.63-1.36.52-2.25-.52-3.28-3.66-.94-2.91-1.03-3.05-3.28-3.85-1.27-.42-2.81-1.08-3.42-1.41-1.13-.56-4.27-4.31-4.27-5.07,0-.75,1.73-.47,2.86.47ZM367.98,111.83c2.16,1.78,6.05,3.94,7.13,3.94,1.36,0,1.83,1.22,1.13,2.67-1.55,2.96-2.06,3.1-7.69,2.49-3.42-.38-5.49-.84-6.29-1.41-1.13-.8-1.45-.84-3.8-.19-1.45.38-3.38.99-4.27,1.36-2.58,1.08-5.82.94-6.43-.28-.84-1.55.42-2.91,3.56-3.89,1.55-.47,4.97-2.11,7.69-3.61,2.72-1.55,5.39-2.77,5.96-2.77.51,0,1.88.75,3,1.69ZM378.72,125.19c1.69.33,5.58.61,8.68.61,3.38.05,6,.28,6.61.61,1.36.75,3.38,3.85,3.75,5.68.28,1.36.19,1.5-.89,1.5-1.5,0-4.08-2.11-4.08-3.33,0-1.5-.89-.99-1.36.84-.61,2.06-.61,4.22-.09,5.53.89,2.11-3.14,5.82-5.02,4.64-1.13-.7-1.92-3.24-1.92-6.19-.05-3.85-1.22-5.49-4.6-6.43-2.02-.56-4.88.7-7.5,3.19-2.2,2.16-2.58,2.77-2.91,5.02-.23,1.41-.33,3.99-.19,5.72.42,4.83-.94,6.99-3.89,6.38-1.69-.33-2.02-2.06-1.92-10.98l.09-8.58,1.41-1.45c.8-.84,1.92-1.74,2.58-2.02,1.83-.75,6.24-1.64,7.27-1.45.52.1,2.3.42,3.99.71ZM414.93,135.37c1.08,1.08-.28,2.11-5.25,3.89-2.67.99-5.39,2.21-6.05,2.77-.66.52-2.91,1.78-4.97,2.81-2.06,1.08-4.17,2.3-4.69,2.77-2.53,2.35-5.96,3.05-6.8,1.45-.38-.75-.33-1.13.33-1.83.84-.89,6.24-3.8,7.08-3.8.19,0,1.64-1.41,3.14-3.1s3.52-3.66,4.46-4.36c1.6-1.13,2.02-1.22,6.94-1.22,3.61,0,5.39.19,5.82.61Z",
+            {
+                fill: "rgba(255,0,0,0.2)",
+                fillStyle: "solid",
+                strokeWidth: "3",
+                simplification: 1
+            }
+        );
+        land_container.appendChild(land.children[0]);
+        land_container.appendChild(land.children[0]);
+
+        d3.selectAll("#land>path")
+            .attr("transform", "translate(225, 300) scale(0.80)");
+
+
+        create_circle("ACB", 615, 515, 10, "rgba(255,85,0)");
+        create_circle("ASW", 435, 445, 10, "#0072B2");
+        create_circle("CEU", 425, 425, 10, "rgba(255,0,141)");
+        create_circle("CLM", 560, 560, 10, "#009E73");
+        create_circle("MXL", 410, 445, 10, "#56B4E9");
+        create_circle("PEL", 560, 600, 10, "#E69F00");
+        create_circle("PUR", 590, 500, 10, "#000000");
+
+        
+
+        d3.selectAll(".kg_stage0").style("display", "block");
+        d3.selectAll(".kg_stage0").style("opacity", "1");
+
+
+        create_circle("genome_circle", 500, 500, 467.5491/2);
+        create_circle("variants_circle", 400, 500, 54.2945/2, "rgba(255,0,0,0.2)");
+        
+        create_circle("common_circle", 400, 500, 27.4473/2, "rgba(0,0,255,0.2)");
+
+
+        var ACB_radius = 213.02/2;
+        var CEU_radius = 180/2;
+        var MXL_radius = 179.02/2;
+
+        create_circle("ACB_circle", 400, 500, ACB_radius, "rgba(255,85,0,0.5)");
+        create_circle("CEU_circle", 600, 550, CEU_radius, "rgba(255,0,141,0.5)");
+        create_circle("MXL_circle", 470, 690, MXL_radius, "rgba(86,180,233,0.5)");
+
+
+        var ACB_start = random_between(400, 600);
+        var CEU_start = random_between(400, 600);
+        var MXL_start = random_between(400, 600);
+
+        create_interactive_circle(
+            "ACB_CEU_ACB",
+            ACB_start,
+            550,
+            ACB_radius,
+            "rgba(255,85,0,0.5)",
+            "kg4_submit",
+            3,
+            "ACB_CEU_CEU",
+            CEU_start,
+            CEU_radius,
+            "kg_answer1"
+        );
+        create_interactive_circle(
+            "ACB_CEU_CEU",
+            CEU_start,
+            550,
+            CEU_radius,
+            "rgba(255,0,141,0.5)",
+            "kg4_submit",
+            3,
+            "ACB_CEU_ACB",
+            ACB_start,
+            ACB_radius,
+            "kg_answer1"
+        );
+
+        create_interactive_circle(
+            "ACB_MXL_ACB",
+            ACB_start,
+            550,
+            ACB_radius,
+            "rgba(255,85,0,0.5)",
+            "kg5_submit",
+            3,
+            "ACB_MXL_MXL",
+            MXL_start,
+            MXL_radius,
+            "kg_answer2"
+        );
+        create_interactive_circle(
+            "ACB_MXL_MXL",
+            MXL_start,
+            550,
+            MXL_radius,
+            "rgba(86,180,233,0.5)",
+            "kg5_submit",
+            3,
+            "ACB_MXL_ACB",
+            ACB_start,
+            ACB_radius,
+            "kg_answer2"
+        );
+
+        create_interactive_circle(
+            "CEU_MXL_CEU",
+            CEU_start,
+            550,
+            CEU_radius,
+            "rgba(255,0,141,0.5)",
+            "kg6_submit",
+            3,
+            "CEU_MXL_MXL",
+            MXL_start,
+            MXL_radius,
+            "kg_answer3"
+        );
+        create_interactive_circle(
+            "CEU_MXL_MXL",
+            MXL_start,
+            550,
+            MXL_radius,
+            "rgba(86,180,233,0.5)",
+            "kg6_submit",
+            3,
+            "CEU_MXL_CEU",
+            CEU_start,
+            CEU_radius,
+            "kg_answer3"
+        );
+
+        
+        var truth_ACB_radius = ACB_radius/2;
+        var truth_CEU_radius = CEU_radius/2;
+        var truth_MXL_radius = MXL_radius/2;
+
+        var transform_ACB_CEU = 250-((ACB_start/2)+(CEU_start/2))/2;
+        create_circle("guess_ACB_CEU_ACB", (ACB_start/2)+transform_ACB_CEU, 360, truth_ACB_radius, "rgba(255,85,0,0.5)");
+        create_circle("guess_ACB_CEU_CEU", (CEU_start/2)+transform_ACB_CEU, 360, truth_CEU_radius, "rgba(255,0,141,0.5)");
+
+        create_circle("truth_ACB_CEU_ACB", 798-50, 360, truth_ACB_radius, "rgba(255,85,0,0.5)");
+        create_circle("truth_ACB_CEU_CEU", 822-50, 360, truth_CEU_radius, "rgba(255,0,141,0.5)");
+        d3.select("#kg_truth1_table").text(String(Math.round((calc_percentage_overlap(798, truth_ACB_radius, 822, truth_CEU_radius) * 100))) + "%");
+
+        var transform_ACB_MXL = 250-((ACB_start/2)+(MXL_start/2))/2;
+        create_circle("guess_ACB_MXL_ACB", (ACB_start/2)+transform_ACB_MXL, 535, truth_ACB_radius, "rgba(255,85,0,0.5)");
+        create_circle("guess_ACB_MXL_MXL", (MXL_start/2)+transform_ACB_MXL, 535, truth_MXL_radius, "rgba(86,180,233,0.5)");
+
+        create_circle("truth_ACB_MXL_ACB", 798.5-50, 535, truth_ACB_radius, "rgba(255,85,0,0.5)");
+        create_circle("truth_ACB_MXL_MXL", 821.5-50, 535, truth_MXL_radius, "rgba(86,180,233,0.5)");
+        d3.select("#kg_truth2_table").text(String(Math.round((calc_percentage_overlap(798.5, truth_ACB_radius, 821.5, truth_MXL_radius) * 100))) + "%");
+        
+        var transform_CEU_MXL = 250-((CEU_start/2)+(MXL_start/2))/2;
+        create_circle("guess_CEU_MXL_CEU", (CEU_start/2)+transform_CEU_MXL, 710, truth_CEU_radius, "rgba(255,0,141,0.5)");
+        create_circle("guess_CEU_MXL_MXL", (MXL_start/2)+transform_CEU_MXL, 710, truth_MXL_radius, "rgba(86,180,233,0.5)");
+        
+        create_circle("truth_CEU_MXL_CEU", 791.3+4.35-50, 710, truth_CEU_radius, "rgba(255,0,141,0.5)");
+        create_circle("truth_CEU_MXL_MXL", 800+4.35-50, 710, truth_MXL_radius, "rgba(86,180,233,0.5)");
+        d3.select("#kg_truth3_table").text(String(Math.round((calc_percentage_overlap(791.3+4.35, truth_CEU_radius, 800+4.35, truth_MXL_radius) * 100))) + "%");
+
+
+        create_button("kg0_buttons", "kg0_next", "Next", 450, 900, 100, 50);
+        create_button("kg1_buttons", "kg1_next", "Next", 450, 900, 100, 50);
+        create_button("kg2_buttons", "kg2_next", "Next", 450, 900, 100, 50);
+        create_button("kg3_buttons", "kg3_next", "Next", 450, 900, 100, 50);
+        create_button("kg4_buttons", "kg4_submit", "Submit", 425, 900, 150, 50);
+        create_button("kg5_buttons", "kg5_submit", "Submit", 425, 900, 150, 50);
+        create_button("kg6_buttons", "kg6_submit", "Submit", 425, 900, 150, 50);
+        create_button("kg7_buttons", "kg7_next", "Complete!", 400, 900, 200, 50);
+
+        d3.select("#kg0_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".kg_stage0").style("display", "none");
+                d3.selectAll(".kg_stage1").style("display", "block").transition().style("opacity", "1");
+            });
+
+        d3.select("#kg1_next")
+            .on("click", function(event, d) {
+
+                d3.selectAll("#variants_circle>path").style("fill", "none");
+                
+                d3.selectAll(".kg_stage1").style("display", "none");
+                d3.selectAll(".kg_stage2").style("display", "block").transition().style("opacity", "1");
+            });
+        
+        d3.select("#kg2_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".kg_stage2").style("display", "none");
+                d3.selectAll(".kg_stage3").style("display", "block").transition().style("opacity", "1");
+            });
+
+        d3.select("#kg3_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".kg_stage3").style("display", "none");
+                d3.selectAll(".kg_stage4").style("display", "block").transition().style("opacity", "1");
+            });
+
+        d3.select("#kg4_submit")
+            .on("click", function(event, d) {
+                d3.selectAll(".kg_stage4").style("display", "none");
+                d3.selectAll(".kg_stage5").style("display", "block").transition().style("opacity", "1");
+                d3.select("#kg_answer1_table").text(d3.select("#kg_answer1").text());
+                d3.select("#thousand_genomes_overlap0").attr("value", d3.select("#kg_answer1").text())
+            });
+        
+        d3.select("#kg5_submit")
+            .on("click", function(event, d) {
+                d3.selectAll(".kg_stage5").style("display", "none");
+                d3.selectAll(".kg_stage6").style("display", "block").transition().style("opacity", "1");
+                d3.select("#kg_answer2_table").text(d3.select("#kg_answer2").text());
+                d3.select("#thousand_genomes_overlap1").attr("value", d3.select("#kg_answer2").text())
+            });
+
+        d3.select("#kg6_submit")
+            .on("click", function(event, d) {
+                d3.selectAll(".kg_stage6").style("display", "none");
+                d3.selectAll(".kg_stage7").style("display", "block").transition().style("opacity", "1");
+                d3.select("#kg_answer3_table").text(d3.select("#kg_answer3").text());
+                d3.select("#thousand_genomes_overlap2").attr("value", d3.select("#kg_answer3").text());
+                
+                var t_ACB_CEU_ACB = get_translation_value("#guess_ACB_CEU_ACB");
+                var t_ACB_CEU_CEU = get_translation_value("#guess_ACB_CEU_CEU");
+                var pos_ACB_CEU_ACB = ((ACB_start/2)+transform_ACB_CEU)+t_ACB_CEU_ACB;
+                var pos_ACB_CEU_CEU = ((CEU_start/2)+transform_ACB_CEU)+t_ACB_CEU_CEU;
+                d3.select("#guess_ACB_CEU_ACB").attr("transform", "translate("+ String((250-(pos_ACB_CEU_ACB+pos_ACB_CEU_CEU)/2)+t_ACB_CEU_ACB) + ")");
+                d3.select("#guess_ACB_CEU_CEU").attr("transform", "translate("+ String((250-(pos_ACB_CEU_ACB+pos_ACB_CEU_CEU)/2)+t_ACB_CEU_CEU) + ")");
+
+                var t_ACB_MXL_ACB = get_translation_value("#guess_ACB_MXL_ACB");
+                var t_ACB_MXL_MXL = get_translation_value("#guess_ACB_MXL_MXL");
+                var pos_ACB_MXL_ACB = ((ACB_start/2)+transform_ACB_MXL)+t_ACB_MXL_ACB;
+                var pos_ACB_MXL_MXL = ((MXL_start/2)+transform_ACB_MXL)+t_ACB_MXL_MXL;
+                d3.select("#guess_ACB_MXL_ACB").attr("transform", "translate("+ String((250-(pos_ACB_MXL_ACB+pos_ACB_MXL_MXL)/2)+t_ACB_MXL_ACB) + ")");
+                d3.select("#guess_ACB_MXL_MXL").attr("transform", "translate("+ String((250-(pos_ACB_MXL_ACB+pos_ACB_MXL_MXL)/2)+t_ACB_MXL_MXL) + ")");
+
+                var t_CEU_MXL_CEU = get_translation_value("#guess_CEU_MXL_CEU");
+                var t_CEU_MXL_MXL = get_translation_value("#guess_CEU_MXL_MXL");
+                var pos_CEU_MXL_CEU = ((CEU_start/2)+transform_CEU_MXL)+t_CEU_MXL_CEU;
+                var pos_CEU_MXL_MXL = ((MXL_start/2)+transform_CEU_MXL)+t_CEU_MXL_MXL;
+                d3.select("#guess_CEU_MXL_CEU").attr("transform", "translate("+ String((250-(pos_CEU_MXL_CEU+pos_CEU_MXL_MXL)/2)+t_CEU_MXL_CEU) + ")");
+                d3.select("#guess_CEU_MXL_MXL").attr("transform", "translate("+ String((250-(pos_CEU_MXL_CEU+pos_CEU_MXL_MXL)/2)+t_CEU_MXL_MXL) + ")");
+            });
+
+        d3.select("#kg7_next")
+            .on("click", function(event, d) {
+                $(".carousel").carousel("next");
+                d3.select("#time_spent").attr("value", Date.now() - start);
+                document.getElementById("submit_form").click();
+            });
+        
+    </script>
+</div>

@@ -1,0 +1,158 @@
+<style>
+    .slider_cursor:hover {
+        cursor: grab
+    }
+
+    .i_stage1, .i_stage2, .i_stage3 {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+
+    #left_circle, #right_circle, #overlap0, #overlap1 {
+        transition: 1s;
+    }
+
+    #example0_guess, #example1_guess {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+</style>
+
+<div id="interpretability" class="carousel-item full grid-background">
+
+    <div class="form-responses">
+        <input type="hidden" id="interpretability_overlap0" name="interpretability_overlap0">
+        <input type="hidden" id="interpretability_overlap1" name="interpretability_overlap1">
+    </div>
+
+    <svg class="figure" viewBox="0 0 1000 1000">
+    
+        <g class="text-content">
+            <g>
+                <text x="100" y="100">Here's some practice reading Euler diagrams! For the</text>
+                <text x="100" y="150">following examples, <tspan font-weight="bold">estimate the percent overlap</tspan></text>
+                <text x="100" y="200"><tspan font-weight="bold">relative to the total diagram area using the slider.</tspan></text>
+            </g>
+        </g>
+
+        <g class="diagram" transform="translate(0, 25)">
+            <g>
+                <g id="left_circle"></g>
+                <g id="right_circle"></g>
+            </g>
+            <g class="numbers">
+                <text id="overlap0" class="i_stage0 i_stage1" x="500" y="500" text-anchor="middle" dominant-baseline="central" font-size=1.5em>X%</text>
+                <text id="overlap1" class="i_stage2 i_stage3" x="500" y="500" text-anchor="middle" dominant-baseline="central" font-size=1.5em transform="translate(-45, 0)">X%</text>
+            </g>
+            <g class="answers">
+                <g class="i_stage1">
+                    <text x="500" y="800" text-anchor="middle" dominant-baseline="central">The correct overlap is <tspan font-weight="bold" dominant-baseline="central">22%</tspan>.</text>
+                </g>
+                <g class="i_stage3">
+                    <text x="500" y="800" text-anchor="middle" dominant-baseline="central">The correct overlap is <tspan font-weight="bold" dominant-baseline="central">12%</tspan>.</text>
+                </g>
+            </g>
+            <g class="slider">
+                <g id="example0_slider" class="i_stage0">
+                    <g id="example0_bar"></g>
+                    <g id="example0_cursor" class="slider_cursor"></g>
+                </g>
+                <g id="example1_slider" class="i_stage2">
+                    <g id="example1_bar"></g>
+                    <g id="example1_cursor" class="slider_cursor"></g>
+                </g>
+            </g>
+        </g>
+    
+        <g class="buttons">
+            <g id="example0_0_buttons" class="i_stage0"></g>
+            <g id="example0_1_buttons" class="i_stage1"></g>
+            <g id="example1_0_buttons" class="i_stage2"></g>
+            <g id="example1_1_buttons" class="i_stage3"></g>
+        </g>
+
+    </svg>
+
+    <script>
+
+        var left_container = document.getElementById("left_circle");
+        var rc = rough.svg(left_container);
+        var left = rc.circle(0, 0, 190*2, {
+            fill: "rgba(255,0,0,0.2)",
+            fillStyle: "solid",
+            strokeWidth: "3"
+        });
+        left_container.appendChild(left.children[0]);
+        left_container.appendChild(left.children[0]);
+
+        var right_container = document.getElementById("right_circle");
+        var rc = rough.svg(right_container);
+        var right = rc.circle(0, 0, 190*2, {
+            fill: "rgba(0,0,255,0.2)",
+            fillStyle: "solid",
+            strokeWidth: "3"
+        });
+        right_container.appendChild(right.children[0]);
+        right_container.appendChild(right.children[0]);
+
+        d3.selectAll(".i_stage0").style("display", "block");
+        d3.selectAll(".i_stage0").transition().style("opacity", "1");
+        d3.select("#left_circle").transition().attr("transform", "translate(400, 500)");
+        d3.select("#right_circle").transition().attr("transform", "translate(600, 500)");
+
+        create_slider("example0", "overlap0", "example0_guess", "interpretability_overlap0");
+        create_slider("example1", "overlap1", "example1_guess", "interpretability_overlap1");
+
+        create_button("example0_0_buttons", "example0_guess", "Submit", 425, 900, 150, 50);
+        d3.select("#example0_guess")
+            .on("click", function(event, d) {
+                d3.selectAll(".i_stage0").style("display", "none");
+                d3.selectAll(".i_stage1").style("display", "block").transition().style("opacity", "1");
+            });
+
+        create_button("example0_1_buttons", "example0_next", "Next", 450, 900, 100, 50);
+        d3.select("#example0_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".i_stage1").style("display", "none");
+                d3.selectAll(".i_stage2").style("display", "block").transition().style("opacity", "1");
+                d3.select("#left_circle").transition().attr("transform", "scale(0.87836632) translate(455.390866990437, 569.238583738047) translate(-48.731718219797, 0)");
+                d3.select("#right_circle").transition().attr("transform", "scale(1.15005105) translate(521.71597078234, 434.763308985284) translate(12.8665592714341, 0)");
+            });
+
+        create_button("example1_0_buttons", "example1_guess", "Submit", 425, 900, 150, 50);
+        d3.select("#example1_guess")
+            .on("click", function(event, d) {
+                d3.selectAll(".i_stage2").style("display", "none");
+                d3.selectAll(".i_stage3").style("display", "block").transition().style("opacity", "1");
+            });
+
+        create_button("example1_1_buttons", "example1_next", "Next", 450, 900, 100, 50);
+        d3.select("#example1_next")
+            .on("click", function(event, d) {
+                
+                $(".carousel").carousel("next");
+                
+                /*
+                setTimeout(function() {
+                    d3.selectAll(".i_stage0,.i_stage2,.i_stage3").style("display", "none").style("opacity", "0");
+                    d3.selectAll(".i_stage1").style("display", "block").transition().style("opacity", "1");
+                    d3.select("#left_circle").transition().attr("transform", "translate(400, 500)");
+                    d3.select("#right_circle").transition().attr("transform", "translate(600, 500)");
+                    
+                    d3.select("#example0_next")
+                        .on("click", function(event, d) {
+                            d3.selectAll(".i_stage1").style("display", "none");
+                            d3.selectAll(".i_stage3").style("display", "block").transition().style("opacity", "1");
+                            d3.select("#left_circle").transition().attr("transform", "scale(0.87836632) translate(455.390866990437, 569.238583738047) translate(-48.731718219797, 0)");
+                            d3.select("#right_circle").transition().attr("transform", "scale(1.15005105) translate(521.71597078234, 434.763308985284) translate(12.8665592714341, 0)");
+                        });
+
+                }, 1000);
+                */
+            });
+
+    </script>
+
+</div>

@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Euler Diagrams and Visualizing Human Genetic Diversity</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rough.js/2.1.1/rough.js" integrity="sha512-sZtT5AmC0DFqxtF/WG8fUVvsum8ZkIoHa08hQO5css2CRXZrvMt9DwMZ4hFNQZiJtwZnmc413p/msPhYMyjlPA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <style>
+
+            @font-face {
+                font-family: FuturaHandwritten;
+                src: url(assets/FuturaHandwritten.ttf);
+            }
+
+            @font-face {
+                font-family: SourGummy;
+                src: url(assets/SourGummy-VariableFont_wdth,wght.ttf);
+            }
+
+            * {
+                font-synthesis: none;
+            }
+
+            html, body, form {
+                margin: 0;
+                height: 100dvh;
+                overflow: hidden;
+                touch-action: none;
+                font-family: SourGummy;
+            }
+
+            .figure {
+                opacity: 1;
+                transition: opacity 1s ease-in-out;
+                height: 100%;
+                width: 100%;
+            }
+
+            .full {
+                width: 100%;
+                height: 100%; 
+            }
+
+            #welcome {
+                background-color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                padding: 50px 15%;
+                height: 100%;
+                width: 100%;
+            }
+
+            #welcome-text {
+                overflow: auto;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                width: 100%;
+                max-width: 900px;
+                max-height: 80%;
+            }
+
+			#env-gene {
+                max-height: 100%;
+                overflow: auto;
+                background-color: white;
+                height: calc(100% - 150px);
+                padding: 50px 15%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+				width: 100%;
+            }
+
+			.spectrum {
+				display: grid;
+				padding: 50px 0px;
+				width: 50%;
+			}
+
+            .carousel-caption {
+                background-color: rgba(255,255,255,1);
+                padding: 10px 20px;
+                outline: 1px lightgrey solid;
+                bottom: 2.5rem;
+                max-height: calc(100dvh - 75px);
+                overflow: auto
+            }
+
+            .carousel-control-hide-caption{
+                background: 0 0;
+                border: 0;
+                opacity: .5;
+                transition: all .15s ease;
+            }
+
+            .carousel-control-prev:hover, .carousel-control-next:hover {
+                opacity: 0.5;
+            }
+
+            .caption-control-text {
+                margin: 0;
+                color: black;
+            }
+
+            .hide-caption-icon {
+                transform: rotate(-90deg);
+            }
+
+            @media (hover: hover) {
+                .carousel-control-prev:hover, .carousel-control-next:hover {
+                    opacity: 1;
+                }
+                .carousel-control-hide-caption:hover, .caption-control-text {
+                    opacity: 1;
+                }
+            }
+
+
+            @media(max-width:767px) {
+                .desc {
+                    text-align: left;
+                }
+            }
+
+            #overlay {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                height: 100%;
+                width: 100%;
+                background-color: rgba(255,255,255,0.75);
+                z-index: 2;
+            }
+
+            #box {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                color: #053e4e;
+            }
+
+            .loader {
+                border: 20px solid #053e4e;
+                border-radius: 50%;
+                border-top: 20px solid #1eebb1;
+                width: 100px;
+                height: 100px;
+                animation: spinner 4s linear infinite;
+            }
+
+            @keyframes spinner {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            #complete {
+                width: 100%;
+                height: 100%;
+                padding: 50px 15%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+
+            #codename_display {
+                max-width: 100%;
+                word-wrap: break-word;
+                font-size: 30px;
+            }
+
+            .center {
+                text-align: center;
+            }
+
+            .region_input {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                padding-bottom: 50px;
+            }
+
+            .answer {
+                opacity: 0;
+            }
+
+            .text-top {
+                text-align: center;
+                font-size: 20px;
+            }
+
+            .region3 {
+                height: 29.736px;
+                margin: 0px;
+            }
+
+            .circle, .line{
+                fill: none;
+                stroke: #231f20;
+                stroke-miterlimit: 10;
+            }
+            .circle {
+                stroke-width: 2px;
+            }
+            .line {
+                stroke-width: 1px;
+            }
+            .text, .label {
+                font-size: 12px;
+                fill: #231f20;
+                font-family: MyriadPro-Regular, Myriad Pro;
+            }
+
+            .grid-container {
+                grid-template-columns: 25% 25% 50%;
+                grid-template-rows: 10% 30% 30% 30%;
+                width: 100%;
+                height: 100%;
+                border: black 1px solid;
+                display: none;
+            }
+
+            .grid-item {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0px;
+            }
+
+            .outline-right {
+                border-right: black 1px solid;
+            }
+
+            .outline-bottom {
+                border-bottom: black 1px solid;
+            }
+
+            #final {
+                display: none;
+            }
+
+            .text-content {
+                font-size: 2em;
+                color: black;
+            }
+
+            .subtext-content {
+                font-size: 0.6em;
+                color: black;
+            }
+
+            .button {
+                font-size: 2em;
+                color: black;
+            }
+
+            .button:hover {
+                cursor: pointer;
+            }
+
+            .likert_option:hover {
+                cursor: pointer;
+            }
+
+
+        </style>
+    </head>
+    <body>
+
+        <script>
+
+            d3.selection.prototype.first = function() {  return d3.select(this.nodes()[0]);  };
+
+            d3.selection.prototype.last = function() {   return d3.select(this.nodes()[this.size() - 1]); };
+
+            function create_button(parent_id, id, text, x, y, w, h) {
+                var bc = d3.select("#"+parent_id).append("g").attr("id", id).attr("class", "button");
+                var button_container = document.getElementById(id);
+                var rc = rough.svg(button_container);
+                var button = rc.rectangle(x, y, w, h,
+                    {
+                        fill: "rgba(255,255,255,1)",
+                        fillStyle: "solid",
+                        strokeWidth: "3"
+                    }
+                );
+                button_container.appendChild(button.children[0]);
+                button_container.appendChild(button.children[0]);
+                
+                bc.append("text")
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "central")
+                    .attr("x", x+w/2)
+                    .attr("y", y+h/2)
+                    .text(text);
+
+                d3.select("#"+id)
+                    .on("mouseover", function(event, d) {
+                        d3.select("#"+id+">path").style("fill", "black");
+                        d3.select("#"+id+">text").style("fill", "white");
+                    })
+                    .on("mouseout", function(event, d) {
+                        d3.select("#"+id+">path").style("fill", "white");
+                        d3.select("#"+id+">text").style("fill", "black");
+                    });
+            }
+
+            function create_slider(id, target, submit, form) {
+                var bar_container = document.getElementById(id+"_bar");
+                var rc = rough.svg(bar_container);
+                var bar = rc.rectangle(200, 750, 600, 50, {
+                    fill: "white",
+                    strokeWidth: "3"
+                });
+                bar_container.appendChild(bar.children[0]);
+                bar_container.appendChild(bar.children[0]);
+
+                var cursor_container = document.getElementById(id+"_cursor");
+                var rc = rough.svg(cursor_container);
+                var cursor = rc.rectangle(490, 745, 20, 60, {
+                    fill: "black",
+                    fillStyle: "solid",
+                    strokeWidth: "3"
+                });
+                cursor_container.appendChild(cursor.children[0]);
+                cursor_container.appendChild(cursor.children[0]);
+                
+                d3.select("#"+id+"_cursor").call(
+                    d3.drag()
+                        .on("start", dragstart)
+                        .on("drag", dragged)
+                        .on("end", dragend)
+                );
+
+                function dragstart(event, d) {
+                    d3.select(this).style("cursor", "grabbing");
+                }
+
+                function dragged(event, d) {
+                    var cursor_pos = Math.min(Math.max(200, event.x), 800)
+                    d3.select(this).attr("transform", "translate(" + String(cursor_pos-500) + ")");
+                    var overlap = String(Math.round((cursor_pos-200)/(800-200)*100))+"%";
+                    d3.select("#"+target).text(overlap);
+                    d3.select("#"+form).attr("value", overlap);
+                }
+
+                function dragend(event, d) {
+                    d3.select(this).style("cursor", "grab");
+                    d3.select("#"+submit).style("display", "block").transition().style("opacity", "1");
+                }
+            }
+
+            function create_5_option_likert(parent_id, trait_num, title, x, y, r) {
+                var colors = ["rgba(255,0,0,0.2)", "rgba(200,150,0,0.2)", "rgba(255,255,255,0.2)", "rgba(0,150,200,0.2)", "rgba(0,0,255,0.2)"];
+                var likert_container = document.getElementById(parent_id);
+                var id = "trait"+trait_num;
+                
+                d3.select("#"+parent_id).append("g").attr("id", id)
+                    .attr("class", "trait_likert");
+
+                d3.select("#"+id).append("text")
+                    .attr("x", "500")
+                    .attr("y", "400")
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "central")
+                    .attr("font-size", "1.5em")
+                    .text(title);
+
+                for (let i = 0; i < 5; i++) {
+                    var option_id = id+"_option"+i;
+                    var symbol = d3.select("#"+id).append("g")
+                        .attr("id", option_id)
+                        .attr("class", "likert_option")
+                        .on("mouseover", function(event, d) {
+                            d3.select(this).selectAll("path").first().style("fill", "black");
+                            d3.select(this).selectAll("text").attr("fill", "white");
+                        })
+                        .on("mouseout", function(event, d) {
+                            d3.select(this).selectAll("path").first().style("fill", colors[i]);
+                            d3.select(this).selectAll("text").attr("fill", "black");
+                        })
+                        .on("click", function(event, d) {
+                            d3.select("#genetics_background_likert"+trait_num).attr("value", i+1);
+                            if (trait_num < 7) {
+                                d3.select("#"+id).style("display", "none").style("opacity", "0");
+                                var next_num = Number(trait_num) + 1;
+                                d3.select("#trait"+next_num).style("display", "block").transition().style("opacity", "1");
+                            } else {
+                                $(".carousel").carousel("next");
+
+                                /*
+                                setTimeout(function() {
+                                    d3.select("#"+id).style("display", "none").style("opacity", "0");
+                                    d3.selectAll(".gb_stage1,.gb_stage2,.gb_stage3").style("display", "none").style("opacity", "0");
+                                    d3.selectAll(".gb_stage0").style("display", "block").transition().style("opacity", "1");
+                                    d3.selectAll("#spectrum>text").transition().attr("y", "500");
+                                }, 1000);
+                                */
+                            }
+                        });
+                    
+                    var option_group = document.getElementById(id+"_option"+i);
+                    var rc = rough.svg(option_group);
+                    var circle = rc.circle(x+(-2+i)*(r*2+10), y, r*2, {
+                        fill: colors[i],
+                        fillStyle: "solid",
+                        strokeWidth: "3"
+                    });
+                    option_group.appendChild(circle.children[0]);
+                    option_group.appendChild(circle.children[0]);
+
+                    symbol.append("text")
+                        .attr("x", x+(-2+i)*(r*2+10))
+                        .attr("y", y)
+                        .attr("text-anchor", "middle")
+                        .attr("dominant-baseline", "central")
+                        .text(i+1);
+
+                    if (i == 2) {
+                        symbol.append("text")
+                            .attr("x", x+(-2+i)*(r*2+10))
+                            .attr("y", y+30)
+                            .attr("font-size", "0.7em")
+                            .attr("text-anchor", "middle")
+                            .attr("dominant-baseline", "central")
+                            .text("50/50");
+                    }
+                }
+
+                d3.select("#"+id).append("text")
+                    .attr("x", "500")
+                    .attr("y", "750")
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "central")
+                    .text(trait_num + " / 7");
+            }
+
+            function create_circle(id, x, y, r, c=false, s=3) {
+                var circle_container = document.getElementById(id);
+                var rc = rough.svg(circle_container);
+                if (c != false) {
+                    var circle = rc.circle(x, y, r*2, {
+                        fill: c,
+                        fillStyle: "solid",
+                        strokeWidth: s
+                    });
+                    circle_container.appendChild(circle.children[0]);
+                    circle_container.appendChild(circle.children[0]);
+                } else {
+                    var circle = rc.circle(x, y, r*2, {
+                        strokeWidth: "3"
+                    });
+                    circle_container.appendChild(circle.children[0]);
+                }
+                
+            }
+            
+            function create_interactive_circle(
+                id,
+                x,
+                y,
+                r,
+                c=false,
+                submit=false,
+                s=3,
+                p_id=false,
+                p_x=false,
+                p_r=false,
+                target=false
+            ) {
+
+                create_circle(id, x, y, r, c, s);
+
+                d3.select("#"+id)
+                    .call(
+                        d3.drag()
+                            .on("start", dragstart)
+                            .on("drag", dragged)
+                            .on("end", dragend)
+                    );
+
+                function dragstart(event, d) {
+                    d3.select(this).style("cursor", "grabbing");
+                }
+
+                function dragged(event, d) {
+                    var cursor_pos = Math.min(Math.max(200, event.x), 800);
+                    d3.select(this).attr("transform", "translate(" + String(cursor_pos-x) + ")");
+                    if (p_id != false) {
+                        var t = get_translation_value("#"+id);
+                        var p_t = get_translation_value("#"+p_id);
+                        d3.select("#"+target).text(String(Math.round((calc_percentage_overlap(x+t, r, p_x+p_t, p_r) * 100))) + "%");
+                        d3.select("#guess_"+id).attr("transform", "translate("+ String((cursor_pos-x)/2) + ")")
+                    }
+                }
+
+                function dragend(event, d) {
+                    d3.select(this).style("cursor", "grab");
+                    if (submit != false) {
+                        d3.select("#"+submit).style("display", "block").transition().style("opacity", "1");
+                    }
+                }
+            }
+
+            function calc_area_of_two_circle_intersection(x, r, X, R) {
+                var d = Math.abs(x-X);
+                var rad_sum = r+R;
+                var rad_diff = r-R;
+                if (d >= rad_sum) {
+                    return 0
+                }
+                if (d <= Math.abs(rad_diff)) {
+                    if (rad_diff < 0) {
+                        return Math.PI*(r**2)
+                    }
+                    return Math.PI*(R**2)
+                }
+                var term1 = (r**2)*Math.acos(((d**2)+(r**2)-(R**2))/(2*d*r));
+                var term2 = (R**2)*Math.acos(((d**2)+(R**2)-(r**2))/(2*d*R));
+                var term3 = (1/2)*Math.sqrt((-d+r+R)*(d+r-R)*(d-r+R)*(d+r+R));
+                return term1+term2-term3
+            }
+
+            function calc_percentage_overlap(x, r, X, R) {
+                var area_of_circle1 = Math.PI*(r**2)
+                var area_of_circle2 = Math.PI*(R**2)
+                var area_of_overlap = calc_area_of_two_circle_intersection(x, r, X, R);
+                var total_area = area_of_circle1 + area_of_circle2 - area_of_overlap;
+                return area_of_overlap / total_area
+            }
+
+            function get_translation_value(id) {
+                var translate_string = d3.select(id).attr("transform");
+                var t = 0;
+                if (translate_string !== null) {
+                    t = parseFloat(translate_string.replace("translate(", "").replace(")", ""));
+                }
+                return t
+            }
+
+            function random_between(min, max) {
+                return Math.random() * (max - min) + min
+            }
+
+            function randomString(length, chars) {
+                var result = '';
+                for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+                return result;
+            }
+
+            function copy_to_clipboard(value) {
+                navigator.clipboard.writeText(value);
+                d3.select("#copied").text("Copied!");
+            }
+
+        </script>
+        <form name="submit-to-google-sheet" id="form">
+            <input type="hidden" id="time_spent" name="time_spent">
+            <div id="carousel" class="carousel carousel-dark slide full" data-bs-touch="false" data-bs-ride="false" data-bs-wrap="false">
+                <!--
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
+                    <button type="button" data-bs-target="#carousel" data-bs-slide-to="7" aria-label="Slide 8"></button>
+                </div>
+                -->
+                <div class="carousel-inner full">
+                    {%- include welcome.html -%}
+                    {%- include introduction.html -%}
+                    {%- include euler_diagram_explanation.html -%}
+                    {%- include interpretability.html -%}
+                    {%- include build_your_own.html -%}
+                    {%- include genetics_background.html -%}
+                    {%- include 1KGP.html -%}
+                    {%- include finished.html -%}
+                </div>
+            </div>
+        </form>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        
+        <script>
+            const start = Date.now();
+            const scriptURL = "https://script.google.com/macros/s/AKfycbxtD8Wfh9iCgPsOPRDGMFs-w8_SpuMvYF5P6YnviDs7vrbEbgFBKtj_5Snsj6MlYMO7/exec";
+            const form = document.forms["submit-to-google-sheet"];
+
+            form.addEventListener("submit", e => {
+                e.preventDefault();
+                
+                fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                    .then(response => console.log("Success"))
+                    .catch(error => console.error('Error!', error.message));
+            });
+        </script>
+
+    </body>
+</html>

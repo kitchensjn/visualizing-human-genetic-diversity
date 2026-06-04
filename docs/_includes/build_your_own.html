@@ -1,0 +1,153 @@
+<style>
+    .interactive_circle:hover {
+        cursor: grab;
+    }
+
+    .static:hover {
+        cursor: default;
+    }
+
+    .byo_stage1, .byo_stage2, .byo_stage3 {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+
+    #byo0_guess, #byo1_guess {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+</style>
+
+<div id="build_your_own" class="carousel-item full grid-background">
+
+    <div class="form-responses">
+        <input type="hidden" id="build_your_own_overlap0" name="build_your_own_overlap0">
+        <input type="hidden" id="build_your_own_overlap1" name="build_your_own_overlap1">
+    </div>
+
+    <svg class="figure" viewBox="0 0 1000 1000">
+
+        <g class="text-content">
+            <g>
+                <text x="100" y="100">Now it's time to build your own diagrams. <tspan font-weight="bold">Slide</tspan></text>
+                <text x="100" y="150"><tspan font-weight="bold">the circles so that they match the specified</tspan></text>
+                <text x="100" y="200"><tspan font-weight="bold">percent overlap.</tspan></text>
+            </g>
+        </g>
+
+        <g class="diagram" transform="translate(0, 50)">
+            <g class="numbers">
+                <text class="byo_stage0 byo_stage1" x="500" y="250" text-anchor="middle" dominant-baseline="central" font-size=1.5em>35%</text>
+                <text class="byo_stage2 byo_stage3" x="500" y="250" text-anchor="middle" dominant-baseline="central" font-size=1.5em>80%</text>
+            </g>
+            <g>
+                <g class="byo_stage0 byo_stage1">
+                    <g id="byo0_red_circle" class="interactive_circle"></g>
+                    <g id="byo0_blue_circle" class="interactive_circle"></g>
+                </g>
+                <g class="byo_stage2 byo_stage3">
+                    <g id="byo1_red_circle" class="interactive_circle"></g>
+                    <g id="byo1_blue_circle" class="interactive_circle"></g>
+                </g>
+            </g>
+            <g class="answers">
+                <g class="byo_stage1">
+                    <text x="500" y="775" text-anchor="middle" dominant-baseline="central">Your diagram shows a <tspan id="byo_answer1" font-weight="bold" dominant-baseline="central">50%</tspan> overlap.</text>
+                </g>
+                <g class="byo_stage3">
+                    <text x="500" y="775" text-anchor="middle" dominant-baseline="central">Your diagram shows a <tspan id="byo_answer2" font-weight="bold" dominant-baseline="central">75%</tspan> overlap.</text>
+                </g>
+            </g>
+        </g>
+
+        <g class="buttons">
+            <g id="byo0_0_buttons" class="byo_stage0"></g>
+            <g id="byo0_1_buttons" class="byo_stage1"></g>
+            <g id="byo1_0_buttons" class="byo_stage2"></g>
+            <g id="byo1_1_buttons" class="byo_stage3"></g>
+        </g>
+
+    </svg>
+
+    <script>
+
+        create_interactive_circle("byo0_red_circle", 400, 500, 190, "rgba(255,0,0,0.2)", "byo0_guess");
+        create_interactive_circle("byo0_blue_circle", 600, 500, 190, "rgba(0,0,255,0.2)", "byo0_guess");
+
+        d3.selectAll(".byo_stage0").style("display", "block");
+        d3.selectAll(".byo_stage0").style("opacity", "1");
+
+        create_button("byo0_0_buttons", "byo0_guess", "Submit", 425, 900, 150, 50);
+        d3.select("#byo0_guess")
+            .on("click", function(event, d) {
+                var r_t = get_translation_value("#byo0_red_circle");
+                var b_t = get_translation_value("#byo0_blue_circle");
+                var overlap = String(Math.round((calc_percentage_overlap(400+r_t, 190, 600+b_t, 190) * 100))) + "%";
+                d3.select("#byo_answer1").text(overlap);
+                d3.select("#build_your_own_overlap0").attr("value", overlap);
+                d3.selectAll(".byo_stage0").style("display", "none");
+                d3.selectAll(".byo_stage1").style("display", "block").transition().style("opacity", "1");
+                d3.select("#byo0_red_circle").attr("class", "static").style("cursor", "default");
+                d3.select("#byo0_blue_circle").attr("class", "static").style("cursor", "default");
+                d3.selectAll(".static").call(
+                    d3.drag()
+                        .on("start", null)
+                        .on("drag", null)
+                        .on("end", null)
+                );
+            });
+
+        create_button("byo0_1_buttons", "byo0_next", "Next", 450, 900, 100, 50);
+        d3.select("#byo0_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".byo_stage1").style("display", "none");
+                d3.selectAll(".byo_stage2").style("display", "block").transition().style("opacity", "1");
+            });
+
+        create_interactive_circle("byo1_red_circle", 400, 500, 190, "rgba(255,0,0,0.2)", "byo1_guess");
+        create_interactive_circle("byo1_blue_circle", 600, 500, 190, "rgba(0,0,255,0.2)", "byo1_guess");
+
+        create_button("byo1_0_buttons", "byo1_guess", "Submit", 425, 900, 150, 50);
+        d3.select("#byo1_guess")
+            .on("click", function(event, d) {
+                var r_t = get_translation_value("#byo1_red_circle");
+                var b_t = get_translation_value("#byo1_blue_circle");
+                var overlap = String(Math.round((calc_percentage_overlap(400+r_t, 190, 600+b_t, 190) * 100))) + "%";
+                d3.select("#byo_answer2").text(overlap);
+                d3.select("#build_your_own_overlap1").attr("value", overlap);
+                d3.selectAll(".byo_stage2").style("display", "none");
+                d3.selectAll(".byo_stage3").style("display", "block").transition().style("opacity", "1");
+                d3.select("#byo1_red_circle").attr("class", "static").style("cursor", "default");
+                d3.select("#byo1_blue_circle").attr("class", "static").style("cursor", "default");
+                d3.selectAll(".static").call(
+                    d3.drag()
+                        .on("start", null)
+                        .on("drag", null)
+                        .on("end", null)
+                );
+            });
+
+        create_button("byo1_1_buttons", "byo1_next", "Next", 450, 900, 100, 50);
+        d3.select("#byo1_next")
+            .on("click", function(event, d) {
+                $(".carousel").carousel("next");
+                
+                /*
+                setTimeout(function() {
+                    d3.selectAll(".byo_stage0,.byo_stage2,.byo_stage3").style("display", "none").style("opacity", "0");
+                    d3.selectAll(".byo_stage1").style("display", "block").transition().style("opacity", "1");
+                    
+                    d3.select("#byo0_next")
+                        .on("click", function(event, d) {
+                            d3.selectAll(".byo_stage1").style("display", "none");
+                            d3.selectAll(".byo_stage3").style("display", "block").transition().style("opacity", "1");
+                        });
+
+                }, 1000);
+                */
+            });
+    </script>
+
+</div>

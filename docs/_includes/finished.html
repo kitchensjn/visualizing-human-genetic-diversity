@@ -1,0 +1,80 @@
+<style>
+    #codeword:hover {
+        cursor: pointer;
+    }
+
+    #download:hover {
+        cursor: pointer;
+    }
+</style>
+
+<div id="finished" class="carousel-item full grid-background">
+
+    <div class="form-responses">
+        <input type="hidden" id="finished_codeword" name="finished_codeword">
+    </div>
+
+    <svg class="figure" viewBox="0 0 1000 1000">
+
+        <g class="text-content">
+            <g>
+                <text x="100" y="100"><tspan font-weight="bold">Thank you for completing this activity!</tspan> To receive</text>
+                <text x="100" y="150">homework points, please copy the following unique</text>
+                <text x="100" y="200">codeword and submit it via the corresponding</text>
+                <text x="100" y="250">assignment on Canvas.</text>
+                <text id="codeword" x="500" y="350" text-anchor="middle" dominant-baseline="central" font-size="1.5em" fill="blue">X</text>
+                <text id="copied" x="500" y="400" text-anchor="middle" dominant-baseline="central" font-size="0.7em">Click the codeword to copy it to your clipboard.</text>
+                <text id="download" x="500" y="500" text-anchor="middle" dominant-baseline="central" font-size="1.5em" fill="blue">Download Your Responses</text>
+                <text id="copied" x="500" y="550" text-anchor="middle" dominant-baseline="central" font-size="0.7em">Click to download.</text>
+                
+                <text x="100" y="700"><tspan font-weight="bold">Interested in learning more?</tspan> Check out this <a xlink:href="https://james-kitchens.com/blog/visualizing-human-genetic-diversity" target="_blank" fill="blue"><tspan text-decoration="underline">blog post</tspan></a></text>
+                <text x="100" y="750">which served as the initial inspiration for this activity.</text>
+                <text x="100" y="800">For any questions about the content of this activity,</text>
+                <text x="100" y="850">please reach out to James Kitchens at</text>
+                <text x="100" y="900" transform="translate(328,3) skewX(-20)"><tspan font-weight="bold">jkitchens</tspan> at <tspan font-weight="bold">ucdavis.edu.</tspan></text>
+            </g>
+        </g>
+
+    </svg>
+
+    <script>
+
+        document.querySelector("#download").addEventListener("click", generateCSV);
+  
+        function generateCSV(e){
+            e.preventDefault();
+            const formdata = new FormData(document.getElementById('form'));
+            const formObj = Object.fromEntries(formdata);
+            const formKeys = Object.keys(formObj)
+            let formValues = '';
+            for(let i=0; i< formKeys.length; i++){
+            // comma separated values and break line
+                formValues += formKeys[i] +','+formObj[formKeys[i]]+ "\r\n";
+            }
+            downloadCSV(formValues);
+        }
+        
+        function downloadCSV(formValues){
+            const columnNames = "Question, Response";
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += columnNames + "\r\n";
+            csvContent += formValues + "\r\n";
+
+            const encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "EVE100_WQ2026_Euler_Diagrams_Responses.csv");
+            document.body.appendChild(link);
+            link.click();
+            // link.remove();
+        }
+
+
+        var codeword = randomString(6, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        d3.select("#codeword")
+            .attr("onclick", "copy_to_clipboard(codeword)")
+            .text(codeword);
+        d3.select("#finished_codeword").attr("value", codeword);
+    </script>
+
+</div>

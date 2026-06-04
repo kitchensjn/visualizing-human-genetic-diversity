@@ -1,0 +1,189 @@
+<style>
+    .marquee {
+        animation: marquee 50s linear infinite;
+    }
+
+    @keyframes marquee {
+        0% {
+            transform: translate(0, 0);
+        }
+        100% {
+            transform: translate(-10500px, 0);
+        }
+    }
+
+    .gb_stage1, .gb_stage2, .gb_stage3, .gb_stage4 {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+
+    #hidden_marquee {
+        display: block;
+        opacity: 0;
+        transition: 1s;
+    }
+
+    .trait_likert {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+</style>
+
+<div id="genetics_background" class="carousel-item full grid-background">
+
+    <div class="form-responses">
+        <input type="hidden" id="genetics_background_likert1" name="genetics_background_likert1">
+        <input type="hidden" id="genetics_background_likert2" name="genetics_background_likert2">
+        <input type="hidden" id="genetics_background_likert3" name="genetics_background_likert3">
+        <input type="hidden" id="genetics_background_likert4" name="genetics_background_likert4">
+        <input type="hidden" id="genetics_background_likert5" name="genetics_background_likert5">
+        <input type="hidden" id="genetics_background_likert6" name="genetics_background_likert6">
+        <input type="hidden" id="genetics_background_likert7" name="genetics_background_likert7">
+        <!--
+        <input type="hidden" id="genetics_background_likert8" name="genetics_background_likert8">
+        <input type="hidden" id="genetics_background_likert9" name="genetics_background_likert9">
+        <input type="hidden" id="genetics_background_likert10" name="genetics_background_likert10">
+        <input type="hidden" id="genetics_background_likert11" name="genetics_background_likert11">
+        <input type="hidden" id="genetics_background_likert12" name="genetics_background_likert12">
+        <input type="hidden" id="genetics_background_likert13" name="genetics_background_likert13">
+        <input type="hidden" id="genetics_background_likert14" name="genetics_background_likert14">
+        <input type="hidden" id="genetics_background_likert15" name="genetics_background_likert15">
+        <input type="hidden" id="genetics_background_likert16" name="genetics_background_likert16">
+        <input type="hidden" id="genetics_background_likert17" name="genetics_background_likert17">
+        -->
+    </div>
+
+    <svg class="figure" viewBox="0 0 1000 1000">
+        <g class="text-content">
+            <g class="gb_stage0">
+                <text x="100" y="100">So how does this relate to <tspan font-weight="bold">genetics</tspan>?</text>
+                <text x="100" y="200">Your genome is a very long sequence of DNA bases</text>
+                <text x="100" y="250">(represented as "A", "T", "G", and "C"). There are in fact</text>
+                <text x="100" y="300">approximately three billion of these bases lined up</text>
+                <text x="100" y="350">one after the other, and the exact combination is</text>
+                <text x="100" y="400">unique to just you.</text>
+            </g>
+            <g class="gb_stage1">
+                <text x="100" y="100">If you compare your genome to others, you will see</text>
+                <text x="100" y="150">that there are subtle differences. For example, where</text>
+                <text x="100" y="200">you have a "T", they have a "C". We describe each</text>
+                <text x="100" y="250">observed DNA base at a site as a <tspan font-weight="bold">variant</tspan> and a site</text>
+                <text x="100" y="300">with multiple variants as <tspan font-weight="bold">polymorphic</tspan>. If you look at</text>
+                <text x="100" y="350">enough genomes, you will see that nearly all positions</text>
+                <text x="100" y="400">in the genome are polymorphic to some degree.</text>
+            </g>
+            <g class="gb_stage2">
+                <text x="100" y="100">Your <tspan font-weight="bold">DNA</tspan>, the <tspan font-weight="bold">environment</tspan>, and the <tspan font-weight="bold">interactions</tspan></text>
+                <text x="100" y="150"><tspan font-weight="bold">between these two factors</tspan> control the development of</text>
+                <text x="100" y="200">your many traits. We are curious about whether you think</text>
+                <text x="100" y="250">the following traits are environmentally-controlled,</text>
+                <text x="100" y="300">genetically-controlled, or somewhere in between.</text>
+            </g>
+            <g class="gb_stage3">
+                <text x="100" y="100">On a scale of 1 (only environment) to 5 (only genetic),</text>
+                <text x="100" y="150"><tspan font-weight="bold">indicate to what extent you think the environment</tspan></text>
+                <text x="100" y="200"><tspan font-weight="bold">and genetic differences explain observed</tspan></text>
+                <text x="100" y="250"><tspan font-weight="bold">differences in the following trait.</tspan></text>
+            </g>
+        </g>
+        <g class="diagram">
+            <g class="gb_stage0 gb_stage1">
+                <text x="-500" y="600" font-size=2em class="marquee" letter-spacing="5">TCTCGTTCCCGCAGCTTGCCAGCACTTTCAGAATCATGGCGTGCATGGTAGAATGACTCT<tspan fill="black">G</tspan>TATAACGGACTTCGACATGGCAATATCCCCCCCTTTCAACTTC<tspan fill="black">G</tspan>TAGAGGAGAAAAGTATTGACATGAGC<tspan fill="black">G</tspan>CTCCCGGCACAACGGCCAAAGAAGTCTCCAATTTCTTA<tspan fill="black">G</tspan>TTTCCGAATGACATGCGTCTCCTTGCGGGTAAATCGCCGACCGCAAAACTTAGGAGCCAGGGGGAACAGATAGGTCTA<tspan fill="black">G</tspan>ATTAGCTTAAGGGA<tspan fill="black">T</tspan>GTAAATCCTGGGATCGTTCAGTTGTAACCATATACTTACGCTGGGGCTTCTCCGGCGGATTTTTACTGTCACCAACCACGAGATTTGAAGTAAACCAATTGAGCACATAGCC</text>
+            </g>
+            <g id="hidden_marquee" class="gb_stage1">
+                <text x="-500" y="550" font-size=2em class="marquee" letter-spacing="5">TCTCGTTCCCGCAGCTTGCCAGCACTTTCAGAATCATGGCGTGCATGGTAGAATGACTCT<tspan fill="red">A</tspan>TATAACGGACTTCGACATGGCAATATCCCCCCCTTTCAACTTC<tspan fill="black">G</tspan>TAGAGGAGAAAAGTATTGACATGAGC<tspan fill="black">G</tspan>CTCCCGGCACAACGGCCAAAGAAGTCTCCAATTTCTTA<tspan fill="red"  >C</tspan>TTTCCGAATGACATGCGTCTCCTTGCGGGTAAATCGCCGACCGCAAAACTTAGGAGCCAGGGGGAACAGATAGGTCTA<tspan fill="black">G</tspan>ATTAGCTTAAGGGA<tspan fill="black">T</tspan>GTAAATCCTGGGATCGTTCAGTTGTAACCATATACTTACGCTGGGGCTTCTCCGGCGGATTTTTACTGTCACCAACCACGAGATTTGAAGTAAACCAATTGAGCACATAGCC</text>
+                <text x="-500" y="650" font-size=2em class="marquee" letter-spacing="5">TCTCGTTCCCGCAGCTTGCCAGCACTTTCAGAATCATGGCGTGCATGGTAGAATGACTCT<tspan fill="black">G</tspan>TATAACGGACTTCGACATGGCAATATCCCCCCCTTTCAACTTC<tspan fill="black">G</tspan>TAGAGGAGAAAAGTATTGACATGAGC<tspan fill="red"  >T</tspan>CTCCCGGCACAACGGCCAAAGAAGTCTCCAATTTCTTA<tspan fill="red"  >C</tspan>TTTCCGAATGACATGCGTCTCCTTGCGGGTAAATCGCCGACCGCAAAACTTAGGAGCCAGGGGGAACAGATAGGTCTA<tspan fill="red"  >T</tspan>ATTAGCTTAAGGGA<tspan fill="black">T</tspan>GTAAATCCTGGGATCGTTCAGTTGTAACCATATACTTACGCTGGGGCTTCTCCGGCGGATTTTTACTGTCACCAACCACGAGATTTGAAGTAAACCAATTGAGCACATAGCC</text>
+                <text x="-500" y="700" font-size=2em class="marquee" letter-spacing="5">TCTCGTTCCCGCAGCTTGCCAGCACTTTCAGAATCATGGCGTGCATGGTAGAATGACTCT<tspan fill="black">G</tspan>TATAACGGACTTCGACATGGCAATATCCCCCCCTTTCAACTTC<tspan fill="black">G</tspan>TAGAGGAGAAAAGTATTGACATGAGC<tspan fill="black">G</tspan>CTCCCGGCACAACGGCCAAAGAAGTCTCCAATTTCTTA<tspan fill="black">G</tspan>TTTCCGAATGACATGCGTCTCCTTGCGGGTAAATCGCCGACCGCAAAACTTAGGAGCCAGGGGGAACAGATAGGTCTA<tspan fill="red"  >T</tspan>ATTAGCTTAAGGGA<tspan fill="black">T</tspan>GTAAATCCTGGGATCGTTCAGTTGTAACCATATACTTACGCTGGGGCTTCTCCGGCGGATTTTTACTGTCACCAACCACGAGATTTGAAGTAAACCAATTGAGCACATAGCC</text>
+                <text x="-500" y="750" font-size=2em class="marquee" letter-spacing="5">TCTCGTTCCCGCAGCTTGCCAGCACTTTCAGAATCATGGCGTGCATGGTAGAATGACTCT<tspan fill="black">G</tspan>TATAACGGACTTCGACATGGCAATATCCCCCCCTTTCAACTTC<tspan fill="red"  >C</tspan>TAGAGGAGAAAAGTATTGACATGAGC<tspan fill="black">G</tspan>CTCCCGGCACAACGGCCAAAGAAGTCTCCAATTTCTTA<tspan fill="black">G</tspan>TTTCCGAATGACATGCGTCTCCTTGCGGGTAAATCGCCGACCGCAAAACTTAGGAGCCAGGGGGAACAGATAGGTCTA<tspan fill="black">G</tspan>ATTAGCTTAAGGGA<tspan fill="red"  >G</tspan>GTAAATCCTGGGATCGTTCAGTTGTAACCATATACTTACGCTGGGGCTTCTCCGGCGGATTTTTACTGTCACCAACCACGAGATTTGAAGTAAACCAATTGAGCACATAGCC</text>
+            </g>
+            <g class="gb_stage2 gb_stage3">
+                <g id="spectrum"></g>
+            </g>
+            <g id="likert" class="gb_stage3"></g>
+        </g>
+        <g class="buttons">
+            <g id="gb0_buttons" class="gb_stage0"></g>
+            <g id="gb1_buttons" class="gb_stage1"></g>
+            <g id="gb2_buttons" class="gb_stage2"></g>
+        </g>
+    </svg>
+
+    <script>
+        d3.selectAll(".gb_stage0").style("display", "block");
+        d3.selectAll(".gb_stage0").style("opacity", "1");
+
+        create_button("gb0_buttons", "gb0_next", "Next", 450, 900, 100, 50);
+        create_button("gb1_buttons", "gb1_next", "Next", 450, 900, 100, 50);
+        create_button("gb2_buttons", "gb2_next", "Next", 450, 900, 100, 50);
+
+        d3.select("#spectrum").append("text")
+            .attr("x", "50")
+            .attr("y", "500")
+            .attr("text-anchor", "start")
+            .attr("dominant-baseline", "central")
+            .text("Only Environment");
+
+        d3.select("#spectrum").append("text")
+            .attr("x", "320")
+            .attr("y", "500")
+            .attr("text-anchor", "start")
+            .attr("dominant-baseline", "central")
+            .text("<------------------------->");
+        
+        d3.select("#spectrum").append("text")
+            .attr("x", "950")
+            .attr("y", "500")
+            .attr("text-anchor", "end")
+            .attr("dominant-baseline", "central")
+            .text("Only Genetics");
+
+        create_5_option_likert("likert", "1", "HEIGHT", 500, 550, 75);
+        create_5_option_likert("likert", "2", "SCHIZOPHRENIA", 500, 550, 75);
+        create_5_option_likert("likert", "3", "RELIGIOUS BELIEFS", 500, 550, 75);
+        create_5_option_likert("likert", "4", "INTELLIGENCE IN ADULTS", 500, 550, 75);
+        create_5_option_likert("likert", "5", "BLOOD GROUP (ABO)", 500, 550, 75);
+        create_5_option_likert("likert", "6", "ASTHMA", 500, 550, 75);
+        create_5_option_likert("likert", "7", "ADDICTION TO GAMBLING", 500, 550, 75);
+
+
+        /*
+        create_5_option_likert("likert", "2", "BIPOLAR DISORDER", 500, 550, 75);
+        create_5_option_likert("likert", "3", "DIABETES", 500, 550, 75);
+        create_5_option_likert("likert", "4", "COLOR BLINDNESS", 500, 550, 75);
+        create_5_option_likert("likert", "6", "ALCOHOLISM", 500, 550, 75);
+        create_5_option_likert("likert", "7", "BREAST CANCER", 500, 550, 75);
+        create_5_option_likert("likert", "8", "INTEREST IN FASHION", 500, 550, 75);
+        create_5_option_likert("likert", "10", "POLITICAL BELIEFS", 500, 550, 75);
+        create_5_option_likert("likert", "12", "SEVERE DEPRESSION", 500, 550, 75);
+        create_5_option_likert("likert", "13", "ATTENTION DEFICIT HYPERACTIVITY DISORDER", 500, 550, 75);
+        create_5_option_likert("likert", "15", "VIOLENT BEHAVIOR", 500, 550, 75);
+        */
+        
+        
+        d3.select("#gb0_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".gb_stage0").style("display", "none");
+                d3.selectAll(".gb_stage1").style("display", "block").transition().style("opacity", "1");
+            });
+        
+        d3.select("#gb1_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".gb_stage1").style("display", "none");
+                d3.selectAll(".gb_stage2").style("display", "block").transition().style("opacity", "1");
+            })
+
+        d3.select("#gb2_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".gb_stage2").style("display", "none");
+                d3.selectAll(".gb_stage3").style("display", "block").transition().style("opacity", "1");
+                d3.select("#trait1").style("display", "block").transition().style("opacity", "1");
+                d3.selectAll("#spectrum>text").transition().attr("y", "675");
+            })
+        
+        
+
+        
+    </script>
+</div>

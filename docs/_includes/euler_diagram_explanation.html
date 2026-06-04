@@ -1,0 +1,211 @@
+<style>
+    .grid-background {
+        background-size: 40px 40px; /* Size of each grid cell */
+        background-image:
+            linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    }
+
+    .ede_stage1, .ede_stage2, .ede_stage3, .ede_stage4 {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+
+    .diagram {
+        font-size: 2em;
+    }
+
+    #cat_circle, #dog_circle, #num_left, #num_middle, #num_right {
+        transition: 1s;
+    }
+
+</style>
+
+<div id="euler_diagram_explanation" class="carousel-item full grid-background">
+    
+    <svg class="figure" viewBox="0 0 1000 1000">
+        <g class="text-content">
+            <g class="ede_stage0">
+                <text x="100" y="100">You’ve likely thought about the overlap between groups</text>
+                <text x="100" y="150">in contexts outside of genetics. Say you interviewed</text>
+                <text x="100" y="200">100 pet owners and generated the following table.</text>
+            </g>
+            <g class="ede_stage1">
+                <text x="100" y="100">We can redraw this table as a <tspan font-weight="bold">Venn diagram</tspan> where</text>
+                <text x="100" y="150">the circles are the same size...</text>
+            </g>
+            <g class="ede_stage2">
+                <text x="100" y="100">Or as an <tspan font-weight="bold">Euler diagram</tspan>, which scales area</text>
+                <text x="100" y="150">proportional to the count of that category.</text>
+            </g>
+            <g class="ede_stage3">
+                <text x="100" y="100">We can convert these counts into percentages by</text>
+                <text x="100" y="150">dividing by the total number of individuals included in</text>
+                <text x="100" y="200">the diagram (<tspan font-weight="bold">25+10+50=85</tspan> unique people that own</text>
+                <text x="100" y="250">cats or dogs).</text>
+            </g>
+            <g class="ede_stage4">
+                <text x="100" y="100">Importantly, if the circles are different sizes, their</text>
+                <text x="100" y="150">overlap will be <tspan font-weight="bold">less than 100%</tspan> even if one circle is</text>
+                <text x="100" y="200">entirely enclosed by the other.</text>
+            </g>
+        </g>
+        <g class="diagram" transform="translate(0, 25)">
+            
+            <g class="ede_stage0">
+                <g id="table_lines"></g>
+                <text x="250" y="350" text-anchor="middle" dominant-baseline="central">Own a...</text>
+                <text x="500" y="325" text-anchor="middle" dominant-baseline="central">Dog</text>
+                <text x="425" y="375" text-anchor="middle" dominant-baseline="central">Yes</text>
+                <text x="575" y="375" text-anchor="middle" dominant-baseline="central">No</text>
+                <text text-anchor="middle" dominant-baseline="central" transform="translate(272, 550) rotate(-90)">Cat</text>
+                <text text-anchor="middle" dominant-baseline="central" transform="translate(322, 475) rotate(-90)">Yes</text>
+                <text text-anchor="middle" dominant-baseline="central" transform="translate(322, 625) rotate(-90)">No</text>
+                <text x="425" y="475" font-size=1.5em text-anchor="middle" dominant-baseline="central">10</text>
+                <text x="575" y="475" font-size=1.5em text-anchor="middle" dominant-baseline="central">25</text>
+                <text x="425" y="625" font-size=1.5em text-anchor="middle" dominant-baseline="central">50</text>
+                <text x="575" y="625" font-size=1.5em text-anchor="middle" dominant-baseline="central">15</text>
+                <g id="table_annotation">
+                    <line x1="625" y1="625" x2="690" y2="625" stroke="black" stroke-width="1"></line>
+                    <text x="700" y="590" font-size="0.7em" dominant-baseline="central">These people own a pet</text>
+                    <text x="700" y="615" font-size="0.7em" dominant-baseline="central">other than a dog or cat.</text>
+                    <text x="700" y="640" font-size="0.7em" dominant-baseline="central">We will ignore them for</text>
+                    <text x="700" y="665" font-size="0.7em" dominant-baseline="central">this exercise.</text>
+                </g>
+            </g>
+            <g class="ede_stage1 ede_stage2 ede_stage3 ede_stage4">
+                <g id="cat_circle"></g>
+                <g id="dog_circle"></g>
+            </g>
+            <g class="numbers">
+                <g class="ede_stage1 ede_stage2">
+                    <text id="num_left" x="325" y="500" text-anchor="middle" dominant-baseline="central" font-size=1.5em>25</text>
+                    <text id="num_middle" x="500" y="500" text-anchor="middle" dominant-baseline="central" font-size=1.5em>10</text>
+                    <text id="num_right" x="675" y="500" text-anchor="middle" dominant-baseline="central" font-size=1.5em>50</text>
+                </g>
+                <g class="ede_stage3">
+                    <text x="325" y="500" text-anchor="middle" dominant-baseline="central" font-size=1.5em>29%</text>
+                    <text x="455" y="500" text-anchor="middle" dominant-baseline="central" font-size=1.5em>12%</text>
+                    <text x="650" y="500" text-anchor="middle" dominant-baseline="central" font-size=1.5em>59%</text>
+                </g>
+                <g class="ede_stage4">
+                    <text x="500" y="500" text-anchor="middle" dominant-baseline="central" font-size=1.5em>58%</text>
+                    <text x="500" y="690" text-anchor="middle" dominant-baseline="central" font-size=1.5em>42%</text>
+                </g>
+            </g>
+            <g class="annotations">
+                <g class="ede_stage1 ede_stage2 ede_stage3">
+                    <g>
+                        <line x1="300" y1="675" x2="275" y2="700" stroke="black" stroke-width="1"></line>
+                        <line x1="275" y1="700" x2="250" y2="700" stroke="black" stroke-width="1"></line>
+                        <text x="175" y="675" text-anchor="middle" dominant-baseline="central" font-size="0.7em">35</text>
+                        <text x="175" y="700" text-anchor="middle" dominant-baseline="central" font-size="0.7em">Cat Owners</text>
+                    </g>
+                    <g>
+                        <line x1="700" y1="325" x2="725" y2="300" stroke="black" stroke-width="1"></line>
+                        <line x1="725" y1="300" x2="750" y2="300" stroke="black" stroke-width="1"></line>
+                        <text x="825" y="275" text-anchor="middle" dominant-baseline="central" font-size="0.7em">60</text>
+                        <text x="825" y="300" text-anchor="middle" dominant-baseline="central" font-size="0.7em">Dog Owners</text>
+                    </g>
+                </g>
+                <g class="ede_stage4">
+                    <g id="common">
+                        <line x1="650" y1="635" x2="675" y2="660" stroke="black" stroke-width="1"></line>
+                        <line x1="675" y1="660" x2="700" y2="660" stroke="black" stroke-width="1"></line>
+                        <text x="725" y="635" dominant-baseline="central" font-size="0.7em">This is equivalent to</text>
+                        <text x="725" y="660" dominant-baseline="central" font-size="0.7em">saying "all <tspan dominant-baseline="central" fill="red">X</tspan> are <tspan dominant-baseline="central" fill="blue">Y</tspan>, but</text>
+                        <text x="725" y="685" dominant-baseline="central" font-size="0.7em">not all <tspan dominant-baseline="central" fill="blue">Y</tspan> are <tspan dominant-baseline="central" fill="red">X</tspan>".</text>
+                    </g>
+                </g>
+            </g>
+        </g>
+        <g class="buttons">
+            <g id="table_buttons" class="ede_stage0"></g>
+            <g id="venn_buttons" class="ede_stage1"></g>
+            <g id="euler_buttons" class="ede_stage2"></g>
+            <g id="percentages_buttons" class="ede_stage3"></g>
+            <g id="clarification_buttons" class="ede_stage4"></g>
+        </g>
+    </svg>
+    <script>
+
+        d3.selectAll(".ede_stage0").style("display", "block");
+
+        var table_container = document.getElementById("table_lines");
+        var rc = rough.svg(table_container);
+        
+        var outer = rc.rectangle(350, 400, 300, 300, {
+            fill: "rgba(0,255,0,0.2)",
+            fillStyle: "solid",
+            strokeWidth: "3"
+        });
+        table_container.appendChild(outer.children[0]);
+        table_container.appendChild(outer.children[0]);
+
+        var horizontal = rc.line(350, 550, 650, 550, {
+            strokeWidth: "3"
+        });
+        table_container.appendChild(horizontal.children[0]);
+
+        var vertical = rc.line(500, 400, 500, 700, {
+            strokeWidth: "3"
+        });
+        table_container.appendChild(vertical.children[0]);
+
+        
+        create_circle("cat_circle", 0, 0, 190, "rgba(255,0,0,0.2)");
+        d3.select("#cat_circle").attr("transform", "translate(400, 500)");
+        create_circle("dog_circle", 0, 0, 190, "rgba(0,0,255,0.2)");
+        d3.select("#dog_circle").attr("transform", "translate(600, 500)");
+
+        create_button("table_buttons", "table_next", "Next", 450, 900, 100, 50);
+        d3.select("#table_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".ede_stage0").style("display", "none");
+                d3.selectAll(".ede_stage1").style("display", "block").transition().style("opacity", "1");
+            });
+
+        create_button("venn_buttons", "venn_next", "Next", 450, 900, 100, 50);
+        d3.select("#venn_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".ede_stage1").style("display", "none");
+                d3.selectAll(".ede_stage2").style("display", "block").transition().style("opacity", "1");
+                d3.select("#num_middle").transition().attr("transform", "translate(-45, 0)");
+                d3.select("#num_right").transition().attr("transform", "translate(-25, 0)");
+                d3.select("#cat_circle").transition().attr("transform", "scale(0.87836632) translate(455.390866990437, 569.238583738047) translate(-48.731718219797, 0)");
+                d3.select("#dog_circle").transition().attr("transform", "scale(1.15005105) translate(521.71597078234, 434.763308985284) translate(12.8665592714341, 0)");
+            });
+
+        create_button("euler_buttons", "euler_next", "Next", 450, 900, 100, 50);
+        d3.select("#euler_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".ede_stage2").style("display", "none");
+                d3.selectAll(".ede_stage3").style("display", "block").transition().style("opacity", "1");
+            });
+
+        create_button("percentages_buttons", "percentages_next", "Next", 450, 900, 100, 50);
+        d3.select("#percentages_next")
+            .on("click", function(event, d) {
+                d3.selectAll(".ede_stage3").style("display", "none");
+                d3.selectAll(".ede_stage4").style("display", "block").transition().style("opacity", "1");
+                d3.select("#cat_circle").transition().attr("transform", "scale(0.87836632) translate(569.238583738047, 569.238583738047)");
+                d3.select("#dog_circle").transition().attr("transform", "scale(1.15005105) translate(434.763308985284, 434.763308985284)");
+            });
+        
+        create_button("clarification_buttons", "clarification_next", "Next", 450, 900, 100, 50);
+        d3.select("#clarification_next")
+            .on("click", function(event,d) {
+                    $(".carousel").carousel("next");
+                    
+                    setTimeout(function() {
+                        d3.selectAll(".ede_stage1,.ede_stage2,.ede_stage3,.ede_stage4").style("display", "none").style("opacity", "0");
+                        d3.selectAll(".ede_stage0").style("display", "block").style("opacity", "1");
+                        d3.select("#cat_circle").attr("transform", "translate(400, 500)");
+                        d3.select("#dog_circle").attr("transform", "translate(600, 500)");
+                        d3.select("#num_middle").attr("transform", null);
+                        d3.select("#num_right").attr("transform", null);
+                    }, 1000);
+                });
+    </script>
+</div>

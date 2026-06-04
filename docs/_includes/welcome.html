@@ -1,0 +1,57 @@
+<style>
+    #begin_activity {
+        display: none;
+        opacity: 0;
+        transition: 1s;
+    }
+</style>
+
+<div class="carousel-item active full">
+    <div id="welcome">
+        <div id="welcome-text">
+            <p class="desc">Welcome! This activity serves as an introduction to Euler diagrams and their application to human genetic datasets. This activity takes approximately 15 minutes to complete.<br><br>This is part of a study that Dr. Coop and I are conducting investigating students’ broad perceptions on the scale of human genetic variation and the effectiveness of a new visualization method in this context. If you are interested in participating in our study, your responses to the questions within the activity will be recorded anonymously. You must be 18 years of age or older and enrolled in either Introduction to Biology: Principles of Ecology and Evolution (BIS2B) or Introduction to Evolution (EVE100) at the University of California, Davis (UCD) to participate.</p>
+            <div style="display: flex; width: 100%; justify-content: center; padding: 50px 10%;">
+                <div style="padding: 20px; background-color: lightgray; text-align: center; border-radius: 20px; width: 450px;">
+                    <p>I am...:</p>
+                    <div>
+                        <div style="padding: 15px 0px;">
+                            <input type="checkbox" name="age" />
+                            <label>18 years of age or older.</label>
+                        </div>
+                        <div style="padding: 15px 0px;">
+                            <input type="checkbox" name="student" />
+                            <label>enrolled in either BIS2B or EVE100 at UCD.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="desc">Even if you do not meet these requirements or do not wish to participate in the study, you can still walk through the activity! In that case, your responses will not be included in the study (Note: they may still be recorded as part of your in-class activity, if applicable), and study specific content will be skipped.<br><br>You will receive a code at the end of the exercise as proof of completion. If this activity has been optionally assigned as part of your course at UCD, you will need to submit this code to the corresponding assignment on your class Canvas page to receive credit. Your performance in this activity will not be graded on correctness, and once you submit your answers to a given set of questions, you will not be able to change them.<br><br>If you have any questions, please reach out to James Kitchens (jkitchens <span style="font-style: italic;">at</span> ucdavis.edu) or Dr. Graham Coop (gmcoop <span style="font-style: italic;">at</span> ucdavis.edu).<br><br>Thank you,<br>James Kitchens and Graham Coop<br>Coop Lab, 3342 Storer Hall</p>
+        </div>
+        <svg id="welcome_next">
+            <g id="instructions">
+                <text x="0" y="75" font-size="1.5em">Scroll to the bottom of</text>
+                <text x="0" y="100" font-size="1.5em">the introduction...</text>
+            </g>
+        </svg>
+    </div>
+    <script>
+        create_button("welcome_next", "begin_activity", "Begin Activity", 25, 50, 250, 50);
+        d3.select("#begin_activity")
+            .on("click", function(event,d) {
+                    $(".carousel").carousel("next");
+                });
+        
+        function difference(first,sec){
+            return Math.abs(first-sec);
+        }
+
+        document.getElementById("welcome-text").addEventListener("scroll", function() {
+            var diff = difference((this.scrollTop+this.clientHeight),(this.scrollHeight));
+            
+            if(diff < 5) {
+                d3.select("#instructions").style("display", "none").style("opacity", "0");
+                d3.select("#begin_activity").style("display", "block").transition().style("opacity", "1");
+            }
+        });
+        </script>
+</div>
