@@ -1029,7 +1029,7 @@ Lastly, given this global view, we can zoom in and look at how variation is part
 
 It's easy for us to fall into the trap of thinking that humans are very genetically different. Historically, our ideas about the structure of human biological variation have been shaped by a few visible physical traits, notably skin color, that have a geographic pattern. But the genetic variants contributing to skin pigmentation are unrepresentative of the more general patterns of genetic sharing present among groups of people sampled from across the world. The genetic changes involved in skin pigmentation differences can show striking geographic patterns (e.g. [SLC24A5](https://popgen.uchicago.edu/ggv/?data=%221000genomes%22&chr=15&pos=48426484)), but that is because they have been shaped by strong local adaptation to the climatic conditions that people encountered as they moved around the world. These loci are fascinating examples of adaptation but are also the exception in comparison to the high degree of sharing that we see for most of human genetic variation. 
 
-### Acknowledgements
+### Acknowledgments
 
 We thank John Novembre, Arjun Biddanda, Molly Przeworski, Doc Edge, and the Coop Lab for their help during the editing of this post.
 
