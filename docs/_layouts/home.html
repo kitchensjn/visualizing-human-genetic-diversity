@@ -396,15 +396,6 @@
                                 d3.select("#trait"+next_num).style("display", "block").transition().style("opacity", "1");
                             } else {
                                 $(".carousel").carousel("next");
-
-                                /*
-                                setTimeout(function() {
-                                    d3.select("#"+id).style("display", "none").style("opacity", "0");
-                                    d3.selectAll(".gb_stage1,.gb_stage2,.gb_stage3").style("display", "none").style("opacity", "0");
-                                    d3.selectAll(".gb_stage0").style("display", "block").transition().style("opacity", "1");
-                                    d3.selectAll("#spectrum>text").transition().attr("y", "500");
-                                }, 1000);
-                                */
                             }
                         });
                     
@@ -581,7 +572,7 @@
         
         <script>
             const start = Date.now();
-            const scriptURL = "https://script.google.com/macros/s/AKfycbxtD8Wfh9iCgPsOPRDGMFs-w8_SpuMvYF5P6YnviDs7vrbEbgFBKtj_5Snsj6MlYMO7/exec";
+            const scriptURL = "";
             const form = document.forms["submit-to-google-sheet"];
 
             form.addEventListener("submit", e => {
