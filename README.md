@@ -15,7 +15,7 @@ We've developed a short online assignment to introduce students to Euler diagram
 1) If you haven't yet, fork this repository on GitHub
 2) Set up a Google Sheet and Google Apps Script to receive your students' responses:
     - [General instructions](https://github.com/jamiewilson/form-to-google-sheets) for set up
-    - Add these column names to Row 1: `timestamp`, `time_spent`, `age`, `student`, `finished_codeword`, `interpretability_overlap0`, `interpretability_overlap1`, `build_your_own_overlap0`, `build_your_own_overlap1`, `thousand_genomes_overlap0`, `thousand_genomes_overlap1`, `thousand_genomes_overlap2`
+    - Add these column names to Row 1: `timestamp`, `time_spent`, `finished_codeword`, `interpretability_overlap0`, `interpretability_overlap1`, `build_your_own_overlap0`, `build_your_own_overlap1`, `thousand_genomes_overlap0`, `thousand_genomes_overlap1`, `thousand_genomes_overlap2`
     - Paste the link to your Google Sheet in Line 575 of `docs/_layouts/home.html`
     - Commit these changes to your GitHub fork
 3) This activity is created with Jekyll and can be hosted through GitHub Pages:
